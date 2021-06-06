@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 class SearchNewsDelegate extends SearchDelegate {
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(textSelectionTheme: TextSelectionThemeData(cursorColor: Theme.of(context).canvasColor, selectionColor: Colors.blue.withAlpha(150)));
+  }
+  @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
