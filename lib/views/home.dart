@@ -1,3 +1,4 @@
+import 'package:app/widgets/bottom-nav-bar.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
@@ -94,6 +95,7 @@ class HomeView extends StatelessWidget {
           Container(),
           Container(),
         ]),
+        bottomNavigationBar: BottomNavAppBar(),
       ),
     );
   }
