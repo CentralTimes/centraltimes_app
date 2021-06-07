@@ -1,3 +1,4 @@
+import 'package:app/views/article.dart';
 import 'package:flutter/material.dart';
 
 class NewsCard extends StatelessWidget {
@@ -40,7 +41,7 @@ class NewsCard extends StatelessWidget {
       child: Column(
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ArticleView())),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -1,4 +1,6 @@
+import 'package:app/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -8,7 +10,42 @@ class AppDrawer extends StatelessWidget {
         children: [
           ListTile(title: Text("Daniel Wu"), subtitle: Text("Welcome Back")),
           ListTile(title: Text("Log Out")),
-          Divider(),
+          ListTile(
+              title: ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () => launch(facebookURL),
+                  icon: ImageIcon(AssetImage("assets/images/facebook.png")),
+                  iconSize: 30,
+                  padding: EdgeInsets.all(4),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => launch(twitterURL),
+                  icon: ImageIcon(AssetImage("assets/images/twitter.png")),
+                  iconSize: 30,
+                  padding: EdgeInsets.all(4),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => launch(instagramURL),
+                  icon: ImageIcon(AssetImage("assets/images/instagram.png")),
+                  iconSize: 30,
+                  padding: EdgeInsets.all(4),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => launch(youtubeURL),
+                  icon: ImageIcon(AssetImage("assets/images/youtube.png")),
+                  iconSize: 30,
+                  padding: EdgeInsets.all(4),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => launch(webURL),
+                  icon: Icon(Icons.language_outlined),
+                  iconSize: 36,
+                  padding: EdgeInsets.all(2),
+                  color: Theme.of(context).primaryColor),
+            ],
+          )),
           NotificationAccordion(),
           ListTile(
               leading: Icon(Icons.dark_mode),
