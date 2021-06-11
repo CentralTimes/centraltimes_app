@@ -1,3 +1,4 @@
+import 'package:app/services/auth_service.dart';
 import 'package:app/constants.dart';
 import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,10 @@ class SignInView extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 300),
                   child: ListTile(
-                      onTap: () {},
+                      onTap: () async {
+                        await AuthService.signIn();
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => HomeView()));
+                      },
                       title: Text("Sign In", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline5),
                       subtitle: Text("With a District 203 Google Account", textAlign: TextAlign.center),
                       tileColor: Colors.white,

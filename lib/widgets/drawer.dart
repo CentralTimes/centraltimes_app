@@ -1,15 +1,35 @@
 import 'package:app/constants.dart';
+import 'package:app/models/app_user.dart';
+import 'package:app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AppUser? user = Provider.of<AppUser?>(context);
     return Drawer(
       child: ListView(
         children: [
-          ListTile(title: Text("Daniel Wu"), subtitle: Text("Welcome Back")),
-          ListTile(title: Text("Log Out")),
+          if (user.isNull)
+            ListTile(
+                onTap: () async {
+                  await AuthService.signIn();
+                },
+                leading: Icon(Icons.login),
+                title: Text("Sign In"))
+          else ...[
+            ListTile(
+                title: Text(user!.authAccount.displayName!),
+                subtitle: Text("Welcome Back")),
+            ListTile(
+                onTap: () async {
+                  await AuthService.signOut();
+                },
+                leading: Icon(Icons.logout),
+                title: Text("Sign Out")),
+          ],
           ListTile(
               title: ButtonBar(
             alignment: MainAxisAlignment.center,

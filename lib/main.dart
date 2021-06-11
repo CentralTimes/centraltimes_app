@@ -1,21 +1,31 @@
-import 'package:app/views/home.dart';
+import 'package:app/models/app_user.dart';
+import 'package:app/services/auth_service.dart';
 import 'package:app/views/sign-in.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  await Firebase.initializeApp();
+  await AuthService.initialize();
+  runApp(CentralTimesApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class CentralTimesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Central Times',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
+    return MultiProvider(
+      providers: [
+        StreamProvider<AppUser?>.value(
+            value: AuthService.onUserChanged, initialData: null),
+      ],
+      child: MaterialApp(
+        title: 'Central Times',
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+        ),
+        home: SignInView(),
       ),
-      home: SignInView(),
     );
   }
 }
