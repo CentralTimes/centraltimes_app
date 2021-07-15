@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,8 +29,7 @@ class FirestoreService {
     }).toList();
   }
 
-  static Future<Map<String, dynamic>> getCategories() async {
-    var snapshot = await FirebaseFirestore.instance.collection("config").doc("categories").get();
-    return snapshot.data()!;
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> getCategoryStream() {
+    return FirebaseFirestore.instance.collection("config").doc("categories").snapshots();
   }
 }
