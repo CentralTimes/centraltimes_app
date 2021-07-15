@@ -10,7 +10,7 @@ class SearchNewsDelegate extends SearchDelegate {
     return [
       IconButton(
           onPressed: () {
-            query = '';
+            close(context, null);
           },
           icon: Icon(Icons.clear))
     ];
@@ -19,10 +19,8 @@ class SearchNewsDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        onPressed: () {
-          close(context, null);
-        },
-        icon: Icon(Icons.arrow_back));
+        onPressed: () {},
+        icon: Icon(Icons.search));
   }
 
   @override

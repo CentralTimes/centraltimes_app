@@ -4,7 +4,24 @@ import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin {
+  late TabController controller;
+  
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(vsync: this, length: 8);
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -44,21 +61,7 @@ class HomeView extends StatelessWidget {
                   title: "A New Thing Happened",
                   subtitle:
                       "orem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec eleifend urna. ",
-                  date: "June 6",
-                  secondary: NewsCard(
-                      title: "Another Smaller Thing Happened",
-                      subtitle:
-                          "orem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec eleifend urna. ",
-                      date: "June 6",
-                      isSecondary: true,
-                      displayTrailingBar: false,
-                      secondary: NewsCard(
-                      title: "Another Smaller Thing Happened",
-                      subtitle:
-                          "orem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec eleifend urna. ",
-                      date: "June 6",
-                      isSecondary: true,
-                      displayTrailingBar: false))),
+                  date: "June 6"),
               Padding(padding: EdgeInsets.all(5)),
               NewsCard(
                 title: "Another Big Thing Happened",
@@ -95,10 +98,8 @@ class HomeView extends StatelessWidget {
           Container(),
           Container(),
         ]),
-        bottomNavigationBar: BottomNavAppBar(),
       ),
     );
   }
 }
-
 

@@ -7,23 +7,17 @@ class NewsCard extends StatelessWidget {
   final bool displayTrailingBar;
   final String? subtitle;
   final Widget? image;
-  final NewsCard? secondary;
-  final bool isSecondary;
 
   NewsCard(
       {required this.title,
       required this.date,
       this.subtitle,
       this.image,
-      this.displayTrailingBar = true,
-      this.secondary,
-      this.isSecondary = false});
+      this.displayTrailingBar = true});
   @override
   Widget build(BuildContext context) {
     return Ink(
-      decoration: (isSecondary)
-          ? null
-          : BoxDecoration(
+      decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               boxShadow: [
                 BoxShadow(
@@ -48,9 +42,7 @@ class NewsCard extends StatelessWidget {
                 image ?? Container(),
                 ListTile(
                     title: Text(title,
-                        style: (isSecondary)
-                            ? Theme.of(context).textTheme.headline6
-                            : Theme.of(context).textTheme.headline5),
+                        style: Theme.of(context).textTheme.headline5),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     subtitle: Text(subtitle ?? "")),
@@ -71,12 +63,6 @@ class NewsCard extends StatelessWidget {
               ],
             ),
           ),
-          if (secondary != null) ...[
-            Container(
-              
-              child: Divider(height: 1, thickness: 1, indent: 16, endIndent: 16)),
-            secondary!,
-          ]
         ],
       ),
     );

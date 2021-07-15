@@ -31,39 +31,39 @@ class AppDrawer extends StatelessWidget {
                 title: Text("Sign Out")),
           ],
           ListTile(
-              title: ButtonBar(
-            alignment: MainAxisAlignment.center,
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                  onPressed: () => launch(facebookURL),
-                  icon: ImageIcon(AssetImage("assets/images/facebook.png")),
-                  iconSize: 30,
-                  padding: EdgeInsets.all(4),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => launch(twitterURL),
-                  icon: ImageIcon(AssetImage("assets/images/twitter.png")),
-                  iconSize: 30,
-                  padding: EdgeInsets.all(4),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => launch(instagramURL),
-                  icon: ImageIcon(AssetImage("assets/images/instagram.png")),
-                  iconSize: 30,
-                  padding: EdgeInsets.all(4),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => launch(youtubeURL),
-                  icon: ImageIcon(AssetImage("assets/images/youtube.png")),
-                  iconSize: 30,
-                  padding: EdgeInsets.all(4),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => launch(webURL),
-                  icon: Icon(Icons.language_outlined),
-                  iconSize: 36,
-                  padding: EdgeInsets.all(2),
-                  color: Theme.of(context).primaryColor),
+              Expanded(
+                child: IconButton(
+                    onPressed: () => launch(facebookURL),
+                    icon: ImageIcon(AssetImage("assets/images/facebook.png")),
+                    color: Theme.of(context).primaryColor),
+              ),
+              Expanded(
+                child: IconButton(
+                    onPressed: () => launch(twitterURL),
+                    icon: ImageIcon(AssetImage("assets/images/twitter.png")),
+                    color: Theme.of(context).primaryColor),
+              ),
+              Expanded(
+                child: IconButton(
+                    onPressed: () => launch(instagramURL),
+                    icon: ImageIcon(AssetImage("assets/images/instagram.png")),
+                    color: Theme.of(context).primaryColor),
+              ),
+              Expanded(
+                child: IconButton(
+                    onPressed: () => launch(youtubeURL),
+                    icon: ImageIcon(AssetImage("assets/images/youtube.png")),
+                    color: Theme.of(context).primaryColor),
+              ),
+              Expanded(
+                child: IconButton(
+                    onPressed: () => launch(webURL),
+                    icon: Icon(Icons.language_outlined),
+                    color: Theme.of(context).primaryColor),
+              ),
             ],
           )),
           NotificationAccordion(),

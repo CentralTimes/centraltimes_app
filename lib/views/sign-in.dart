@@ -1,6 +1,7 @@
 import 'package:app/services/auth_service.dart';
 import 'package:app/constants.dart';
 import 'package:app/views/home.dart';
+import 'package:app/widgets/custom-dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,8 +38,15 @@ class SignInView extends StatelessWidget {
                   constraints: BoxConstraints(maxWidth: 300),
                   child: ListTile(
                       onTap: () async {
-                        await AuthService.signIn();
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => HomeView()));
+                        try {
+                          showLoadingDialog(context, "Signing in...");
+                          await AuthService.signIn();
+                          Navigator.of(context).pop();
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => HomeView()));
+                        } on String catch (e) {
+                          Navigator.of(context).pop();
+                          if (e != "") showErrorDialog(context, e);
+                        }
                       },
                       title: Text("Sign In", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline5),
                       subtitle: Text("With a District 203 Google Account", textAlign: TextAlign.center),

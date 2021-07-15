@@ -6,7 +6,7 @@ class BottomNavAppBar extends StatelessWidget {
     return BottomNavigationBar(items: [
       BottomNavigationBarItem(icon: Icon(Icons.article_outlined), label: "News"),
       BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
-      BottomNavigationBarItem(icon: Icon(Icons.bookmark_outline), label: "Saved"),
+      BottomNavigationBarItem(icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
     ]
     );
   }

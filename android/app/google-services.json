@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "903135621540",
+    "project_id": "central-times-2f120",
+    "storage_bucket": "central-times-2f120.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903135621540:android:a171651e4f9361ab4fd131",
+        "android_client_info": {
+          "package_name": "com.centraltimes.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903135621540-74p34l5vbpame1qfhdg80rptvjr9tdhk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.centraltimes.app",
+            "certificate_hash": "2683f7b962910dcc244beb2c0ac8a6d2a2ae7b2c"
+          }
+        },
+        {
+          "client_id": "903135621540-b7vdmf0m6nvqp7uu6dim6phmtdmpbdkc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5SUkY2_5598vFaQY8xwk_ZPRHf0X6QYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903135621540-b7vdmf0m6nvqp7uu6dim6phmtdmpbdkc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
