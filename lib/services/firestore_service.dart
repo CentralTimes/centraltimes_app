@@ -20,13 +20,8 @@ class FirestoreService {
     });
   }
 
-  static Future<List<Map<String, dynamic>>> getStories({String sortBy = "date", bool descending = false}) async {
-    var snapshot = await FirebaseFirestore.instance.collection("stories").orderBy(sortBy, descending: descending).get();
-    return snapshot.docs.map((doc) {
-      var data = doc.data();
-      data["id"] = doc.id;
-      return data;
-    }).toList();
+  static Future<QuerySnapshot<Map<String, dynamic>>> getStories({required String categoryID}) {
+    return FirebaseFirestore.instance.collection("stories").where("categories", arrayContains: categoryID).orderBy("date", descending: true).get();
   }
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getCategoryStream() {
