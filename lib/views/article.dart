@@ -1,6 +1,14 @@
+import 'package:app/widgets/img_placeholder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:app/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleView extends StatelessWidget {
+  final Map<String, dynamic> data;
+  const ArticleView({required this.data});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,25 +20,96 @@ class ArticleView extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.share)),
         ],
       ),
-      body: ListView(
-        children: [
-          ListTile(title: Text("Editorial")),
-          ListTile(
-            title: Text("Example of an Article Headline Displayed", style: Theme.of(context).textTheme.headline5),
-            subtitle: Text("Agam volutpat elaboraret mei eu, habemus gloriatur scripserit ad qui. Quo cu intellegat contentiones, ex amet nihil vituperata vix."),
-          ),
-          ListTile(title: Text("By Lorem Ipsum", style: TextStyle(fontStyle: FontStyle.italic)), subtitle: Text("Updated June 7, 2021 - 12:59 PM CDT")),
-          Placeholder(fallbackHeight: 200),
-          ListTile(subtitle: Text("Ei partem nominavi mea, mucius volumus eu his. Eu tota offendit mei, duis liberavisse pro cu, vim ea blandit")),
-          ListTile(title: Text("Praesent vulputate odio quis bibendum commodo. Morbi semper sem nec augue posuere, id tempor lorem laoreet. Suspendisse ut dignissim lacus, eget porta neque. Nullam id urna sem. ")),
-          ListTile(title: Text("Etiam ultricies massa est, efficitur efficitur nisi suscipit sit amet. Vestibulum sit amet quam leo. Fusce eget augue leo. Nunc mollis lacus at nulla cursus hendrerit. Proin porta metus eu blandit consectetur.")),
-          ListTile(title: Text("Some Subtitle",  style: Theme.of(context).textTheme.headline6)),
-          ListTile(title: Text("Ei partem nominavi mea, mucius volumus",  style: TextStyle(fontWeight: FontWeight.bold))),
-          ListTile(subtitle: Text("Ei mei quando labore consectetuer, mel inani lucilius et. Meis civibus explicari an mei, menandri vulputate pri id.")),
-          Placeholder(fallbackHeight: 100),
-          ListTile(subtitle: Text("Mei equidem quaestio mnesarchum in, summo mucius duo ne, ut fabellas dissentiet nam. Vel dicat aperiri a.")),
-          Placeholder(fallbackHeight: 300),
-          ListTile(title: Text("Alia mnesarchum sit ex, et everti tritani probatus quo. Quis movet te pri, deleniti erroribus cu per. Epicuri iracundia ius ea. Ut has munere option senserit, at has audiam denique accommodare. Per zril indoctum in, explicari mediocritatem et quo.")),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+              delegate: SliverChildListDelegate.fixed([
+            Padding(padding: EdgeInsets.all(8)),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text(data["title"],
+                    style: TextStyle(fontSize: 28, height: 1.5))),
+            if (!(data["subtitle"] as String?).isNull &&
+                data["subtitle"] != "") ...[
+              Padding(padding: EdgeInsets.all(4)),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(data["subtitle"],
+                      style: TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          color: Colors.black.withOpacity(0.6)))),
+            ],
+            Padding(padding: EdgeInsets.all(16)),
+            if (!(data["author"] as String?).isNull &&
+                data["author"] != "") ...[
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(data["author"],
+                      style: TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          fontStyle: FontStyle.italic))),
+              Padding(padding: EdgeInsets.all(4)),
+            ],
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                    DateFormat("MMMM d, yyyy - h:mm a")
+                        .format(data["date"].toDate()),
+                    style: TextStyle(
+                        fontSize: 18,
+                        height: 1.5,
+                        color: Colors.black.withOpacity(0.6)))),
+            Padding(padding: EdgeInsets.all(8)),
+          ])),
+          SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+            switch (data["sections"][index]["type"]) {
+              case "IMAGE":
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: CachedNetworkImage(
+                          imageUrl: data["sections"][index]["url"],
+                          placeholder: (context, url) => ImagePlaceholder(
+                              width: data["sections"][index]["width"],
+                              height: data["sections"][index]["height"])),
+                    ),
+                    Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: MarkdownBody(
+                          data: data["sections"][index]["caption"],
+                          styleSheet:
+                              MarkdownStyleSheet.fromTheme(Theme.of(context))
+                                  .copyWith(
+                            p: TextStyle(fontSize: 16, height: 1.2),
+                          ),
+                          onTapLink: (text, href, title) {
+                            if (!href.isNull) launch(href!);
+                          },
+                        )),
+                  ],
+                );
+              default:
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: MarkdownBody(
+                    data: data["sections"][index]["text"],
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                        .copyWith(
+                      p: TextStyle(fontSize: 20, height: 1.5),
+                    ),
+                    onTapLink: (text, href, title) {
+                      if (!href.isNull) launch(href!);
+                    },
+                  ),
+                );
+            }
+          }, childCount: data["sections"].length)),
         ],
       ),
     );

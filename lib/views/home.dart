@@ -6,8 +6,10 @@ import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:app/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -147,11 +149,7 @@ class __SnippetsPageState extends State<_SnippetsPage>
             return Center(child: CircularProgressIndicator());
           return ListView.separated(
               itemBuilder: (context, index) {
-                return NewsCard(
-                    image: Placeholder(fallbackHeight: 200),
-                    title: snapshot.data![index]["title"],
-                    subtitle: snapshot.data![index]["subtitle"],
-                    date: "June 6");
+                return NewsCard(data: snapshot.data![index]);
               },
               separatorBuilder: (context, index) =>
                   Padding(padding: EdgeInsets.all(5)),
@@ -159,51 +157,3 @@ class __SnippetsPageState extends State<_SnippetsPage>
         });
   }
 }
-
-/*
-class _SnippetsPage extends StatelessWidget {
-  final Stream<List<Map<String, dynamic>>> stream;
-  const _SnippetsPage({required this.stream});
-  @override
-  Widget build(BuildContext context) {
-    return 
-  }
-}*/
-
-/*
-class _SnippetsPage extends StatefulWidget {
-  final StreamSubscription<QuerySnapshot<Map<String, dynamic>>> streamSub;
-
-  const _SnippetsPage({Key? key, required this.streamSub}) : super(key: key);
-  @override
-  __SnippetsPageState createState() => __SnippetsPageState();
-}
-
-class __SnippetsPageState extends State<_SnippetsPage> {
-  List<Map<String, dynamic>>? snippetsData;
-  @override
-  void initState() {
-    super.initState();
-    widget.streamSub.onData((data) {
-      snippetsData = data.docs.map((doc) => doc.data()).toList();
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (snippetsData.isNull) return Center(child: CircularProgressIndicator());
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return NewsCard(
-              image: Placeholder(fallbackHeight: 200),
-              title: snippetsData![index]["title"],
-              subtitle:
-                  snippetsData![index]["subtitle"],
-              date: "June 6");
-        },
-        separatorBuilder: (context, index) => Padding(padding: EdgeInsets.all(5)),
-        itemCount: snippetsData!.length);
-  }
-}
-*/
