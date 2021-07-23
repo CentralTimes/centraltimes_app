@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:app/constants.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleView extends StatelessWidget {
@@ -17,7 +18,9 @@ class ArticleView extends StatelessWidget {
         title: Text("Central Times"),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+          IconButton(onPressed: () {
+            Share.share("${data["title"]} - Central Times", subject: "${data["title"]} - Central Times");
+          }, icon: Icon(Icons.share)),
         ],
       ),
       body: CustomScrollView(

@@ -1,6 +1,7 @@
 import 'package:app/constants.dart';
 import 'package:app/models/app_user.dart';
 import 'package:app/services/auth_service.dart';
+import 'package:app/widgets/custom-dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,7 +16,14 @@ class AppDrawer extends StatelessWidget {
           if (user.isNull)
             ListTile(
                 onTap: () async {
-                  await AuthService.signIn();
+                  try {
+                    showLoadingDialog(context, "Signing in...");
+                    await AuthService.signIn();
+                    Navigator.of(context).pop();
+                  } on String catch (e) {
+                    Navigator.of(context).pop();
+                    if (e != "") showErrorDialog(context, e);
+                  }
                 },
                 leading: Icon(Icons.login),
                 title: Text("Sign In"))

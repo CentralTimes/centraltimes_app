@@ -1,8 +1,10 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/constants.dart';
 import 'package:app/views/home.dart';
 import 'package:app/widgets/custom-dialogs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignInView extends StatelessWidget {
@@ -75,7 +77,9 @@ class SignInView extends StatelessWidget {
                 children: [
                   IconButton(onPressed: () => launch(facebookURL), icon: ImageIcon(AssetImage("assets/images/facebook.png")), iconSize: 40, color: Theme.of(context).canvasColor),
                   IconButton(onPressed: () => launch(twitterURL), icon: ImageIcon(AssetImage("assets/images/twitter.png")), iconSize: 40, color: Theme.of(context).canvasColor),
-                  IconButton(onPressed: () => launch(instagramURL), icon: ImageIcon(AssetImage("assets/images/instagram.png")), iconSize: 40, color: Theme.of(context).canvasColor),
+                  IconButton(onPressed: () {
+                    AndroidIntent(action: "http://instagram.com/_u/centraltimes", data: "com.instagram.android").launch().onError<PlatformException>((error, stackTrace) => launch(instagramURL));
+                  }, icon: ImageIcon(AssetImage("assets/images/instagram.png")), iconSize: 40, color: Theme.of(context).canvasColor),
                   IconButton(onPressed: () => launch(youtubeURL), icon: ImageIcon(AssetImage("assets/images/youtube.png")), iconSize: 40, color: Theme.of(context).canvasColor),
                   IconButton(onPressed: () => launch(webURL), icon: Icon(Icons.language_outlined), iconSize: 48, padding: EdgeInsets.all(4), color: Theme.of(context).canvasColor),
                 ],

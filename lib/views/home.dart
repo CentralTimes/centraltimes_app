@@ -1,15 +1,11 @@
 import 'dart:async';
 
 import 'package:app/services/firestore_service.dart';
-import 'package:app/widgets/bottom-nav-bar.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:app/constants.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -17,42 +13,34 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
-  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? categoryStreamSub;
-  List<Stream<List<Map<String, dynamic>>>>? snippetsStreamList;
-  List<StreamController<List<Map<String, dynamic>>>>? snippetsControllerList;
-  TabController? tabController;
-  List<Map<String, dynamic>>? categoryData;
+  late List<Stream<List<Map<String, dynamic>>>> snippetsStreamList;
+  late List<StreamController<List<Map<String, dynamic>>>> snippetsControllerList;
+  late TabController tabController;
   late List<DateTime> lastUpdatedList;
+  List<Map<String, dynamic>>? categoryData;
   static const double cooldownSecs = 30;
 
   @override
   void initState() {
     super.initState();
-
-    categoryStreamSub =
-        FirestoreService.getCategoryStream().listen((data) async {
-      if (!categoryData.isNull) {
-        setState(() {
-          categoryData = null;
-        });
-      }
+    FirestoreService.getCategories().then((data) {
       var cData = (data.get("categories") as List<dynamic>)
           .cast<Map<String, dynamic>>();
       tabController = TabController(vsync: this, length: cData.length);
       snippetsControllerList = cData
           .map((_) => StreamController<List<Map<String, dynamic>>>())
           .toList();
-      snippetsStreamList = snippetsControllerList!
+      snippetsStreamList = snippetsControllerList
           .map((controller) => controller.stream)
           .toList();
       lastUpdatedList = cData.map((_) => DateTime.now()).toList();
-      tabController!.addListener(() {
-        int index = tabController!.index;
+      tabController.addListener(() {
+        int index = tabController.index;
         if (!categoryData.isNull &&
             DateTime.now().difference(lastUpdatedList[index]).inSeconds >
                 cooldownSecs) {
           FirestoreService.getStories(categoryID: categoryData![index]["id"])
-              .then((query) => snippetsControllerList![index]
+              .then((query) => snippetsControllerList[index]
                   .add(query.docs.map((doc) => doc.data()).toList()));
           lastUpdatedList[index] = DateTime.now();
         }
@@ -62,7 +50,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       });
       for (int i = 0; i < categoryData!.length; i++) {
         FirestoreService.getStories(categoryID: categoryData![i]["id"]).then(
-            (query) => snippetsControllerList![i]
+            (query) => snippetsControllerList[i]
                 .add(query.docs.map((doc) => doc.data()).toList()));
       }
     });
@@ -70,9 +58,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    categoryStreamSub?.cancel();
-    snippetsControllerList?.forEach((controller) => controller.close());
-    tabController?.dispose();
+    snippetsControllerList.forEach((controller) => controller.close());
+    tabController.dispose();
     super.dispose();
   }
 
@@ -106,10 +93,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             : TabBarView(
                 controller: tabController,
                 children: List.generate(
-                    snippetsStreamList!.length,
+                    snippetsStreamList.length,
                     (index) => RefreshIndicator(
                         child:
-                            _SnippetsPage(stream: snippetsStreamList![index]),
+                            _SnippetsPage(stream: snippetsStreamList[index]),
                         onRefresh: () async {
                           if (DateTime.now()
                                   .difference(lastUpdatedList[index])
@@ -118,7 +105,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             var query = await FirestoreService.getStories(
                                 categoryID: categoryData![index]["id"]);
                             lastUpdatedList[index] = DateTime.now();
-                            snippetsControllerList![index].add(
+                            snippetsControllerList[index].add(
                                 query.docs.map((doc) => doc.data()).toList());
                           }
                         }))));

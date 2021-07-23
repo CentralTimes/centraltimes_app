@@ -42,6 +42,7 @@ class AuthService {
           await _googleSignIn.signIn();
       final GoogleSignInAuthentication? googleSignInAuthentication =
           await googleSignInAccount?.authentication;
+      if (googleSignInAccount.isNull) throw PlatformException(code: "popup_closed_by_user");
       if (!whitelisted.contains(googleSignInAccount?.email) &&
           !domains.contains(googleSignInAccount?.email.split("@").last)) {
         throw PlatformException(

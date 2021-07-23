@@ -24,6 +24,10 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection("stories").where("categories", arrayContains: categoryID).orderBy("date", descending: true).get();
   }
 
+  static Future<DocumentSnapshot<Map<String, dynamic>>> getCategories() {
+    return FirebaseFirestore.instance.collection("config").doc("categories").get();
+  }
+
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getCategoryStream() {
     return FirebaseFirestore.instance.collection("config").doc("categories").snapshots();
   }

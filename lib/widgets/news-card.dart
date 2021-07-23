@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:app/constants.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewsCard extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -62,7 +63,9 @@ class NewsCard extends StatelessWidget {
                         IconButton(
                             onPressed: () {},
                             icon: Icon(Icons.bookmark_add_outlined)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+                        IconButton(onPressed: () {
+                          Share.share("${data["title"]} - Central Times", subject: "${data["title"]} - Central Times");
+                        }, icon: Icon(Icons.share)),
                       ],
                     )),
               ],
