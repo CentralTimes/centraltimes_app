@@ -15,13 +15,15 @@ Future<void> showErrorDialog(BuildContext context, String text) async {
       ]);
 }
 
-Future<void> showLoadingDialog(BuildContext context, String text) async {
-  return showDialog<void>(
+Future<void> showLoadingDialog(BuildContext context, String text, Future<dynamic> Function() function) async {
+  showDialog<void>(
       context: context,
       builder: (context) => SimpleDialog(children: [
             ListTile(leading: CircularProgressIndicator(), title: Text(text)),
           ]),
       barrierDismissible: false);
+  await function();
+  Navigator.of(context).pop();
 }
 
 Future<bool> showPromptDialog(BuildContext context, String text) async {

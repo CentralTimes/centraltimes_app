@@ -41,12 +41,9 @@ class SignInView extends StatelessWidget {
                   child: ListTile(
                       onTap: () async {
                         try {
-                          showLoadingDialog(context, "Signing in...");
-                          await AuthService.signIn();
-                          Navigator.of(context).pop();
+                          await showLoadingDialog(context, "Signing in...", () async => await AuthService.signIn());
                           Navigator.push(context, MaterialPageRoute(builder: (_) => HomeView()));
                         } on String catch (e) {
-                          Navigator.of(context).pop();
                           if (e != "") showErrorDialog(context, e);
                         }
                       },

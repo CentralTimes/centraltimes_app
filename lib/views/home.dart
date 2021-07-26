@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/services/firestore_service.dart';
+import 'package:app/widgets/custom-dialogs.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
@@ -14,7 +15,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late List<Stream<List<Map<String, dynamic>>>> snippetsStreamList;
-  late List<StreamController<List<Map<String, dynamic>>>> snippetsControllerList;
+  late List<StreamController<List<Map<String, dynamic>>>>
+      snippetsControllerList;
   late TabController tabController;
   late List<DateTime> lastUpdatedList;
   List<Map<String, dynamic>>? categoryData;
@@ -48,11 +50,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       setState(() {
         categoryData = cData;
       });
-      for (int i = 0; i < categoryData!.length; i++) {
-        FirestoreService.getStories(categoryID: categoryData![i]["id"]).then(
-            (query) => snippetsControllerList[i]
-                .add(query.docs.map((doc) => doc.data()).toList()));
-      }
+      FirestoreService.getStories(
+              categoryID: categoryData![tabController.index]["id"])
+          .then((query) => snippetsControllerList[tabController.index]
+              .add(query.docs.map((doc) => doc.data()).toList()));
+    }).onError<String>((error, stackTrace) {
+      showErrorDialog(context, error);
     });
   }
 
@@ -95,8 +98,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 children: List.generate(
                     snippetsStreamList.length,
                     (index) => RefreshIndicator(
-                        child:
-                            _SnippetsPage(stream: snippetsStreamList[index]),
+                        child: _SnippetsPage(stream: snippetsStreamList[index]),
                         onRefresh: () async {
                           if (DateTime.now()
                                   .difference(lastUpdatedList[index])
@@ -139,7 +141,7 @@ class __SnippetsPageState extends State<_SnippetsPage>
                 return NewsCard(data: snapshot.data![index]);
               },
               separatorBuilder: (context, index) =>
-                  Padding(padding: EdgeInsets.all(5)),
+                  Padding(padding: EdgeInsets.all(8)),
               itemCount: snapshot.data!.length);
         });
   }

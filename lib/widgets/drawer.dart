@@ -17,11 +17,8 @@ class AppDrawer extends StatelessWidget {
             ListTile(
                 onTap: () async {
                   try {
-                    showLoadingDialog(context, "Signing in...");
-                    await AuthService.signIn();
-                    Navigator.of(context).pop();
+                    await showLoadingDialog(context, "Signing in...", () async => await AuthService.signIn());
                   } on String catch (e) {
-                    Navigator.of(context).pop();
                     if (e != "") showErrorDialog(context, e);
                   }
                 },

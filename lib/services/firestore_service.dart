@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class FirestoreService {
   static Future<void> updateUserInfo({required User user}) async {
@@ -21,7 +22,11 @@ class FirestoreService {
   }
 
   static Future<QuerySnapshot<Map<String, dynamic>>> getStories({required String categoryID}) {
-    return FirebaseFirestore.instance.collection("stories").where("categories", arrayContains: categoryID).orderBy("date", descending: true).get();
+    try {
+      return FirebaseFirestore.instance.collection("stories").where("categories", arrayContains: categoryID).where("published", isEqualTo: true).orderBy("publishdate", descending: true).get();
+    } on PlatformException catch (e) {
+      throw e.code;
+    }
   }
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getCategories() {
