@@ -18,12 +18,20 @@ Future<void> showErrorDialog(BuildContext context, String text) async {
 Future<void> showLoadingDialog(BuildContext context, String text, Future<dynamic> Function() function) async {
   showDialog<void>(
       context: context,
-      builder: (context) => SimpleDialog(children: [
-            ListTile(leading: CircularProgressIndicator(), title: Text(text)),
-          ]),
+      builder: (context) => WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: SimpleDialog(children: [
+              ListTile(leading: CircularProgressIndicator(), title: Text(text)),
+            ]),
+      ),
       barrierDismissible: false);
-  await function();
-  Navigator.of(context).pop();
+  try {
+    await function();
+    Navigator.of(context).pop();
+  } catch (e) {
+    Navigator.of(context).pop();
+    throw e;
+  }
 }
 
 Future<bool> showPromptDialog(BuildContext context, String text) async {

@@ -1,6 +1,6 @@
 import 'package:app/models/app_user.dart';
 import 'package:app/services/auth_service.dart';
-import 'package:app/views/sign-in.dart';
+import 'package:app/views/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,7 @@ class CentralTimesApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
-        home: SignInView(),
+        home: HomeView(),
       ),
     );
   }

@@ -1,10 +1,12 @@
-import 'package:app/constants.dart';
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/models/app_user.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/widgets/custom-dialogs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -13,20 +15,25 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          if (user.isNull)
+          if (user == null)
             ListTile(
                 onTap: () async {
                   try {
-                    await showLoadingDialog(context, "Signing in...", () async => await AuthService.signIn());
+                    await showLoadingDialog(context, "Signing in...",
+                        () async => await AuthService.signIn());
                   } on String catch (e) {
                     if (e != "") showErrorDialog(context, e);
                   }
                 },
                 leading: Icon(Icons.login),
-                title: Text("Sign In"))
+                title: Text("Sign In"),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Text("With a District 203 Google Account"),
+                ))
           else ...[
             ListTile(
-                title: Text(user!.authAccount.displayName!),
+                title: Text(user.authAccount.displayName!),
                 subtitle: Text("Welcome Back")),
             ListTile(
                 onTap: () async {
@@ -36,49 +43,56 @@ class AppDrawer extends StatelessWidget {
                 title: Text("Sign Out")),
           ],
           ListTile(
-              title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+              title: Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Expanded(
-                child: IconButton(
-                    onPressed: () => launch(facebookURL),
-                    icon: ImageIcon(AssetImage("assets/images/facebook.png")),
-                    color: Theme.of(context).primaryColor),
-              ),
-              Expanded(
-                child: IconButton(
-                    onPressed: () => launch(twitterURL),
-                    icon: ImageIcon(AssetImage("assets/images/twitter.png")),
-                    color: Theme.of(context).primaryColor),
-              ),
-              Expanded(
-                child: IconButton(
-                    onPressed: () => launch(instagramURL),
-                    icon: ImageIcon(AssetImage("assets/images/instagram.png")),
-                    color: Theme.of(context).primaryColor),
-              ),
-              Expanded(
-                child: IconButton(
-                    onPressed: () => launch(youtubeURL),
-                    icon: ImageIcon(AssetImage("assets/images/youtube.png")),
-                    color: Theme.of(context).primaryColor),
-              ),
-              Expanded(
-                child: IconButton(
-                    onPressed: () => launch(webURL),
-                    icon: Icon(Icons.language_outlined),
-                    color: Theme.of(context).primaryColor),
-              ),
+              IconButton(
+                  onPressed: () => AndroidIntent(
+                          action: "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                          data: "com.facebook.katana")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch(
+                      "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                  icon: Icon(FontAwesomeIcons.facebook),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => AndroidIntent(
+                          action: "twitter://user?screen_name=centraltimes",
+                          data: "com.twitter.android")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch("https://twitter.com/centraltimes")),
+                  icon: Icon(FontAwesomeIcons.twitter),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => AndroidIntent(
+                          action: "http://instagram.com/_u/centraltimes",
+                          data: "com.instagram.android")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch("https://instagram.com/centraltimes")),
+                  icon: Icon(FontAwesomeIcons.instagram),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => AndroidIntent(
+                          action: "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                          data: "com.google.android.youtube")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch(
+                      "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                  icon: Icon(FontAwesomeIcons.youtube),
+                  color: Theme.of(context).primaryColor),
+              IconButton(
+                  onPressed: () => launch("https://www.centraltimes.org/"),
+                  icon: Icon(Icons.language_outlined),
+                  color: Theme.of(context).primaryColor),
             ],
           )),
           NotificationAccordion(),
-          ListTile(
-              leading: Icon(Icons.dark_mode),
-              title: Text("Dark Theme"),
-              trailing: Switch(value: false, onChanged: (_) {})),
           ListTile(leading: Icon(Icons.info), title: Text("About")),
-          ListTile(
-              leading: Icon(Icons.bug_report), title: Text("Report a Bug")),
         ],
       ),
     );

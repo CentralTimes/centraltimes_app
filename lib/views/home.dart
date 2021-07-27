@@ -1,12 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/services/firestore_service.dart';
-import 'package:app/widgets/custom-dialogs.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
-import 'package:app/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late List<StreamController<List<Map<String, dynamic>>>>
       snippetsControllerList;
   late TabController tabController;
-  late List<DateTime> lastUpdatedList;
+  late List<DateTime?> lastUpdatedList;
   List<Map<String, dynamic>>? categoryData;
   static const double cooldownSecs = 30;
 
@@ -35,27 +35,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       snippetsStreamList = snippetsControllerList
           .map((controller) => controller.stream)
           .toList();
-      lastUpdatedList = cData.map((_) => DateTime.now()).toList();
-      tabController.addListener(() {
-        int index = tabController.index;
-        if (!categoryData.isNull &&
-            DateTime.now().difference(lastUpdatedList[index]).inSeconds >
-                cooldownSecs) {
-          FirestoreService.getStories(categoryID: categoryData![index]["id"])
-              .then((query) => snippetsControllerList[index]
-                  .add(query.docs.map((doc) => doc.data()).toList()));
-          lastUpdatedList[index] = DateTime.now();
-        }
-      });
+      lastUpdatedList = List.filled(cData.length, null);
       setState(() {
         categoryData = cData;
       });
-      FirestoreService.getStories(
-              categoryID: categoryData![tabController.index]["id"])
-          .then((query) => snippetsControllerList[tabController.index]
-              .add(query.docs.map((doc) => doc.data()).toList()));
-    }).onError<String>((error, stackTrace) {
-      showErrorDialog(context, error);
+      tabController.addListener(() {
+        int index = tabController.index;
+        refreshCategory(index);
+      });
+      refreshCategory(0);
     });
   }
 
@@ -80,7 +68,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 },
                 icon: Icon(Icons.search))
           ],
-          bottom: (categoryData.isNull)
+          bottom: (categoryData == null)
               ? null
               : TabBar(
                   controller: tabController,
@@ -91,7 +79,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       .toList(),
                 ),
         ),
-        body: (categoryData.isNull)
+        body: (categoryData == null)
             ? Center(child: CircularProgressIndicator())
             : TabBarView(
                 controller: tabController,
@@ -100,17 +88,19 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     (index) => RefreshIndicator(
                         child: _SnippetsPage(stream: snippetsStreamList[index]),
                         onRefresh: () async {
-                          if (DateTime.now()
-                                  .difference(lastUpdatedList[index])
-                                  .inSeconds >
-                              cooldownSecs) {
-                            var query = await FirestoreService.getStories(
-                                categoryID: categoryData![index]["id"]);
-                            lastUpdatedList[index] = DateTime.now();
-                            snippetsControllerList[index].add(
-                                query.docs.map((doc) => doc.data()).toList());
-                          }
+                          refreshCategory(index);
                         }))));
+  }
+
+  void refreshCategory(int index) {
+    if (lastUpdatedList[index] == null ||
+        DateTime.now().difference(lastUpdatedList[index]!).inSeconds >
+            cooldownSecs) {
+      FirestoreService.getStories(categoryID: categoryData![index]["id"])
+          .then((query) => snippetsControllerList[index]
+              .add(query.docs.map((doc) => doc.data()).toList()));
+      lastUpdatedList[index] = DateTime.now();
+    }
   }
 }
 

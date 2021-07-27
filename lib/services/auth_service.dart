@@ -5,7 +5,6 @@ import 'package:app/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:app/constants.dart';
 
 class AuthService {
   static final StreamController<AppUser?> _controller =
@@ -25,15 +24,13 @@ class AuthService {
       _controller.close();
     };
     _auth = FirebaseAuth.instance;
-    /*
-    await _googleSignIn.signInSilently();
-    if (!_auth.currentUser.isNull && !_googleSignIn.currentUser.isNull) {
-      _controller.add(AppUser(_googleSignIn.currentUser!, _auth.currentUser!));
-      return;
-    }*/
-    if (!_googleSignIn.currentUser.isNull) _googleSignIn.signOut();
-    if (!_auth.currentUser.isNull) _auth.signOut();
-    _controller.add(null);
+    _auth.authStateChanges().listen((user) {
+      if (user == null) {
+        _controller.add(null);
+      } else {
+        _controller.add(AppUser(user));
+      }
+    });
   }
 
   static Future<void> signIn() async {
@@ -42,12 +39,13 @@ class AuthService {
           await _googleSignIn.signIn();
       final GoogleSignInAuthentication? googleSignInAuthentication =
           await googleSignInAccount?.authentication;
-      if (googleSignInAccount.isNull) throw PlatformException(code: "popup_closed_by_user");
-      if (!whitelisted.contains(googleSignInAccount?.email) &&
-          !domains.contains(googleSignInAccount?.email.split("@").last)) {
+      if (googleSignInAccount == null) throw PlatformException(code: "popup_closed_by_user");
+      if (!whitelisted.contains(googleSignInAccount.email) &&
+          !domains.contains(googleSignInAccount.email.split("@").last)) {
+        signOut();
         throw PlatformException(
             code:
-                "invalid-email:${googleSignInAccount?.email ?? "Google account"}");
+                "invalid-email:${googleSignInAccount.email}");
       }
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication?.accessToken,
@@ -56,7 +54,7 @@ class AuthService {
       final UserCredential authResult =
           await _auth.signInWithCredential(credential);
       await FirestoreService.updateUserInfo(user: authResult.user!);
-      _controller.add(AppUser(_googleSignIn.currentUser!, authResult.user!));
+      _controller.add(AppUser(authResult.user!));
     } on PlatformException catch (e) {
       switch (e.code) {
         case "popup_closed_by_user":
@@ -81,8 +79,7 @@ class AuthService {
   }
 
   static Future<void> signOut() async {
-    if (!_googleSignIn.currentUser.isNull) _googleSignIn.signOut();
-    if (!_auth.currentUser.isNull) _auth.signOut();
-    _controller.add(null);
+    if (_googleSignIn.currentUser != null) _googleSignIn.signOut();
+    if (_auth.currentUser != null) _auth.signOut();
   }
 }
