@@ -17,9 +17,12 @@ class ArticleView extends StatelessWidget {
         title: Text("Central Times"),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
-          IconButton(onPressed: () {
-            Share.share("${data["title"]} - Central Times", subject: "${data["title"]} - Central Times");
-          }, icon: Icon(Icons.share)),
+          IconButton(
+              onPressed: () {
+                Share.share("${data["title"]} - Central Times",
+                    subject: "${data["title"]} - Central Times");
+              },
+              icon: Icon(Icons.share)),
         ],
       ),
       body: CustomScrollView(
@@ -31,8 +34,7 @@ class ArticleView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(data["title"],
                     style: TextStyle(fontSize: 28, height: 1.5))),
-            if (data["subtitle"] != null &&
-                data["subtitle"] != "") ...[
+            if (data["subtitle"] != null && data["subtitle"] != "") ...[
               Padding(padding: EdgeInsets.all(4)),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
@@ -43,8 +45,7 @@ class ArticleView extends StatelessWidget {
                           color: Colors.black.withOpacity(0.6)))),
             ],
             Padding(padding: EdgeInsets.all(16)),
-            if (data["author"] != null &&
-                data["author"] != "") ...[
+            if (data["author"] != null && data["author"] != "") ...[
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(data["author"],
@@ -58,7 +59,7 @@ class ArticleView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                     DateFormat("MMMM d, yyyy - h:mm a")
-                        .format(data["date"].toDate()),
+                        .format(data["publishdate"].toDate()),
                     style: TextStyle(
                         fontSize: 18,
                         height: 1.5,

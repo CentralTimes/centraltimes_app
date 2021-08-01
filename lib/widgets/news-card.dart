@@ -42,18 +42,21 @@ class NewsCard extends StatelessWidget {
                   Padding(padding: EdgeInsets.all(8)),
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(data["title"],
-                          style: TextStyle(fontSize: 28))),
+                      child:
+                          Text(data["title"], style: TextStyle(fontSize: 28))),
                   if (data["subtitle"] != null && data["subtitle"] != "") ...[
                     Padding(padding: EdgeInsets.all(4)),
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(data["subtitle"],
-                            style: TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.6)))),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black.withOpacity(0.6)))),
                   ],
                   ListTile(
                       title: Text(
-                          DateFormat("MMMM d").format(data["date"].toDate()),
+                          DateFormat("MMMM d")
+                              .format(data["publishdate"].toDate()),
                           style: TextStyle(fontSize: 18)),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -61,18 +64,23 @@ class NewsCard extends StatelessWidget {
                           IconButton(
                               onPressed: () {},
                               icon: Icon(Icons.bookmark_add_outlined)),
-                          IconButton(onPressed: () {
-                            Share.share("${data["title"]} - Central Times", subject: "${data["title"]} - Central Times");
-                          }, icon: Icon(Icons.share)),
+                          IconButton(
+                              onPressed: () {
+                                Share.share("${data["title"]} - Central Times",
+                                    subject:
+                                        "${data["title"]} - Central Times");
+                              },
+                              icon: Icon(Icons.share)),
                         ],
                       )),
                 ],
               ),
-              Positioned.fill(child: Material(
+              Positioned.fill(
+                  child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => ArticleView(data: data))),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => ArticleView(data: data))),
                 ),
               )),
             ],
