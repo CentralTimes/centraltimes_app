@@ -1,4 +1,3 @@
-import 'package:app/widgets/img_placeholder.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +16,12 @@ class ArticleView extends StatelessWidget {
         title: Text("Central Times"),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
-          IconButton(onPressed: () {
-            Share.share("${data["title"]} - Central Times", subject: "${data["title"]} - Central Times");
-          }, icon: Icon(Icons.share)),
+          IconButton(
+              onPressed: () {
+                Share.share("${data["title"]} - Central Times",
+                    subject: "${data["title"]} - Central Times");
+              },
+              icon: Icon(Icons.share)),
         ],
       ),
       body: CustomScrollView(
@@ -31,8 +33,7 @@ class ArticleView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(data["title"],
                     style: TextStyle(fontSize: 28, height: 1.5))),
-            if (data["subtitle"] != null &&
-                data["subtitle"] != "") ...[
+            if (data["subtitle"] != null && data["subtitle"] != "") ...[
               Padding(padding: EdgeInsets.all(4)),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
@@ -43,8 +44,7 @@ class ArticleView extends StatelessWidget {
                           color: Colors.black.withOpacity(0.6)))),
             ],
             Padding(padding: EdgeInsets.all(16)),
-            if (data["author"] != null &&
-                data["author"] != "") ...[
+            if (data["author"] != null && data["author"] != "") ...[
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(data["author"],
@@ -75,9 +75,15 @@ class ArticleView extends StatelessWidget {
                     Center(
                       child: CachedNetworkImage(
                           imageUrl: data["sections"][index]["url"],
-                          placeholder: (context, url) => ImagePlaceholder(
-                              width: data["sections"][index]["width"],
-                              height: data["sections"][index]["height"])),
+                          placeholder: (context, url) => Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width *
+                                    data["sections"][index]["height"] /
+                                    data["sections"][index]["width"],
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )),
                     ),
                     Padding(
                         padding:
