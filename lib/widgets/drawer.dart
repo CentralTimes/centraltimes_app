@@ -49,12 +49,12 @@ class AppDrawer extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () => AndroidIntent(
-                          action: "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                          action:
+                              "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
                           data: "com.facebook.katana")
                       .launch()
-                      .onError<PlatformException>((error, stackTrace) =>
-                          launch(
-                      "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                      .onError<PlatformException>((error, stackTrace) => launch(
+                          "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
                   icon: Icon(FontAwesomeIcons.facebook),
                   color: Theme.of(context).primaryColor),
               IconButton(
@@ -77,12 +77,12 @@ class AppDrawer extends StatelessWidget {
                   color: Theme.of(context).primaryColor),
               IconButton(
                   onPressed: () => AndroidIntent(
-                          action: "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                          action:
+                              "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
                           data: "com.google.android.youtube")
                       .launch()
-                      .onError<PlatformException>((error, stackTrace) =>
-                          launch(
-                      "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                      .onError<PlatformException>((error, stackTrace) => launch(
+                          "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
                   icon: Icon(FontAwesomeIcons.youtube),
                   color: Theme.of(context).primaryColor),
               IconButton(
@@ -93,6 +93,12 @@ class AppDrawer extends StatelessWidget {
           )),
           NotificationAccordion(),
           ListTile(leading: Icon(Icons.info), title: Text("About")),
+          ListTile(
+              leading: const Icon(Icons.email),
+              title: const Text("Contact Us"),
+              onTap: () async {
+                launch('mailto:nchspaper.ct@gmail.com');
+              }),
         ],
       ),
     );
