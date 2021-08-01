@@ -60,7 +60,7 @@ class ArticleView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                     DateFormat("MMMM d, yyyy - h:mm a")
-                        .format(data["date"].toDate()),
+                        .format(data["publishdate"].toDate()),
                     style: TextStyle(
                         fontSize: 18,
                         height: 1.5,
