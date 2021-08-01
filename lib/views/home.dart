@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:app/services/firestore_service.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/news-card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -58,46 +56,57 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: AppDrawer(),
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Central Times"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showSearch(context: context, delegate: SearchNewsDelegate());
-                },
-                icon: Icon(Icons.search))
-          ],
-          bottom: (categoryData == null)
-              ? null
-              : TabBar(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                centerTitle: true,
+                title: Text("Central Times"),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showSearch(
+                            context: context, delegate: SearchNewsDelegate());
+                      },
+                      icon: Icon(Icons.search))
+                ],
+                bottom: (categoryData == null)
+                    ? null
+                    : TabBar(
+                        controller: tabController,
+                        isScrollable: true,
+                        indicatorColor: Colors.white,
+                        tabs: categoryData!
+                            .map((category) =>
+                                Tab(child: Text(category["name"])))
+                            .toList(),
+                      ),
+                pinned: true,
+                floating: true,
+              )
+            ];
+          },
+          body: (categoryData == null)
+              ? Center(child: CircularProgressIndicator())
+              : TabBarView(
                   controller: tabController,
-                  isScrollable: true,
-                  indicatorColor: Colors.white,
-                  tabs: categoryData!
-                      .map((category) => Tab(child: Text(category["name"])))
-                      .toList(),
-                ),
-        ),
-        body: (categoryData == null)
-            ? Center(child: CircularProgressIndicator())
-            : TabBarView(
-                controller: tabController,
-                children: List.generate(
-                    snippetsStreamList.length,
-                    (index) => RefreshIndicator(
-                        child: _SnippetsPage(stream: snippetsStreamList[index]),
-                        onRefresh: () async {
-                          refreshCategory(index);
-                        }))));
+                  children: List.generate(
+                      snippetsStreamList.length,
+                      (index) => RefreshIndicator(
+                          child:
+                              _SnippetsPage(stream: snippetsStreamList[index]),
+                          onRefresh: () async {
+                            refreshCategory(index);
+                          }))),
+        ));
   }
 
   void refreshCategory(int index) {
     if (lastUpdatedList[index] == null ||
         DateTime.now().difference(lastUpdatedList[index]!).inSeconds >
             cooldownSecs) {
-      FirestoreService.getStories(categoryID: categoryData![index]["id"])
-          .then((query) => snippetsControllerList[index]
+      FirestoreService.getStories(categoryID: categoryData![index]["id"]).then(
+          (query) => snippetsControllerList[index]
               .add(query.docs.map((doc) => doc.data()).toList()));
       lastUpdatedList[index] = DateTime.now();
     }
@@ -127,6 +136,7 @@ class __SnippetsPageState extends State<_SnippetsPage>
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
           return ListView.separated(
+              padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return NewsCard(data: snapshot.data![index]);
               },
