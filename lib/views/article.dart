@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -76,10 +78,23 @@ class ArticleView extends StatelessWidget {
                       child: CachedNetworkImage(
                           imageUrl: data["sections"][index]["url"],
                           placeholder: (context, url) => Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width *
-                                    data["sections"][index]["height"] /
-                                    data["sections"][index]["width"],
+                                width: min(
+                                    data["sections"][index]["width"].toDouble(),
+                                    MediaQuery.of(context)
+                                        .size
+                                        .width
+                                        .toDouble()),
+                                height: min(
+                                        (data["sections"][index]["width"]
+                                                as num)
+                                            .toDouble(),
+                                        MediaQuery.of(context)
+                                            .size
+                                            .width
+                                            .toDouble()) *
+                                    data["sections"][index]["height"]
+                                        .toDouble() /
+                                    data["sections"][index]["width"].toDouble(),
                                 child: Center(
                                   child: CircularProgressIndicator(),
                                 ),

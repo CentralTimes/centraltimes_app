@@ -136,6 +136,7 @@ class __SnippetsPageState extends State<_SnippetsPage>
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
           return ListView.separated(
+              padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return NewsCard(data: snapshot.data![index]);
               },

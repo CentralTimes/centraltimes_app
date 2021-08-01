@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/views/article.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
@@ -6,29 +8,29 @@ import 'package:share_plus/share_plus.dart';
 
 class NewsCard extends StatelessWidget {
   final Map<String, dynamic> data;
-
+  static const double blur = 1;
   NewsCard({required this.data});
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 5),
-            blurRadius: 8,
-            spreadRadius: -15,
-          ),
-          BoxShadow(
-            offset: Offset(0, -5),
-            blurRadius: 8,
-            spreadRadius: -15,
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => ArticleView(data: data))),
+    return InkWell(
+      onTap: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => ArticleView(data: data))),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, blur),
+              blurRadius: blur,
+              spreadRadius: -2*blur,
+            ),
+            BoxShadow(
+              offset: Offset(0, -blur),
+              blurRadius: blur,
+              spreadRadius: -2*blur,
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,7 +42,7 @@ class NewsCard extends StatelessWidget {
             Padding(padding: EdgeInsets.all(8)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(data["title"], style: TextStyle(fontSize: 28))),
+                child: Text(data["title"] ?? "test Title", style: TextStyle(fontSize: 28))),
             if (data["subtitle"] != null && data["subtitle"] != "") ...[
               Padding(padding: EdgeInsets.all(4)),
               Padding(
@@ -79,16 +81,15 @@ class NewsCard extends StatelessWidget {
         imageBuilder: (context, provider) {
           return Ink.image(
               image: provider,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width *
-                  sections[0]["height"] /
-                  sections[0]["width"]);
+              fit: BoxFit.contain,
+              width: min(sections[0]["width"].toDouble(), MediaQuery.of(context).size.width.toDouble()),
+              height: min((sections[0]["width"] as num).toDouble(), MediaQuery.of(context).size.width.toDouble()) *
+                  sections[0]["height"].toDouble() / sections[0]["width"].toDouble());
         },
         placeholder: (context, url) => Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width *
-                  sections[0]["height"] /
-                  sections[0]["width"],
+              width: min(sections[0]["width"].toDouble(), MediaQuery.of(context).size.width.toDouble()),
+              height: min((sections[0]["width"] as num).toDouble(), MediaQuery.of(context).size.width.toDouble()) *
+                  sections[0]["height"].toDouble() / sections[0]["width"].toDouble(),
               child: Center(
                 child: CircularProgressIndicator(),
               ),
