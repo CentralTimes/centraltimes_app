@@ -14,7 +14,7 @@ class NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => ArticleView(data: data))),
+          .push(MaterialPageRoute(builder: (_) => ArticleView(data: data))),
       child: Ink(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -22,12 +22,12 @@ class NewsCard extends StatelessWidget {
             BoxShadow(
               offset: Offset(0, blur),
               blurRadius: blur,
-              spreadRadius: -2*blur,
+              spreadRadius: -2 * blur,
             ),
             BoxShadow(
               offset: Offset(0, -blur),
               blurRadius: blur,
-              spreadRadius: -2*blur,
+              spreadRadius: -2 * blur,
             ),
           ],
         ),
@@ -42,7 +42,8 @@ class NewsCard extends StatelessWidget {
             Padding(padding: EdgeInsets.all(8)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(data["title"] ?? "test Title", style: TextStyle(fontSize: 28))),
+                child: Text(data["title"] ?? "test Title",
+                    style: TextStyle(fontSize: 28))),
             if (data["subtitle"] != null && data["subtitle"] != "") ...[
               Padding(padding: EdgeInsets.all(4)),
               Padding(
@@ -52,7 +53,8 @@ class NewsCard extends StatelessWidget {
                           fontSize: 18, color: Colors.black.withOpacity(0.6)))),
             ],
             ListTile(
-                title: Text(DateFormat("MMMM d").format(data["date"].toDate()),
+                title: Text(
+                    DateFormat("MMMM d").format(data["publishdate"].toDate()),
                     style: TextStyle(fontSize: 18)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -82,14 +84,20 @@ class NewsCard extends StatelessWidget {
           return Ink.image(
               image: provider,
               fit: BoxFit.contain,
-              width: min(sections[0]["width"].toDouble(), MediaQuery.of(context).size.width.toDouble()),
-              height: min((sections[0]["width"] as num).toDouble(), MediaQuery.of(context).size.width.toDouble()) *
-                  sections[0]["height"].toDouble() / sections[0]["width"].toDouble());
+              width: min(sections[0]["width"].toDouble(),
+                  MediaQuery.of(context).size.width.toDouble()),
+              height: min((sections[0]["width"] as num).toDouble(),
+                      MediaQuery.of(context).size.width.toDouble()) *
+                  sections[0]["height"].toDouble() /
+                  sections[0]["width"].toDouble());
         },
         placeholder: (context, url) => Container(
-              width: min(sections[0]["width"].toDouble(), MediaQuery.of(context).size.width.toDouble()),
-              height: min((sections[0]["width"] as num).toDouble(), MediaQuery.of(context).size.width.toDouble()) *
-                  sections[0]["height"].toDouble() / sections[0]["width"].toDouble(),
+              width: min(sections[0]["width"].toDouble(),
+                  MediaQuery.of(context).size.width.toDouble()),
+              height: min((sections[0]["width"] as num).toDouble(),
+                      MediaQuery.of(context).size.width.toDouble()) *
+                  sections[0]["height"].toDouble() /
+                  sections[0]["width"].toDouble(),
               child: Center(
                 child: CircularProgressIndicator(),
               ),
