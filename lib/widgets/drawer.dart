@@ -16,21 +16,24 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         children: [
           if (user == null)
-            ListTile(
-                onTap: () async {
-                  try {
-                    await showLoadingDialog(context, "Signing in...",
-                        () async => await AuthService.signIn());
-                  } on String catch (e) {
-                    if (e != "") showErrorDialog(context, e);
-                  }
-                },
-                leading: Icon(Icons.login),
-                title: Text("Sign In"),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text("With a District 203 Google Account"),
-                ))
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ListTile(
+                  onTap: () async {
+                    try {
+                      await showLoadingDialog(context, "Signing in...",
+                          () async => await AuthService.signIn());
+                    } on String catch (e) {
+                      if (e != "") showErrorDialog(context, e);
+                    }
+                  },
+                  leading: Icon(Icons.login),
+                  title: Text("Sign In"),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text("With a District 203 Google Account"),
+                  )),
+            )
           else ...[
             ListTile(
                 title: Text(user.authAccount.displayName!),
