@@ -29,7 +29,7 @@ class FirestoreService {
     }
   }
 
-  static Future<QuerySnapshot<Map<String, dynamic>>> searchStories({required String search}) {}
+  //static Future<QuerySnapshot<Map<String, dynamic>>> searchStories({required String search}) {}
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getCategories() {
     return FirebaseFirestore.instance.collection("config").doc("categories").get();
@@ -39,4 +39,3 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection("config").doc("categories").snapshots();
   }
 }
-static Future<QuerySnapshot<Map<String, dynamic>>> searchStories({required String search}) {}
