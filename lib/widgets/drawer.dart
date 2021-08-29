@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:io' show Platform;
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -45,55 +46,85 @@ class AppDrawer extends StatelessWidget {
                 leading: Icon(Icons.logout),
                 title: Text("Sign Out")),
           ],
-          ListTile(
-              title: Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () => AndroidIntent(
-                          action:
-                              "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
-                          data: "com.facebook.katana")
-                      .launch()
-                      .onError<PlatformException>((error, stackTrace) => launch(
-                          "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
-                  icon: Icon(FontAwesomeIcons.facebook),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => AndroidIntent(
-                          action: "twitter://user?screen_name=centraltimes",
-                          data: "com.twitter.android")
-                      .launch()
-                      .onError<PlatformException>((error, stackTrace) =>
-                          launch("https://twitter.com/centraltimes")),
-                  icon: Icon(FontAwesomeIcons.twitter),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => AndroidIntent(
-                          action: "http://instagram.com/_u/centraltimes",
-                          data: "com.instagram.android")
-                      .launch()
-                      .onError<PlatformException>((error, stackTrace) =>
-                          launch("https://instagram.com/centraltimes")),
-                  icon: Icon(FontAwesomeIcons.instagram),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => AndroidIntent(
-                          action:
-                              "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
-                          data: "com.google.android.youtube")
-                      .launch()
-                      .onError<PlatformException>((error, stackTrace) => launch(
-                          "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
-                  icon: Icon(FontAwesomeIcons.youtube),
-                  color: Theme.of(context).primaryColor),
-              IconButton(
-                  onPressed: () => launch("https://www.centraltimes.org/"),
-                  icon: Icon(Icons.language_outlined),
-                  color: Theme.of(context).primaryColor),
-            ],
-          )),
+          if (Platform.isAndroid)
+            ListTile(
+                title: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () => AndroidIntent(
+                            action:
+                                "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                            data: "com.facebook.katana")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) => launch(
+                            "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                    icon: Icon(FontAwesomeIcons.facebook),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => AndroidIntent(
+                            action: "twitter://user?screen_name=centraltimes",
+                            data: "com.twitter.android")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launch("https://twitter.com/centraltimes")),
+                    icon: Icon(FontAwesomeIcons.twitter),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => AndroidIntent(
+                            action: "http://instagram.com/_u/centraltimes",
+                            data: "com.instagram.android")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launch("https://instagram.com/centraltimes")),
+                    icon: Icon(FontAwesomeIcons.instagram),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => AndroidIntent(
+                            action:
+                                "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                            data: "com.google.android.youtube")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) => launch(
+                            "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                    icon: Icon(FontAwesomeIcons.youtube),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    icon: Icon(Icons.language_outlined),
+                    color: Theme.of(context).primaryColor),
+              ],
+            ))
+          else ...[
+            ListTile(
+                title: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () => launch("https://www.facebook.com/pages/The-Central-Times/244007425638003"),
+                    icon: Icon(FontAwesomeIcons.facebook),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://twitter.com/centraltimes"),
+                    icon: Icon(FontAwesomeIcons.twitter),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("http://instagram.com/_u/centraltimes"),
+                    icon: Icon(FontAwesomeIcons.instagram),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
+                    icon: Icon(FontAwesomeIcons.youtube),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    icon: Icon(Icons.language_outlined),
+                    color: Theme.of(context).primaryColor),
+              ],
+            ))
+          ],
           NotificationAccordion(),
           ListTile(leading: Icon(Icons.info), title: Text("About")),
           ListTile(
