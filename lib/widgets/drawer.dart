@@ -1,3 +1,4 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/models/app_user.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/widgets/custom-dialogs.dart';
@@ -50,19 +51,41 @@ class AppDrawer extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               IconButton(
-                  onPressed: () => launch("https://www.facebook.com/pages/The-Central-Times/244007425638003"),
+                  onPressed: () => AndroidIntent(
+                          action:
+                              "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                          data: "com.facebook.katana")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) => launch(
+                          "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
                   icon: Icon(FontAwesomeIcons.facebook),
                   color: Theme.of(context).primaryColor),
               IconButton(
-                  onPressed: () => launch("https://twitter.com/centraltimes"),
+                  onPressed: () => AndroidIntent(
+                          action: "twitter://user?screen_name=centraltimes",
+                          data: "com.twitter.android")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch("https://twitter.com/centraltimes")),
                   icon: Icon(FontAwesomeIcons.twitter),
                   color: Theme.of(context).primaryColor),
               IconButton(
-                  onPressed: () => launch("http://instagram.com/_u/centraltimes"),
+                  onPressed: () => AndroidIntent(
+                          action: "http://instagram.com/_u/centraltimes",
+                          data: "com.instagram.android")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) =>
+                          launch("https://instagram.com/centraltimes")),
                   icon: Icon(FontAwesomeIcons.instagram),
                   color: Theme.of(context).primaryColor),
               IconButton(
-                  onPressed: () => launch("https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
+                  onPressed: () => AndroidIntent(
+                          action:
+                              "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                          data: "com.google.android.youtube")
+                      .launch()
+                      .onError<PlatformException>((error, stackTrace) => launch(
+                          "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
                   icon: Icon(FontAwesomeIcons.youtube),
                   color: Theme.of(context).primaryColor),
               IconButton(
