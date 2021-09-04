@@ -21,9 +21,15 @@ class FirestoreService {
     });
   }
 
-  static Future<QuerySnapshot<Map<String, dynamic>>> getStories({required String categoryID}) {
+  static Future<QuerySnapshot<Map<String, dynamic>>> getStories(
+      {required String categoryID}) {
     try {
-      return FirebaseFirestore.instance.collection("stories").where("categories", arrayContains: categoryID).where("published", isEqualTo: true).orderBy("publishdate", descending: true).get();
+      return FirebaseFirestore.instance
+          .collection("stories")
+          .where("categories", arrayContains: categoryID)
+          .where("published", isEqualTo: true)
+          .orderBy("publishdate", descending: true)
+          .get();
     } on PlatformException catch (e) {
       throw e.code;
     }
@@ -32,10 +38,22 @@ class FirestoreService {
   //static Future<QuerySnapshot<Map<String, dynamic>>> searchStories({required String search}) {}
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getCategories() {
-    return FirebaseFirestore.instance.collection("config").doc("categories").get();
+    return FirebaseFirestore.instance
+        .collection("config")
+        .doc("categories")
+        .get();
+  }
+
+  static Future<List<DocumentSnapshot<Map<String, dynamic>>>> getSavedStories(
+      {required List<String> storyIDs}) {
+    return Future.wait(storyIDs.map((id) =>
+        FirebaseFirestore.instance.collection("stories").doc(id).get()));
   }
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getCategoryStream() {
-    return FirebaseFirestore.instance.collection("config").doc("categories").snapshots();
+    return FirebaseFirestore.instance
+        .collection("config")
+        .doc("categories")
+        .snapshots();
   }
 }

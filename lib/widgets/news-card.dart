@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/views/article.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
@@ -8,8 +9,11 @@ import 'package:share_plus/share_plus.dart';
 
 class NewsCard extends StatelessWidget {
   final Map<String, dynamic> data;
+  final ValueNotifier<bool> saved;
+  final String id;
+  final void Function(String id, bool newValue, BuildContext context) saveArticle;
   static const double blur = 1;
-  NewsCard({required this.data});
+  NewsCard({required this.data, required this.saved, required this.id, required this.saveArticle});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -59,15 +63,31 @@ class NewsCard extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.bookmark_add_outlined)),
+                    ValueListenableBuilder(
+                        valueListenable: SharedPrefsService.prefsNotifier,
+                        builder: (context, prefs, child) {
+                          if (prefs == null) return CircularProgressIndicator();
+                          return ValueListenableBuilder(
+                              valueListenable: saved,
+                              builder: (context, value, child) {
+                                return IconButton(
+                                    onPressed: () {
+                                      saveArticle(id, !saved.value, context);
+                                    },
+                                    icon: Icon(
+                                        saved.value
+                                            ? Icons.bookmark
+                                            : Icons.bookmark_outline,
+                                        color: Theme.of(context).primaryColor));
+                              });
+                        }),
                     IconButton(
                         onPressed: () {
                           Share.share("${data["title"]} - Central Times",
                               subject: "${data["title"]} - Central Times");
                         },
-                        icon: Icon(Icons.share)),
+                        icon: Icon(Icons.share),
+                        color: Theme.of(context).primaryColor),
                   ],
                 )),
           ],
