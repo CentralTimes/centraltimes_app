@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AuthService.initialize();
+  AuthService.initialize();
   SharedPrefsService.initialize();
   runApp(CentralTimesApp());
 }
@@ -20,6 +20,11 @@ class CentralTimesApp extends StatefulWidget {
 }
 
 class _CentralTimesAppState extends State<CentralTimesApp> {
+  @override
+  void initState() {
+    super.initState();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

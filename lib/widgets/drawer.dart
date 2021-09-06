@@ -19,6 +19,38 @@ class AppDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: ListTile(
+                  onLongPress: () async {
+                    try {
+                      bool? s = await showPreTestLoginDialog(context);
+                      if (s == true) {
+                        String email = "";
+                        String password = "";
+                        bool? s = await showSubmitDialog(
+                            context,
+                            "Sign in with your email & password",
+                            Column(children: [
+                              TextField(onChanged: (value) => email = value),
+                              TextField(obscureText: true, onChanged: (value) => password = value),
+                            ]),
+                            () => true);
+                        if (s ?? false) {
+                          try {
+                            await showLoadingDialog(context, "Signing in...",
+                            () async => await AuthService.signIn(test: true, email: email, password: password));
+                          } on String catch (e) {
+                            if (e != "") showErrorDialog(context, e);
+                          }
+                        }
+                      } else {
+                        if (s == null) {
+                          await showLoadingDialog(context, "Signing in...",
+                            () async => await AuthService.signIn());
+                        }
+                      }
+                    } on String catch (e) {
+                      if (e != "") showErrorDialog(context, e);
+                    }
+                  },
                   onTap: () async {
                     try {
                       await showLoadingDialog(context, "Signing in...",
@@ -35,9 +67,7 @@ class AppDrawer extends StatelessWidget {
                   )),
             )
           else ...[
-            ListTile(
-                title: Text(user.authAccount.displayName!),
-                subtitle: Text("Welcome Back")),
+            ListTile(title: Text(user.name), subtitle: Text("Welcome Back")),
             ListTile(
                 onTap: () async {
                   await AuthService.signOut();

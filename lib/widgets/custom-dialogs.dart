@@ -15,15 +15,16 @@ Future<void> showErrorDialog(BuildContext context, String text) async {
       ]);
 }
 
-Future<void> showLoadingDialog(BuildContext context, String text, Future<dynamic> Function() function) async {
+Future<void> showLoadingDialog(BuildContext context, String text,
+    Future<dynamic> Function() function) async {
   showDialog<void>(
       context: context,
       builder: (context) => WillPopScope(
-        onWillPop: () => Future.value(false),
-        child: SimpleDialog(children: [
+            onWillPop: () => Future.value(false),
+            child: SimpleDialog(children: [
               ListTile(leading: CircularProgressIndicator(), title: Text(text)),
             ]),
-      ),
+          ),
       barrierDismissible: false);
   try {
     await function();
@@ -32,6 +33,40 @@ Future<void> showLoadingDialog(BuildContext context, String text, Future<dynamic
     Navigator.of(context).pop();
     throw e;
   }
+}
+
+Future<bool?> showPreTestLoginDialog(BuildContext context) async {
+  bool? s = await Future.any<bool?>([
+    () async {
+      bool? w = await showDialog<bool>(
+          context: context,
+          builder: (context) => WillPopScope(
+                onWillPop: () => Future.value(false),
+                child: AlertDialog(
+                  content: ListTile(
+                      leading: CircularProgressIndicator(),
+                      title: Text("Loading...")),
+                  actions: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop<bool>(false);
+                      }
+                      onLongPress: () {
+                        Navigator.of(context).pop<bool>(true);
+                      },
+                      child: Text("Cancel"),
+                    ),
+                  ],
+                ),
+              ),
+          barrierDismissible: false);
+      return w ?? false;
+    }(),
+    Future.delayed(Duration(seconds: 3), () => null),
+  ]);
+  if (s == null) Navigator.of(context).pop();
+
+  return s;
 }
 
 Future<bool> showPromptDialog(BuildContext context, String text) async {
@@ -57,8 +92,8 @@ Future<bool> showPromptDialog(BuildContext context, String text) async {
   return value ?? false;
 }
 
-Future<T?> showSubmitDialog<T>(
-    BuildContext context, String text, Widget content, T Function() onSubmitted) {
+Future<T?> showSubmitDialog<T>(BuildContext context, String text,
+    Widget content, T Function() onSubmitted) {
   return showCustomDialog<T>(
       context: context,
       icon: Icons.info_outlined,

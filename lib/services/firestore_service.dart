@@ -1,21 +1,21 @@
 import 'dart:async';
 
+import 'package:app/models/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
 class FirestoreService {
-  static Future<void> updateUserInfo({required User user}) async {
+  static Future<void> updateUserInfo({required AppUser user}) async {
     FirebaseFirestore.instance.runTransaction((transaction) async {
       var snapshot = await transaction
           .get(FirebaseFirestore.instance.collection("users").doc(user.uid));
       transaction
           .set(FirebaseFirestore.instance.collection("users").doc(user.uid), {
-        "first": user.displayName?.split(" ").first ?? "",
-        "last": user.displayName?.split(" ").last ?? "",
-        "name": user.displayName ?? "",
+        "first": user.first,
+        "last": user.last,
+        "name": user.name,
         "date": snapshot.data()?["date"] ?? DateTime.now(),
-        "email": user.email ?? "",
+        "email": user.email,
         "uid": user.uid,
       });
     });

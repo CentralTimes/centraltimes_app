@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class AppUser {
-  final User _authAccount;
-  AppUser(this._authAccount);
-  User get authAccount => _authAccount;
+  final String email;
+  final String uid;
+  final String name;
+  AppUser(this.email, this.uid, this.name);
+  String get first => name.split(" ").first;
+  String get last => name.split(" ").last;
 }
