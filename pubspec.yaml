@@ -46,6 +46,7 @@ dependencies:
   wordpress_api: ^1.1.0
   flutter_html: ^2.1.2
   infinite_scroll_pagination: ^3.1.0
+  logging: ^1.0.2
 
 dev_dependencies:
   flutter_test:

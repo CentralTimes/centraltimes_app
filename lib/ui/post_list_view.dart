@@ -10,13 +10,13 @@ class PostListView extends StatefulWidget {
 }
 
 class _PostListViewState extends State<PostListView> {
-  PagingController _pagingController =
+  final _pagingController =
       PagingController<int, PostModel>(firstPageKey: 1);
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(() => () => _pagingController.refresh()),
+      onRefresh: () => Future.sync(() => refresh()),
       child: PagedListView.separated(
           pagingController: _pagingController,
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -26,9 +26,10 @@ class _PostListViewState extends State<PostListView> {
               print(_pagingController.error.toString());
               return Placeholder();
             },
+            noItemsFoundIndicatorBuilder: (context) => Placeholder(),
             /*firstPageErrorIndicatorBuilder: (context) => ErrorIndicator(
               error: _pagingController.error,
-              onTryAgain: () => _pagingController.refresh(),
+              onTryAgain: () => refresh(),
             ),
             noItemsFoundIndicatorBuilder: (context) => EmptyListIndicator(),*/
           ),
@@ -49,7 +50,6 @@ class _PostListViewState extends State<PostListView> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newPage = await WordpressPostsService.getPostsPage(pageKey);
-      final fetchedItemsCount = _pagingController.itemList?.length ?? 0;
       // Final page to load if length < 10
       if (newPage.length < 10) {
         _pagingController.appendLastPage(newPage);
@@ -64,6 +64,18 @@ class _PostListViewState extends State<PostListView> {
   @override
   void dispose() {
     _pagingController.dispose();
+    WordpressPostsService.clearCache();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(PostListView oldWidget) {
+    refresh();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void refresh() {
+    _pagingController.refresh();
+    WordpressPostsService.clearCache();
   }
 }

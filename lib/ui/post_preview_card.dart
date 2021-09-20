@@ -11,10 +11,10 @@ import 'package:share_plus/share_plus.dart';
 class PostPreviewCard extends StatelessWidget {
   final PostModel post;
   static const double blur = 1;
-  PostPreviewCard({ required this.post });
+  PostPreviewCard({ required this.post }) : super();
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Material(child:InkWell(
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => ArticleView(post: post))),
       child: Ink(
@@ -49,7 +49,7 @@ class PostPreviewCard extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget? getHeadMedia(List<Map<String, dynamic>> sections) {

@@ -4,10 +4,16 @@ import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/views/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 void main() async {
+  Logger.root.level = Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
+
   final api = WordPressAPI('www.centraltimes.org');
   WordpressPostsService.init(api);
   WidgetsFlutterBinding.ensureInitialized();
