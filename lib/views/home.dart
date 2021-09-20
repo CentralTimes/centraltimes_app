@@ -1,8 +1,8 @@
-import 'package:app/services/firestore_service.dart';
+import 'package:app/content/posts_page.dart';
 import 'package:app/services/shared_prefs_service.dart';
-import 'package:app/widgets/custom-dialogs.dart';
+import 'package:app/widgets/custom_dialogs.dart';
 import 'package:app/widgets/drawer.dart';
-import 'package:app/widgets/news-card.dart';
+import 'package:app/ui/post_preview_card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,31 +31,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    FirestoreService.getCategories().then((data) {
-      var cData = (data.get("categories") as List<dynamic>)
-          .cast<Map<String, dynamic>>();
-      tabController = TabController(vsync: this, length: cData.length);
-      snippetsList = List.filled(cData.length, null);
-      lastUpdatedList = List.filled(cData.length, null);
-      notifiersList = List.filled(cData.length, ValueNotifier(false));
-      setState(() {
-        categoryData = cData;
-      });
-      tabController.addListener(() {
-        int index = tabController.index;
-        refreshCategory(index);
-      });
-      refreshCategory(0);
-      ValueNotifier<SharedPreferences?> prefsNotifier =
-          SharedPrefsService.prefsNotifier;
-      if (prefsNotifier.value == null) {
-        prefsNotifier.addListener(() {
-          initSaved(prefsNotifier.value);
-        });
-      } else {
-        initSaved(prefsNotifier.value);
-      }
-    });
   }
 
   @override
@@ -66,116 +41,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: AppDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-            onTap: (value) => setState(() {
-                  bottomIndex = value;
-                }),
-            currentIndex: bottomIndex,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.article_outlined), label: "News"),
-              //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
-            ]),
-        body: [
-          NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  centerTitle: true,
-                  title: Text("Central Times"),
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          showSearch(
-                              context: context, delegate: SearchNewsDelegate());
-                        },
-                        icon: Icon(Icons.search))
-                  ],
-                  bottom: (categoryData == null)
-                      ? null
-                      : TabBar(
-                          controller: tabController,
-                          isScrollable: true,
-                          indicatorColor: Colors.white,
-                          tabs: categoryData!
-                              .map((category) =>
-                                  Tab(child: Text(category["name"])))
-                              .toList(),
-                        ),
-                  pinned: true,
-                  floating: true,
-                )
-              ];
-            },
-            body: (categoryData == null)
-                ? Center(child: CircularProgressIndicator())
-                : TabBarView(
-                    controller: tabController,
-                    children: List.generate(
-                        snippetsList.length,
-                        (index) => RefreshIndicator(
-                            child: ValueListenableBuilder(
-                                valueListenable: notifiersList[index],
-                                builder: (context, value, child) {
-                                  if (snippetsList[index] == null)
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  return ListView.separated(
-                                      padding: EdgeInsets.zero,
-                                      itemBuilder: (context, j) {
-                                        return NewsCard(
-                                            data: snippetsList[index]![j],
-                                            saved: idsToNotifiers[
-                                                snippetsList[index]![j]["id"]]!,
-                                            id: snippetsList[index]![j]["id"],
-                                            saveArticle: saveArticle);
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          Padding(padding: EdgeInsets.all(8)),
-                                      itemCount: snippetsList[index]!.length);
-                                }),
-                            onRefresh: () async {
-                              refreshCategory(index);
-                            }))),
-          ),
-          NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    centerTitle: true,
-                    title: ValueListenableBuilder(
-                        valueListenable: updateSaved,
-                        builder: (context, value, child) {
-                          return Text(
-                              "Saved Articles (${savedIds.length}/$saveLimit)");
-                        }),
-                    pinned: true,
-                  )
-                ];
-              },
-              body: (categoryData == null || savedLoaded == false)
-                  ? Center(child: CircularProgressIndicator())
-                  : ValueListenableBuilder(
-                      valueListenable: updateSaved,
-                      builder: (context, value, child) {
-                        return ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, j) {
-                              return NewsCard(
-                                  data: savedList[j],
-                                  saved: idsToNotifiers[savedIds[j]]!,
-                                  id: savedIds[j],
-                                  saveArticle: saveArticle);
-                            },
-                            separatorBuilder: (context, index) =>
-                                Padding(padding: EdgeInsets.all(8)),
-                            itemCount: savedList.length);
-                      })),
-        ][bottomIndex]);
+    return new PostsPage();
   }
 
   void refreshCategory(int index) {
@@ -183,22 +49,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         DateTime.now().difference(lastUpdatedList[index]!).inSeconds >
             cooldownSecs) {
       lastUpdatedList[index] = DateTime.now();
-      FirestoreService.getStories(categoryID: categoryData![index]["id"])
-          .then((query) {
-        query.docs.forEach((doc) {
-          if (idsToNotifiers[doc.id] == null) {
-            idsToNotifiers[doc.id] = ValueNotifier(false);
-            setupSavedNotifier(
-                idsToNotifiers[doc.id]!, doc.id, doc.data(), context);
-          }
-        });
-        snippetsList[index] = query.docs.map((doc) {
-          var s = doc.data();
-          s["id"] = doc.id;
-          return s;
-        }).toList();
-        notifiersList[index].value = !notifiersList[index].value;
-      });
+
     }
   }
 
@@ -206,29 +57,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     if (prefs != null) {
       List<String> sIds;
       sIds = prefs.getStringList("saved") ?? List.empty();
-      FirestoreService.getSavedStories(storyIDs: sIds).then((value) {
-        savedList = [];
-        for (int i = 0; i < value.length; i++) {
-          if (value[i].data() == null)
-            sIds.removeAt(i);
-          else {
-            var s = value[i].data()!;
-            s["id"] = value[i].id;
-            savedList.add(s);
-            if (idsToNotifiers[sIds[i]] == null ||
-                idsToNotifiers[sIds[i]]!.value == false) {
-              idsToNotifiers[sIds[i]] = ValueNotifier(true);
-              setupSavedNotifier(
-                  idsToNotifiers[sIds[i]]!, sIds[i], value[i].data()!, context);
-            }
-          }
-        }
-        prefs.setStringList("saved", sIds);
-        savedIds = sIds;
-        setState(() {
-          savedLoaded = true;
-        });
-      });
+
     }
   }
 

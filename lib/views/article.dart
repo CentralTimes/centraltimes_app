@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/models/post_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,8 +9,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleView extends StatelessWidget {
-  final Map<String, dynamic> data;
-  const ArticleView({required this.data});
+  final PostModel post;
+  const ArticleView({required this.post});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +21,8 @@ class ArticleView extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
           IconButton(
               onPressed: () {
-                Share.share("${data["title"]} - Central Times",
-                    subject: "${data["title"]} - Central Times");
+                Share.share("${post.title} - Central Times",
+                    subject: "${post.title} - Central Times");
               },
               icon: Icon(Icons.share)),
         ],
@@ -33,23 +34,13 @@ class ArticleView extends StatelessWidget {
             Padding(padding: EdgeInsets.all(8)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(data["title"],
+                child: Text(post.title,
                     style: TextStyle(fontSize: 28, height: 1.5))),
-            if (data["subtitle"] != null && data["subtitle"] != "") ...[
-              Padding(padding: EdgeInsets.all(4)),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(data["subtitle"],
-                      style: TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          color: Colors.black.withOpacity(0.6)))),
-            ],
             Padding(padding: EdgeInsets.all(16)),
-            if (data["author"] != null && data["author"] != "") ...[
+            if (post.author != null && post.author != "") ...[
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(data["author"],
+                  child: Text(post.author.toString(),
                       style: TextStyle(
                           fontSize: 18,
                           height: 1.5,
@@ -60,79 +51,13 @@ class ArticleView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                     DateFormat("MMMM d, yyyy - h:mm a")
-                        .format(data["publishdate"].toDate()),
+                        .format(post.date),
                     style: TextStyle(
                         fontSize: 18,
                         height: 1.5,
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
           ])),
-          SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-            switch (data["sections"][index]["type"]) {
-              case "IMAGE":
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: CachedNetworkImage(
-                          imageUrl: data["sections"][index]["url"],
-                          placeholder: (context, url) => Container(
-                                width: min(
-                                    data["sections"][index]["width"].toDouble(),
-                                    MediaQuery.of(context)
-                                        .size
-                                        .width
-                                        .toDouble()),
-                                height: min(
-                                        (data["sections"][index]["width"]
-                                                as num)
-                                            .toDouble(),
-                                        MediaQuery.of(context)
-                                            .size
-                                            .width
-                                            .toDouble()) *
-                                    data["sections"][index]["height"]
-                                        .toDouble() /
-                                    data["sections"][index]["width"].toDouble(),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )),
-                    ),
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: MarkdownBody(
-                          data: data["sections"][index]["caption"],
-                          styleSheet:
-                              MarkdownStyleSheet.fromTheme(Theme.of(context))
-                                  .copyWith(
-                            p: TextStyle(fontSize: 16, height: 1.2),
-                          ),
-                          onTapLink: (text, href, title) {
-                            if (href != null) launch(href);
-                          },
-                        )),
-                  ],
-                );
-              default:
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: MarkdownBody(
-                    data: data["sections"][index]["text"],
-                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
-                        .copyWith(
-                      p: TextStyle(fontSize: 20, height: 1.5),
-                    ),
-                    onTapLink: (text, href, title) {
-                      if (href != null) launch(href);
-                    },
-                  ),
-                );
-            }
-          }, childCount: data["sections"].length)),
         ],
       ),
     );

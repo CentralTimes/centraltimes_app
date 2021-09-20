@@ -1,7 +1,6 @@
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:app/models/app_user.dart';
-import 'package:app/services/auth_service.dart';
-import 'package:app/widgets/custom-dialogs.dart';
+import 'package:app/models/user_model.dart';
+import 'package:app/widgets/custom_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,7 @@ import 'dart:io' show Platform;
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AppUser? user = Provider.of<AppUser?>(context);
+    UserModel? user = Provider.of<UserModel?>(context);
     return Drawer(
       child: ListView(
         children: [
@@ -35,30 +34,14 @@ class AppDrawer extends StatelessWidget {
                             ]),
                             () => true);
                         if (s ?? false) {
-                          try {
-                            await showLoadingDialog(context, "Signing in...",
-                            () async => await AuthService.signIn(test: true, email: email, password: password));
-                          } on String catch (e) {
-                            if (e != "") showErrorDialog(context, e);
-                          }
                         }
                       } else {
-                        if (s == null) {
-                          await showLoadingDialog(context, "Signing in...",
-                            () async => await AuthService.signIn());
-                        }
                       }
                     } on String catch (e) {
                       if (e != "") showErrorDialog(context, e);
                     }
                   },
                   onTap: () async {
-                    try {
-                      await showLoadingDialog(context, "Signing in...",
-                          () async => await AuthService.signIn());
-                    } on String catch (e) {
-                      if (e != "") showErrorDialog(context, e);
-                    }
                   },
                   leading: Icon(Icons.login),
                   title: Text("Sign In"),
@@ -70,9 +53,6 @@ class AppDrawer extends StatelessWidget {
           else ...[
             ListTile(title: Text(user.name), subtitle: Text("Welcome Back")),
             ListTile(
-                onTap: () async {
-                  await AuthService.signOut();
-                },
                 leading: Icon(Icons.logout),
                 title: Text("Sign Out")),
           ],
