@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/models/post_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:share_plus/share_plus.dart';
@@ -57,6 +58,7 @@ class ArticleView extends StatelessWidget {
                         height: 1.5,
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
+            Html(data: post.content),
           ])),
         ],
       ),

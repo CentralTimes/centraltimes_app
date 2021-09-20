@@ -2,16 +2,18 @@ import 'package:app/models/post_model.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressPostsService {
-
   static WordPressAPI? api;
 
   static void init(WordPressAPI api) {
     WordpressPostsService.api = api;
   }
-  // Temporary bashing together until I replace the package with a custom
-  // library specifically for SNO deployments.
-  static Future<List<PostModel>> getPosts() async {
-    final WPResponse res = await WordpressPostsService.api!.posts.fetch();
+
+  static Future<List<PostModel>> getPostsPage(int page) async {
+    final WPResponse res = await WordpressPostsService.api!.pages.fetch(args: {
+      "page": page,
+      "per_page": 10,
+    });
+
     List<PostModel> posts = List.empty(growable: true);
     for (final post in res.data) {
       posts.add(new PostModel(
@@ -27,8 +29,7 @@ class WordpressPostsService {
           post.featuredMedia,
           post.categories,
           post.tags,
-          post.commentStatus
-      ));
+          post.commentStatus));
     }
     return posts;
   }
