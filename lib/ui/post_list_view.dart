@@ -17,7 +17,8 @@ class _PostListViewState extends State<PostListView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => Future.sync(() => refresh()),
-      child: PagedListView.separated(
+      child:
+      PagedListView.separated(
           pagingController: _pagingController,
           padding: const EdgeInsets.symmetric(vertical: 16),
           builderDelegate: PagedChildBuilderDelegate<PostModel>(

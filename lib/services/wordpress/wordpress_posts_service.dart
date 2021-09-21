@@ -10,19 +10,19 @@ class WordpressPostsService {
 
   static void init(WordPressAPI api) {
     WordpressPostsService.api = api;
+    log.info("Initialized!");
   }
 
   static Future<List<PostModel>> getPostsPage(int page) async {
     try {
       if (pageCache.containsKey(page)) {
         log.info("Cache hit!");
-        return pageCache[page]!;
       } else {
-        final WPResponse res = await WordpressPostsService.api!.posts.fetch(
-            args: {
-              "page": page,
-              "per_page": 10,
-            });
+        final WPResponse res =
+            await WordpressPostsService.api!.posts.fetch(args: {
+          "page": page,
+          "per_page": 10,
+        });
 
         List<PostModel> posts = List.empty(growable: true);
         for (final post in res.data) {
@@ -41,11 +41,10 @@ class WordpressPostsService {
               post.tags,
               post.commentStatus));
         }
-        print(posts);
         pageCache[page] = posts;
-        log.info(posts);
-        return posts;
+        log.info("Fetched ${posts.length} posts from API.");
       }
+      return pageCache[page]!;
     } catch (e) {
       log.severe(e.toString());
       return List.empty();
@@ -53,6 +52,6 @@ class WordpressPostsService {
   }
 
   static void clearCache() {
-    pageCache = {};
+    //pageCache = {};
   }
 }
