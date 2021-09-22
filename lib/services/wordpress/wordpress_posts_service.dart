@@ -37,6 +37,7 @@ class WordpressPostsService {
                 DateTime.parse(post.modified),
                 post.guid,
                 post.slug,
+                post.link,
                 post.title,
                 post.content,
                 post.excerpt,

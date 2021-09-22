@@ -52,9 +52,20 @@ class PostPreviewCard extends StatelessWidget {
                   })),
             ],
             ListTile(
-              title: Text(DateFormat("MMMM d").format(post.date),
-                  style: TextStyle(fontSize: 18)),
-            ),
+                title: Text(DateFormat("MMMM d").format(post.date),
+                    style: TextStyle(fontSize: 18)),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Share.share(post.link,
+                              subject: "${post.title} - Central Times");
+                        },
+                        icon: Icon(Icons.share),
+                        color: Theme.of(context).primaryColor),
+                  ],
+                )),
           ],
         ),
       ),

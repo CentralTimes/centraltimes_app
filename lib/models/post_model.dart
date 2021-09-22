@@ -5,6 +5,7 @@ class PostModel {
   final DateTime modified;
   final String guid;
   final String slug;
+  final String link;
   final String title;
   final String content;
   final String excerpt;
@@ -20,6 +21,7 @@ class PostModel {
       this.modified,
       this.guid,
       this.slug,
+      this.link,
       this.title,
       this.content,
       this.excerpt,
