@@ -1,109 +1,72 @@
 import 'dart:io' show Platform;
 
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:app/models/user_model.dart';
-import 'package:app/widgets/custom_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserModel? user = Provider.of<UserModel?>(context);
     return Drawer(
       child: ListView(
         children: [
-          if (user == null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: ListTile(
-                  onLongPress: () async {
-                    try {
-                      bool? s = await showPreTestLoginDialog(context);
-                      if (s == true) {
-                        String email = "";
-                        String password = "";
-                        bool? s = await showSubmitDialog(
-                            context,
-                            "Sign in with your email & password",
-                            Column(children: [
-                              TextField(onChanged: (value) => email = value),
-                              TextField(
-                                  obscureText: true,
-                                  onChanged: (value) => password = value),
-                            ]),
-                            () => true);
-                        if (s ?? false) {}
-                      } else {}
-                    } on String catch (e) {
-                      if (e != "") showErrorDialog(context, e);
-                    }
-                  },
-                  onTap: () async {},
-                  leading: Icon(Icons.login),
-                  title: Text("Sign In"),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text("With a District 203 Google Account"),
-                  )),
-            )
-          else ...[
-            ListTile(title: Text(user.name), subtitle: Text("Welcome Back")),
-            ListTile(leading: Icon(Icons.logout), title: Text("Sign Out")),
-          ],
           if (Platform.isAndroid)
             ListTile(
-                title: Wrap(
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () => AndroidIntent(
-                            action:
-                                "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
-                            data: "com.facebook.katana")
-                        .launch()
-                        .onError<PlatformException>((error, stackTrace) => launch(
-                            "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
-                    icon: Icon(FontAwesomeIcons.facebook),
-                    color: Theme.of(context).primaryColor),
-                IconButton(
-                    onPressed: () => AndroidIntent(
-                            action: "twitter://user?screen_name=centraltimes",
-                            data: "com.twitter.android")
-                        .launch()
-                        .onError<PlatformException>((error, stackTrace) =>
-                            launch("https://twitter.com/centraltimes")),
-                    icon: Icon(FontAwesomeIcons.twitter),
-                    color: Theme.of(context).primaryColor),
-                IconButton(
-                    onPressed: () => AndroidIntent(
-                            action: "http://instagram.com/_u/centraltimes",
-                            data: "com.instagram.android")
-                        .launch()
-                        .onError<PlatformException>((error, stackTrace) =>
-                            launch("https://instagram.com/centraltimes")),
-                    icon: Icon(FontAwesomeIcons.instagram),
-                    color: Theme.of(context).primaryColor),
-                IconButton(
-                    onPressed: () => AndroidIntent(
-                            action:
-                                "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
-                            data: "com.google.android.youtube")
-                        .launch()
-                        .onError<PlatformException>((error, stackTrace) => launch(
-                            "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
-                    icon: Icon(FontAwesomeIcons.youtube),
-                    color: Theme.of(context).primaryColor),
-                IconButton(
-                    onPressed: () => launch("https://www.centraltimes.org/"),
-                    icon: Icon(Icons.language_outlined),
-                    color: Theme.of(context).primaryColor),
-              ],
-            ))
+                title: Text("Follow Central Times"),
+                subtitle: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: () => AndroidIntent(
+                                action:
+                                    "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                                data: "com.facebook.katana")
+                            .launch()
+                            .onError<PlatformException>((error, stackTrace) =>
+                                launch(
+                                    "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                        icon: Icon(FontAwesomeIcons.facebook),
+                        color: Theme.of(context).primaryColor),
+                    IconButton(
+                        onPressed: () => AndroidIntent(
+                                action:
+                                    "twitter://user?screen_name=centraltimes",
+                                data: "com.twitter.android")
+                            .launch()
+                            .onError<PlatformException>((error, stackTrace) =>
+                                launch("https://twitter.com/centraltimes")),
+                        icon: Icon(FontAwesomeIcons.twitter),
+                        color: Theme.of(context).primaryColor),
+                    IconButton(
+                        onPressed: () => AndroidIntent(
+                                action: "http://instagram.com/_u/centraltimes",
+                                data: "com.instagram.android")
+                            .launch()
+                            .onError<PlatformException>((error, stackTrace) =>
+                                launch("https://instagram.com/centraltimes")),
+                        icon: Icon(FontAwesomeIcons.instagram),
+                        color: Theme.of(context).primaryColor),
+                    IconButton(
+                        onPressed: () => AndroidIntent(
+                                action:
+                                    "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                                data: "com.google.android.youtube")
+                            .launch()
+                            .onError<PlatformException>((error, stackTrace) =>
+                                launch(
+                                    "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                        icon: Icon(FontAwesomeIcons.youtube),
+                        color: Theme.of(context).primaryColor),
+                    IconButton(
+                        onPressed: () =>
+                            launch("https://www.centraltimes.org/"),
+                        icon: Icon(Icons.language_outlined),
+                        color: Theme.of(context).primaryColor),
+                  ],
+                ))
           else ...[
             ListTile(
                 title: Wrap(
@@ -136,8 +99,6 @@ class AppDrawer extends StatelessWidget {
               ],
             ))
           ],
-          NotificationAccordion(),
-          ListTile(leading: Icon(Icons.info), title: Text("About")),
           ListTile(
               leading: const Icon(Icons.email),
               title: const Text("Contact Us"),

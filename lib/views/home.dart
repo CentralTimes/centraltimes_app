@@ -1,6 +1,7 @@
 import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/ui/post_list_view.dart';
 import 'package:app/widgets/custom_dialogs.dart';
+import 'package:app/widgets/drawer.dart';
 import 'package:app/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +41,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      drawer: AppDrawer(),
         /*bottomNavigationBar: BottomNavigationBar(
             onTap: (value) => setState(() {
                   bottomIndex = value;

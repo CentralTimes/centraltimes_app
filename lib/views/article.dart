@@ -63,8 +63,8 @@ class ArticleView extends StatelessWidget {
                     ),
                     "p": Style(
                       fontSize: FontSize(20),
-                      lineHeight: LineHeight(1.5),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      lineHeight: LineHeight(1.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     ),
                     // Temporary figure styles...
                     ".videowidget": Style(
