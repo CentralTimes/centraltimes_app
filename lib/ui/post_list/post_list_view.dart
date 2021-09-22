@@ -74,10 +74,10 @@ class _PostListViewState extends State<PostListView> {
     try {
       final newPage = await WordpressPostsService.getPostsPage(pageKey);
       // Final page to load if length < 10
-      if (newPage.length < 10) {
-        _pagingController.appendLastPage(newPage);
+      if (newPage.isLast) {
+        _pagingController.appendLastPage(newPage.posts);
       } else {
-        _pagingController.appendPage(newPage, pageKey + 1);
+        _pagingController.appendPage(newPage.posts, pageKey + 1);
       }
     } catch (e) {
       _pagingController.error = e;

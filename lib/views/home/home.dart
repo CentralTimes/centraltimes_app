@@ -43,21 +43,51 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      drawer: AppDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) => setState(() {
-            bottomIndex = value;
-          }),
-          currentIndex: bottomIndex,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.article_outlined), label: "News"),
-            //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
-          ]),
-      body: PostListView(),
-    );
+        drawer: AppDrawer(),
+        bottomNavigationBar: BottomNavigationBar(
+            onTap: (value) => setState(() {
+                  bottomIndex = value;
+                }),
+            currentIndex: bottomIndex,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.article_outlined), label: "News"),
+              //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
+            ]),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                centerTitle: true,
+                title: Text("Central Times"),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showSearch(
+                            context: context, delegate: SearchNewsDelegate());
+                      },
+                      icon: Icon(Icons.search))
+                ],
+                bottom: (categoryData == null)
+                    ? null
+                    : TabBar(
+                        controller: tabController,
+                        isScrollable: true,
+                        indicatorColor: Colors.white,
+                        tabs: categoryData!
+                            .map((category) =>
+                                Tab(child: Text(category["name"])))
+                            .toList(),
+                      ),
+                pinned: true,
+                floating: true,
+              )
+            ];
+          },
+          body: PostListView(),
+        ));
   }
 
   void refreshCategory(int index) {
@@ -65,7 +95,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         DateTime.now().difference(lastUpdatedList[index]!).inSeconds >
             cooldownSecs) {
       lastUpdatedList[index] = DateTime.now();
-
     }
   }
 
@@ -73,7 +102,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     if (prefs != null) {
       List<String> sIds;
       sIds = prefs.getStringList("saved") ?? List.empty();
-
     }
   }
 

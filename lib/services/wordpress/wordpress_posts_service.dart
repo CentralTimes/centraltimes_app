@@ -6,14 +6,14 @@ class WordpressPostsService {
   static WordPressAPI? api;
   static final Logger log = new Logger("WordpressPostsService");
 
-  static Map<int, List<PostModel>> pageCache = {};
+  static Map<int, PostsPage> pageCache = {};
 
   static void init(WordPressAPI api) {
     WordpressPostsService.api = api;
     log.info("Initialized!");
   }
 
-  static Future<List<PostModel>> getPostsPage(int page) async {
+  static Future<PostsPage> getPostsPage(int page) async {
     try {
       if (pageCache.containsKey(page)) {
         log.info("Cache hit!");
@@ -26,32 +26,44 @@ class WordpressPostsService {
 
         List<PostModel> posts = List.empty(growable: true);
         for (final post in res.data) {
-          posts.add(new PostModel(
-              post.id,
-              DateTime.parse(post.dateGmt),
-              DateTime.parse(post.modified),
-              post.guid,
-              post.slug,
-              post.title,
-              post.content,
-              post.excerpt,
-              post.author,
-              post.featuredMedia,
-              post.categories,
-              post.tags,
-              post.commentStatus));
+          // Temporary fix for posts with invalid content/formatting
+          // TODO add post preprocessing service
+          // Blacklist posts with video category (ID 123)
+          // Blacklist posts with no content
+          if (!(post.categories.contains(123) || post.content == ""))
+            posts.add(new PostModel(
+                post.id,
+                DateTime.parse(post.dateGmt),
+                DateTime.parse(post.modified),
+                post.guid,
+                post.slug,
+                post.title,
+                post.content,
+                post.excerpt,
+                post.author,
+                post.featuredMedia,
+                post.categories,
+                post.tags,
+                post.commentStatus));
         }
-        pageCache[page] = posts;
+        pageCache[page] = new PostsPage(posts, res.data.length < 10);
         log.info("Fetched ${posts.length} posts from API.");
       }
       return pageCache[page]!;
     } catch (e) {
       log.severe(e.toString());
-      return List.empty();
+      return PostsPage(List.empty(), false);
     }
   }
 
   static void clearCache() {
     pageCache = {};
   }
+}
+
+class PostsPage {
+  final List<PostModel> posts;
+  final bool isLast;
+
+  PostsPage(this.posts, this.isLast);
 }
