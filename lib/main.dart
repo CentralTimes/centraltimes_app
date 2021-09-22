@@ -11,7 +11,7 @@ void main() async {
   Logger.root.level = Level.INFO;
   Logger.root.onRecord.listen((record) {
     print(
-        '${record.loggerName} - [${record.level.name}]: ${record.time}: ${record.message}');
+        '[${record.level.name}]-${record.loggerName}: ${record.time}: ${record.message}');
   });
 
   final api = WordPressAPI('www.centraltimes.org');

@@ -27,7 +27,8 @@ class WordpressPostsService {
 
         List<PostModel> posts = _blacklistPosts(res);
         pageCache[page] = new PostsPage(posts, res.data.length < 10);
-        log.info("Fetched ${posts.length} posts from API.");
+        log.info(
+            "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
       }
       return pageCache[page]!;
     } catch (e) {
@@ -44,10 +45,10 @@ class WordpressPostsService {
     final unescape = HtmlUnescape();
     List<PostModel> posts = List.empty(growable: true);
     for (final post in res.data) {
-      // Temporary fix for posts with invalid content/formatting
+      // Temporary fix for posts with invalid pages/formatting
       // TODO add post preprocessing service
       // Blacklist posts with video category (ID 123)
-      // Blacklist posts with no content
+      // Blacklist posts with no pages
       if (!(post.categories.contains(123) || post.content == ""))
         posts.add(new PostModel(
             post.id,

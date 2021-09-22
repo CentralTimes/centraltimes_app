@@ -1,4 +1,3 @@
-
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';

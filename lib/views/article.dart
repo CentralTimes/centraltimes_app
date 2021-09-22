@@ -15,7 +15,6 @@ class ArticleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this.post);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

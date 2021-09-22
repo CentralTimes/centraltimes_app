@@ -2,7 +2,7 @@ import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/ui/error_screens/error_screen.dart';
 import 'package:app/ui/error_screens/no_results_error_screen.dart';
-import 'package:app/ui/post_preview_card.dart';
+import 'package:app/ui/post_list/post_preview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
