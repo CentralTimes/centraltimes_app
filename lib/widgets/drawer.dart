@@ -1,12 +1,13 @@
+import 'dart:io' show Platform;
+
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/models/user_model.dart';
 import 'package:app/widgets/custom_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:io' show Platform;
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -30,19 +31,18 @@ class AppDrawer extends StatelessWidget {
                             "Sign in with your email & password",
                             Column(children: [
                               TextField(onChanged: (value) => email = value),
-                              TextField(obscureText: true, onChanged: (value) => password = value),
+                              TextField(
+                                  obscureText: true,
+                                  onChanged: (value) => password = value),
                             ]),
                             () => true);
-                        if (s ?? false) {
-                        }
-                      } else {
-                      }
+                        if (s ?? false) {}
+                      } else {}
                     } on String catch (e) {
                       if (e != "") showErrorDialog(context, e);
                     }
                   },
-                  onTap: () async {
-                  },
+                  onTap: () async {},
                   leading: Icon(Icons.login),
                   title: Text("Sign In"),
                   subtitle: Padding(
@@ -52,9 +52,7 @@ class AppDrawer extends StatelessWidget {
             )
           else ...[
             ListTile(title: Text(user.name), subtitle: Text("Welcome Back")),
-            ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Sign Out")),
+            ListTile(leading: Icon(Icons.logout), title: Text("Sign Out")),
           ],
           if (Platform.isAndroid)
             ListTile(
@@ -113,7 +111,8 @@ class AppDrawer extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 IconButton(
-                    onPressed: () => launch("https://www.facebook.com/pages/The-Central-Times/244007425638003"),
+                    onPressed: () => launch(
+                        "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
                     icon: Icon(FontAwesomeIcons.facebook),
                     color: Theme.of(context).primaryColor),
                 IconButton(
@@ -121,11 +120,13 @@ class AppDrawer extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.twitter),
                     color: Theme.of(context).primaryColor),
                 IconButton(
-                    onPressed: () => launch("http://instagram.com/_u/centraltimes"),
+                    onPressed: () =>
+                        launch("http://instagram.com/_u/centraltimes"),
                     icon: Icon(FontAwesomeIcons.instagram),
                     color: Theme.of(context).primaryColor),
                 IconButton(
-                    onPressed: () => launch("https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
+                    onPressed: () => launch(
+                        "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
                     icon: Icon(FontAwesomeIcons.youtube),
                     color: Theme.of(context).primaryColor),
                 IconButton(
@@ -156,6 +157,7 @@ class NotificationAccordion extends StatefulWidget {
 
 class _NotificationAccordionState extends State<NotificationAccordion> {
   bool expanded = false;
+
   @override
   Widget build(BuildContext context) {
     return ExpansionPanelList(

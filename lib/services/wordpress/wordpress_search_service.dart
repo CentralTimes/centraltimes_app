@@ -1,5 +1,3 @@
-import 'package:app/models/post_model.dart';
-import 'package:app/services/wordpress/wordpress_util_service.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
@@ -24,7 +22,6 @@ class WordpressSearchService {
       return new PostsResults(List.empty());
     }
   }
-
 }
 
 class PostsResults {

@@ -1,14 +1,11 @@
-import 'dart:math';
 
 import 'package:app/models/post_model.dart';
-import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:app/views/article.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/src/helpers.dart';
 
@@ -33,7 +30,7 @@ class PostPreviewCard extends StatelessWidget {
           children: [
             if (post.featuredMedia != 0) // 0 is no media
               Center(
-                child: getHeadMedia(post.featuredMedia),
+                child: getFeaturedMedia(post.featuredMedia),
               ),
             Padding(padding: EdgeInsets.all(8)),
             Padding(
@@ -72,7 +69,7 @@ class PostPreviewCard extends StatelessWidget {
     ));
   }
 
-  FutureBuilder<WPResponse> getHeadMedia(id) {
+  FutureBuilder<WPResponse> getFeaturedMedia(id) {
     return WordpressMediaService.getImage(id, (context, provider) {
       return AspectRatio(
           aspectRatio: 1.38,

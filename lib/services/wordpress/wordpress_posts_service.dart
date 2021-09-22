@@ -1,5 +1,4 @@
 import 'package:app/models/post_model.dart';
-import 'package:app/services/wordpress/wordpress_util_service.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
@@ -39,6 +38,7 @@ class WordpressPostsService {
   static void clearCache() {
     pageCache = {};
   }
+
   static List<PostModel> _blacklistPosts(WPResponse res) {
     List<PostModel> posts = List.empty(growable: true);
     for (final post in res.data) {

@@ -1,13 +1,10 @@
-import 'package:app/models/user_model.dart';
 import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_search_service.dart';
 import 'package:app/views/home.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 void main() async {

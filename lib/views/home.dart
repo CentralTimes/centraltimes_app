@@ -1,9 +1,6 @@
-import 'package:app/content/posts_page.dart';
 import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/ui/post_list_view.dart';
 import 'package:app/widgets/custom_dialogs.dart';
-import 'package:app/widgets/drawer.dart';
-import 'package:app/ui/post_preview_card.dart';
 import 'package:app/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,26 +53,26 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
             ]),*/
         body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                centerTitle: true,
-                title: Text("Central Times"),
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        showSearch(
-                            context: context, delegate: SearchNewsDelegate());
-                      },
-                      icon: Icon(Icons.search))
-                ],
-                pinned: false,
-                floating: true,
-              )
-            ];
-          },
-          body: PostListView(),
-        ));
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            centerTitle: true,
+            title: Text("Central Times"),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    showSearch(
+                        context: context, delegate: SearchNewsDelegate());
+                  },
+                  icon: Icon(Icons.search))
+            ],
+            pinned: false,
+            floating: true,
+          )
+        ];
+      },
+      body: PostListView(),
+    ));
   }
 
   void refreshCategory(int index) {

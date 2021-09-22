@@ -21,7 +21,8 @@ Future<void> showLoadingDialog(BuildContext context, String text,
     Future<dynamic> Function() function) async {
   showDialog<void>(
       context: context,
-      builder: (context) => WillPopScope(
+      builder: (context) =>
+          WillPopScope(
             onWillPop: () => Future.value(false),
             child: SimpleDialog(children: [
               ListTile(leading: CircularProgressIndicator(), title: Text(text)),
@@ -39,30 +40,34 @@ Future<void> showLoadingDialog(BuildContext context, String text,
 
 Future<bool?> showPreTestLoginDialog(BuildContext context) async {
   bool? s = await Future.any<bool?>([
-    () async {
+        () async {
       bool? w = await showDialog<bool>(
-          context: context,
-          builder: (context) => WillPopScope(
+        context: context,
+        builder: (context) =>
+            WillPopScope(
                 onWillPop: () => Future.value(false),
                 child: AlertDialog(
-                  content: ListTile(
-                      leading: CircularProgressIndicator(),
-                      title: Text("Loading...")),
-                  actions: [
+                    content: ListTile(
+                        leading: CircularProgressIndicator(),
+                        title: Text("Loading...")),
+                    actions: [
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop<bool>(false);
-                      }
-                      onLongPress: () {
-                        Navigator.of(context).pop<bool>(true);
-                      },
-                      child: Text("Cancel"),
-                    ),
-                  ],
-                ),
-              ),
-          barrierDismissible: false);
-      return w ?? false;
+                    onTap: () {
+            Navigator.of(context).pop<bool>(false);
+            }
+                onLongPress: () {
+      Navigator.of(context).pop<bool>(true);
+      },
+        child: Text("Cancel"),
+      )
+      ,],
+      ),
+      ),
+      barrierDismissible: false);
+      return
+      w
+      ??
+      false;
     }(),
     Future.delayed(Duration(seconds: 3), () => null),
   ]);
@@ -84,7 +89,9 @@ Future<bool> showPromptDialog(BuildContext context, String text) async {
             child: Text("Yes"),
             style: ButtonStyle(
                 side: MaterialStateProperty.all(
-                    BorderSide(color: Theme.of(context).primaryColor)))),
+                    BorderSide(color: Theme
+                        .of(context)
+                        .primaryColor)))),
         TextButton(
             onPressed: () {
               Navigator.of(context).pop(false);
@@ -109,7 +116,9 @@ Future<T?> showSubmitDialog<T>(BuildContext context, String text,
             child: Text("Enter"),
             style: ButtonStyle(
                 side: MaterialStateProperty.all(
-                    BorderSide(color: Theme.of(context).primaryColor)))),
+                    BorderSide(color: Theme
+                        .of(context)
+                        .primaryColor)))),
         TextButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -118,21 +127,26 @@ Future<T?> showSubmitDialog<T>(BuildContext context, String text,
       ]);
 }
 
-Future<T?> showCustomDialog<T>(
-    {required BuildContext context,
-    required IconData icon,
-    required String header,
-    Widget? content,
-    List<Widget>? actions}) async {
+Future<T?> showCustomDialog<T>({required BuildContext context,
+  required IconData icon,
+  required String header,
+  Widget? content,
+  List<Widget>? actions}) async {
   return showDialog<T>(
       context: context,
-      builder: (context) => AlertDialog(
-            title: Icon(icon, color: Theme.of(context).primaryColor),
+      builder: (context) =>
+          AlertDialog(
+            title: Icon(icon, color: Theme
+                .of(context)
+                .primaryColor),
             content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(header, style: Theme.of(context).textTheme.headline6),
+                  Text(header, style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline6),
                   Padding(padding: EdgeInsets.all(3)),
                   content ?? Container(),
                 ]),
