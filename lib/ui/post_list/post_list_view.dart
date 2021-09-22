@@ -2,6 +2,7 @@ import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/ui/preview_card/post_preview_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logging/logging.dart';
 
@@ -12,14 +13,21 @@ class PostListView extends StatefulWidget {
 
 class _PostListViewState extends State<PostListView> {
   final _pagingController = PagingController<int, PostModel>(firstPageKey: 1);
+  final _scrollController = ScrollController();
   final log = new Logger("PostListView");
+
+  bool _showRefreshButton = false;
+  double _lastReversal = 0.0;
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return ScrollWrapper(
+      scrollController: _scrollController,
+      child: RefreshIndicator(
         onRefresh: () => Future.sync(() => refresh()),
         child: PagedListView.separated(
           pagingController: _pagingController,
+          scrollController: _scrollController,
           padding: const EdgeInsets.symmetric(vertical: 16),
           builderDelegate: PagedChildBuilderDelegate<PostModel>(
             itemBuilder: (context, post, index) => PostPreviewCard(post: post),
@@ -39,7 +47,21 @@ class _PostListViewState extends State<PostListView> {
             color: Colors.grey,
             thickness: 2,
           ),
-        ));
+        ),
+      ),
+      promptAlignment: Alignment.bottomRight,
+      promptReplacementBuilder: (BuildContext context, Function scrollToTop) {
+        return Padding(
+            padding: EdgeInsets.all(16),
+            child: FloatingActionButton(
+              onPressed: () {
+                refresh();
+                scrollToTop();
+              },
+              child: Icon(Icons.arrow_upward),
+            ));
+      },
+    );
   }
 
   @override
@@ -68,6 +90,7 @@ class _PostListViewState extends State<PostListView> {
   void dispose() {
     log.info("Disposed!");
     _pagingController.dispose();
+    _scrollController.dispose();
     WordpressPostsService.clearCache();
     super.dispose();
   }
@@ -75,6 +98,8 @@ class _PostListViewState extends State<PostListView> {
   void refresh() {
     log.info("Refreshed!");
     _pagingController.refresh();
+    _scrollController.animateTo(0,
+        duration: Duration(seconds: 3), curve: Curves.linear);
     WordpressPostsService.clearCache();
   }
 }
