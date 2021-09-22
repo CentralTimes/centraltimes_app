@@ -52,6 +52,6 @@ class WordpressPostsService {
   }
 
   static void clearCache() {
-    //pageCache = {};
+    pageCache = {};
   }
 }

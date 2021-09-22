@@ -97,9 +97,9 @@ class _PostListViewState extends State<PostListView> {
 
   void refresh() {
     log.info("Refreshed!");
+    WordpressPostsService.clearCache();
     _pagingController.refresh();
     _scrollController.animateTo(0,
         duration: Duration(seconds: 3), curve: Curves.linear);
-    WordpressPostsService.clearCache();
   }
 }

@@ -42,7 +42,6 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      darkTheme: ThemeData(),
       home: HomeView(),
     );
   }
