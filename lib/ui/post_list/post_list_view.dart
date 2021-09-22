@@ -1,5 +1,7 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
+import 'package:app/ui/error_screens/error_screen.dart';
+import 'package:app/ui/error_screens/no_results_error_screen.dart';
 import 'package:app/ui/preview_card/post_preview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
@@ -32,15 +34,11 @@ class _PostListViewState extends State<PostListView> {
           builderDelegate: PagedChildBuilderDelegate<PostModel>(
             itemBuilder: (context, post, index) => PostPreviewCard(post: post),
             firstPageErrorIndicatorBuilder: (context) {
-              log.severe(_pagingController.error.toString());
-              return Placeholder();
+              final error = _pagingController.error.toString();
+              log.severe(error);
+              return ErrorScreen(title: "Application Error", message: error);
             },
-            noItemsFoundIndicatorBuilder: (context) => Placeholder(),
-            /*firstPageErrorIndicatorBuilder: (context) => ErrorIndicator(
-              error: _pagingController.error,
-              onTryAgain: () => refresh(),
-            ),
-            noItemsFoundIndicatorBuilder: (context) => EmptyListIndicator(),*/
+            noItemsFoundIndicatorBuilder: (context) => NoResultsErrorScreen(),
           ),
           separatorBuilder: (context, index) => Divider(
             height: 2,
