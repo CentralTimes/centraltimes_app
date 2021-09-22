@@ -15,12 +15,12 @@ class ArticleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(this.post);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("Central Times"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
           IconButton(
               onPressed: () {
                 Share.share(post.link,
@@ -49,12 +49,25 @@ class ArticleView extends StatelessWidget {
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
             if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
-            Html(
-                data: post.content,
-                onLinkTap: (String? url, RenderContext context,
-                    Map<String, String> attributes, element) async {
-                  await canLaunch(url!) ? await launch(url!) : throw 'Could not launch $url';
-                }),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Html(
+                  data: post.content,
+                  onLinkTap: (String? url, RenderContext context,
+                      Map<String, String> attributes, element) async {
+                    await launch(url!);
+                  },
+                  style: {
+                    "*": Style(
+                      margin: EdgeInsets.symmetric(horizontal: 0),
+                    ),
+                    "p": Style(
+                      fontSize: FontSize(20),
+                      lineHeight: LineHeight(1.5),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                    )
+                  },
+                )),
           ])),
         ],
       ),

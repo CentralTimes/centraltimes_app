@@ -51,6 +51,7 @@ dependencies:
   infinite_scroll_pagination: ^3.1.0
   logging: ^1.0.2
   flutter_scroll_to_top: ^1.1.0
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:

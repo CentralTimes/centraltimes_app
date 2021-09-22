@@ -1,4 +1,5 @@
 import 'package:app/models/post_model.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
@@ -40,6 +41,7 @@ class WordpressPostsService {
   }
 
   static List<PostModel> _blacklistPosts(WPResponse res) {
+    final unescape = HtmlUnescape();
     List<PostModel> posts = List.empty(growable: true);
     for (final post in res.data) {
       // Temporary fix for posts with invalid content/formatting
@@ -47,7 +49,6 @@ class WordpressPostsService {
       // Blacklist posts with video category (ID 123)
       // Blacklist posts with no content
       if (!(post.categories.contains(123) || post.content == ""))
-        log.warning(post.content);
         posts.add(new PostModel(
             post.id,
             DateTime.parse(post.dateGmt),
@@ -55,7 +56,7 @@ class WordpressPostsService {
             post.guid,
             post.slug,
             post.link,
-            post.title,
+            unescape.convert(post.title),
             post.content,
             post.excerpt,
             post.author,
