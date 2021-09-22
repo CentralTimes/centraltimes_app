@@ -65,7 +65,28 @@ class ArticleView extends StatelessWidget {
                       fontSize: FontSize(20),
                       lineHeight: LineHeight(1.5),
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                    )
+                    ),
+                    // Temporary figure styles...
+                    ".videowidget": Style(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      // TODO somehow add text padding (wait for preprocessor?)
+                    ),
+                    "figure": Style(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    ".wp-caption-text": Style(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                    // Don't support galleries
+                    ".back": Style(
+                      display: Display.NONE,
+                    ),
+                    ".next": Style(
+                      display: Display.NONE,
+                    ),
+                    ".counter": Style(
+                      display: Display.NONE,
+                    ),
                   },
                 )),
           ])),
