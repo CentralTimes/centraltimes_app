@@ -1,3 +1,4 @@
+import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -16,14 +17,14 @@ class WordpressMediaService {
     return new FutureBuilder(
       future: WordpressMediaService.api!.media.fetch(id: id),
       builder: (context, res) {
-        if (res.connectionState == ConnectionState.done)
+        if (res.connectionState == ConnectionState.done && !res.hasError)
           return new CachedNetworkImage(
             imageUrl: res.data!.data.sourceUrl,
             imageBuilder: builder,
             placeholder: placeholder,
           );
         else
-          return new Container(width: 0,height: 0,);
+          return new MediaLoadingIndicator();
       },
     );
   }

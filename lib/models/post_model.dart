@@ -1,3 +1,4 @@
+// We build our own models for posts in case like... we want extra data.
 class PostModel {
   final int id;
   final DateTime date;
@@ -13,7 +14,20 @@ class PostModel {
   final List<int> tags;
   final String commentStatus;
 
-  PostModel(this.id, this.date, this.modified, this.guid, this.slug, this.title, this.content, this.excerpt, this.author, this.featuredMedia, this.categories, this.tags, this.commentStatus);
+  PostModel(
+      this.id,
+      this.date,
+      this.modified,
+      this.guid,
+      this.slug,
+      this.title,
+      this.content,
+      this.excerpt,
+      this.author,
+      this.featuredMedia,
+      this.categories,
+      this.tags,
+      this.commentStatus);
 }
 
 class PostLinksModel {
@@ -29,7 +43,18 @@ class PostLinksModel {
   final List<PostTermModel> wpTerm;
   final List<String> curies;
 
-  PostLinksModel(this.self, this.collection, this.about, this.author, this.replies, this.versionHistory, this.predecessorVersion, this.wpFeaturedMedia, this.wpAttachment, this.wpTerm, this.curies);
+  PostLinksModel(
+      this.self,
+      this.collection,
+      this.about,
+      this.author,
+      this.replies,
+      this.versionHistory,
+      this.predecessorVersion,
+      this.wpFeaturedMedia,
+      this.wpAttachment,
+      this.wpTerm,
+      this.curies);
 }
 
 class PostTermModel {

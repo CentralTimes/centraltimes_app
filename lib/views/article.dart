@@ -38,16 +38,6 @@ class ArticleView extends StatelessWidget {
                 child: Text(post.title,
                     style: TextStyle(fontSize: 28, height: 1.5))),
             Padding(padding: EdgeInsets.all(16)),
-            if (post.author != null && post.author != "") ...[
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(post.author.toString(),
-                      style: TextStyle(
-                          fontSize: 18,
-                          height: 1.5,
-                          fontStyle: FontStyle.italic))),
-              Padding(padding: EdgeInsets.all(4)),
-            ],
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(

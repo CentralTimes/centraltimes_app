@@ -1,8 +1,9 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
-import 'package:app/ui/post_preview_card.dart';
+import 'package:app/ui/preview_card/post_preview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:logging/logging.dart';
 
 class PostListView extends StatefulWidget {
   @override
@@ -10,21 +11,20 @@ class PostListView extends StatefulWidget {
 }
 
 class _PostListViewState extends State<PostListView> {
-  final _pagingController =
-      PagingController<int, PostModel>(firstPageKey: 1);
+  final _pagingController = PagingController<int, PostModel>(firstPageKey: 1);
+  final log = new Logger("PostListView");
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(() => refresh()),
-      child:
-      PagedListView.separated(
+        onRefresh: () => Future.sync(() => refresh()),
+        child: PagedListView.separated(
           pagingController: _pagingController,
           padding: const EdgeInsets.symmetric(vertical: 16),
           builderDelegate: PagedChildBuilderDelegate<PostModel>(
             itemBuilder: (context, post, index) => PostPreviewCard(post: post),
             firstPageErrorIndicatorBuilder: (context) {
-              print(_pagingController.error.toString());
+              log.severe(_pagingController.error.toString());
               return Placeholder();
             },
             noItemsFoundIndicatorBuilder: (context) => Placeholder(),
@@ -34,10 +34,12 @@ class _PostListViewState extends State<PostListView> {
             ),
             noItemsFoundIndicatorBuilder: (context) => EmptyListIndicator(),*/
           ),
-          separatorBuilder: (context, index) => const SizedBox(
-            height: 16,
-          )),
-    );
+          separatorBuilder: (context, index) => Divider(
+            height: 2,
+            color: Colors.grey,
+            thickness: 2,
+          ),
+        ));
   }
 
   @override
@@ -64,18 +66,14 @@ class _PostListViewState extends State<PostListView> {
 
   @override
   void dispose() {
+    log.info("Disposed!");
     _pagingController.dispose();
     WordpressPostsService.clearCache();
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(PostListView oldWidget) {
-    refresh();
-    super.didUpdateWidget(oldWidget);
-  }
-
   void refresh() {
+    log.info("Refreshed!");
     _pagingController.refresh();
     WordpressPostsService.clearCache();
   }

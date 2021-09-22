@@ -1,4 +1,4 @@
-import 'package:app/ui/post_preview_card.dart';
+import 'package:app/ui/preview_card/post_preview_card.dart';
 import 'package:flutter/material.dart';
 
 class SavedsPage extends StatelessWidget {
