@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// TODO opting to refactor this out into separate Widgets
+
 Future<void> showErrorDialog(BuildContext context, String text) async {
   return showCustomDialog<void>(
       context: context,
