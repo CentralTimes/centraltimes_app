@@ -47,6 +47,7 @@ class WordpressPostsService {
       // Blacklist posts with video category (ID 123)
       // Blacklist posts with no content
       if (!(post.categories.contains(123) || post.content == ""))
+        log.warning(post.content);
         posts.add(new PostModel(
             post.id,
             DateTime.parse(post.dateGmt),

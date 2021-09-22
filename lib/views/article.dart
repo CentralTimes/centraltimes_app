@@ -1,4 +1,3 @@
-
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class ArticleView extends StatelessWidget {
@@ -49,7 +49,12 @@ class ArticleView extends StatelessWidget {
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
             if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
-            Html(data: post.content),
+            Html(
+                data: post.content,
+                onLinkTap: (String? url, RenderContext context,
+                    Map<String, String> attributes, element) async {
+                  await canLaunch(url!) ? await launch(url!) : throw 'Could not launch $url';
+                }),
           ])),
         ],
       ),

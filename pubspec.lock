@@ -372,7 +372,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.5"
   infinite_scroll_pagination:
     dependency: "direct main"
     description:
@@ -878,9 +878,11 @@ packages:
   wordpress_api:
     dependency: "direct main"
     description:
-      name: wordpress_api
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: bb2ac6b628c3103a85a38a5d8e0122cc15f5bc64
+      resolved-ref: bb2ac6b628c3103a85a38a5d8e0122cc15f5bc64
+      url: "git://github.com/dhmgroup/dart-wp.git"
+    source: git
     version: "1.1.0"
   xdg_directories:
     dependency: transitive

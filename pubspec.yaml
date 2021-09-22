@@ -43,7 +43,10 @@ dependencies:
   flutter_launcher_icons: ^0.9.0
   font_awesome_flutter: ^9.1.0
   shared_preferences: ^2.0.6
-  wordpress_api: ^1.1.0
+  wordpress_api:
+    git:
+      url: git://github.com/dhmgroup/dart-wp.git
+      ref: bb2ac6b628c3103a85a38a5d8e0122cc15f5bc64
   flutter_html: ^2.1.2
   infinite_scroll_pagination: ^3.1.0
   logging: ^1.0.2
