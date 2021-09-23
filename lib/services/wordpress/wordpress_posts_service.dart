@@ -1,4 +1,5 @@
 import 'package:app/models/post_model.dart';
+import 'package:app/ui/list/list_page.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -10,14 +11,14 @@ class WordpressPostsService {
 
   static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
 
-  static Map<int, PostsPage> pageCache = {};
+  static Map<int, ListPage<PostModel>> pageCache = {};
 
   static void init(WordPressAPI api) {
     WordpressPostsService.api = api;
     log.info("Initialized!");
   }
 
-  static Future<PostsPage> getPostsPage(int page) async {
+  static Future<ListPage<PostModel>> getPostsPage(int page) async {
     try {
       if (pageCache.containsKey(page)) {
         log.info("Cache hit!");
@@ -29,14 +30,14 @@ class WordpressPostsService {
         });
 
         List<PostModel> posts = _blacklistPosts(res);
-        pageCache[page] = new PostsPage(posts, res.data.length < 10);
+        pageCache[page] = new ListPage<PostModel>(posts, res.data.length < 10);
         log.info(
             "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
       }
       return pageCache[page]!;
     } catch (e) {
       log.severe(e.toString());
-      return PostsPage(List.empty(), false);
+      return ListPage<PostModel>(List.empty(), false);
     }
   }
 
@@ -71,11 +72,4 @@ class WordpressPostsService {
     }
     return posts;
   }
-}
-
-class PostsPage {
-  final List<PostModel> posts;
-  final bool isLast;
-
-  PostsPage(this.posts, this.isLast);
 }

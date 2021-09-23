@@ -7,6 +7,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 class WordpressMediaService {
   static WordPressAPI? api;
   static final Logger log = new Logger("WordpressMediaService");
+
   // This cache shouldn't need to be cleared during app runtime, as media IDs
   // should be intrinsically linked to its API metadata and content.
   // Because of this we may want to TODO convert memory cache to local storage.

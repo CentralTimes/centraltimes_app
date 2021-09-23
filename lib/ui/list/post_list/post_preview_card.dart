@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/src/helpers.dart';
 
-import '../transparent_image.dart';
+import '../../transparent_image.dart';
 
 class PostPreviewCard extends StatelessWidget {
   final PostModel post;

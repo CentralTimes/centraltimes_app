@@ -1,12 +1,13 @@
+import 'package:app/ui/list/list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logging/logging.dart';
 
-import 'error_screens/error_screen.dart';
-import 'error_screens/no_results_error_screen.dart';
+import '../error_screens/error_screen.dart';
+import '../error_screens/no_results_error_screen.dart';
 
-class _PostListViewState<T> extends State<StatefulWidget> {
+class InfiniteListState<T> extends State<StatefulWidget> {
   final _pagingController = PagingController<int, T>(firstPageKey: 1);
   final _scrollController = ScrollController();
   final log = new Logger("InfiniteList");
@@ -15,7 +16,7 @@ class _PostListViewState<T> extends State<StatefulWidget> {
   bool _showRefreshButton = false;
   double _lastReversal = 0.0;
 
-  Widget buildItem(BuildContext, T data, int index) {
+  Widget buildItem(BuildContext context, T data, int index) {
     return AspectRatio(aspectRatio: 1.5, child: Placeholder());
   }
 
@@ -43,7 +44,8 @@ class _PostListViewState<T> extends State<StatefulWidget> {
               ));
         },
       );
-    else return _listNoScroll();
+    else
+      return _listNoScroll();
   }
 
   RefreshIndicator _listNoScroll() {
@@ -58,12 +60,11 @@ class _PostListViewState<T> extends State<StatefulWidget> {
           firstPageErrorIndicatorBuilder: buildFirstPageErrorIndicator,
           noItemsFoundIndicatorBuilder: (context) => NoResultsErrorScreen(),
         ),
-        separatorBuilder: (context, index) =>
-            Divider(
-              height: 2,
-              color: Colors.grey,
-              thickness: 2,
-            ),
+        separatorBuilder: (context, index) => Divider(
+          height: 2,
+          color: Colors.grey,
+          thickness: 2,
+        ),
       ),
     );
   }
@@ -71,12 +72,28 @@ class _PostListViewState<T> extends State<StatefulWidget> {
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+      _processPage(pageKey);
     });
     super.initState();
   }
 
-  Future<void> _fetchPage(int pageKey) async {}
+  Future<void> _processPage(int pageKey) async {
+    try {
+      final newPage = await fetchPage(pageKey);
+      // Final page to load if length < 10
+      if (newPage.isLast) {
+        _pagingController.appendLastPage(newPage.items);
+      } else {
+        _pagingController.appendPage(newPage.items, pageKey + 1);
+      }
+    } catch (e) {
+      _pagingController.error = e;
+    }
+  }
+
+  Future<ListPage<T>> fetchPage(int pageKey) async {
+    return ListPage(List.empty(), true);
+  }
 
   @override
   void dispose() {

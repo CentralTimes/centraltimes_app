@@ -1,7 +1,7 @@
 import 'package:app/services/shared_prefs_service.dart';
-import 'package:app/ui/post_list/post_list_view.dart';
 import 'package:app/ui/custom_dialogs.dart';
 import 'package:app/ui/drawer.dart';
+import 'package:app/ui/pages/posts_page.dart';
 import 'package:app/ui/search.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +41,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      drawer: AppDrawer(),
+        drawer: AppDrawer(),
         /*bottomNavigationBar: BottomNavigationBar(
             onTap: (value) => setState(() {
                   bottomIndex = value;
@@ -55,26 +55,26 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
             ]),*/
         body: NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverAppBar(
-            centerTitle: true,
-            title: Text("Central Times"),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    showSearch(
-                        context: context, delegate: SearchNewsDelegate());
-                  },
-                  icon: Icon(Icons.search))
-            ],
-            pinned: false,
-            floating: true,
-          )
-        ];
-      },
-      body: PostListView(),
-    ));
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                centerTitle: true,
+                title: Text("Central Times"),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showSearch(
+                            context: context, delegate: SearchNewsDelegate());
+                      },
+                      icon: Icon(Icons.search))
+                ],
+                pinned: false,
+                floating: true,
+              )
+            ];
+          },
+          body: PostsPage(),
+        ));
   }
 
   void refreshCategory(int index) {
