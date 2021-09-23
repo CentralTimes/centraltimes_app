@@ -30,7 +30,7 @@ class _PostListViewState extends State<PostListView> {
         child: PagedListView.separated(
           pagingController: _pagingController,
           scrollController: _scrollController,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 0),
           builderDelegate: PagedChildBuilderDelegate<PostModel>(
             itemBuilder: (context, post, index) => PostPreviewCard(post: post),
             firstPageErrorIndicatorBuilder: (context) {
