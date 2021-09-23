@@ -1,6 +1,7 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
+import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,8 @@ class ArticleView extends StatelessWidget {
                     "p": Style(
                       fontSize: FontSize(20),
                       lineHeight: LineHeight(1.0),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     ),
                     // Temporary figure styles...
                     ".videowidget": Style(
@@ -96,7 +98,10 @@ class ArticleView extends StatelessWidget {
 
   FutureBuilder<WPResponse> getFeaturedMedia(id) {
     return WordpressMediaService.getImage(id, (context, provider) {
-      return Image(image: provider, fit: BoxFit.fitWidth);
+      return FadeInImage(
+          placeholder: MemoryImage(transparentImage),
+          image: provider,
+          fit: BoxFit.fitWidth);
     }, (context, url) {
       return new MediaLoadingIndicator();
     });

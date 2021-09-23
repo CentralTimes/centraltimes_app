@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/src/helpers.dart';
 
+import '../transparent_image.dart';
+
 class PostPreviewCard extends StatelessWidget {
   final PostModel post;
   static const double blur = 1;
@@ -72,11 +74,10 @@ class PostPreviewCard extends StatelessWidget {
     return WordpressMediaService.getImage(id, (context, provider) {
       return AspectRatio(
           aspectRatio: 1.38,
-          child: Ink.image(
-            image: provider,
-            fit: BoxFit.cover,
-            width: 500,
-            height: 300,
+          child: FadeInImage( // TODO ideally this image would have ink property
+              placeholder: MemoryImage(transparentImage),
+              image: provider,
+              fit: BoxFit.cover,
           ));
     }, (context, url) {
       return new MediaLoadingIndicator();

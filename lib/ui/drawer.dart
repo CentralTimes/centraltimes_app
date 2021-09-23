@@ -14,7 +14,6 @@ class AppDrawer extends StatelessWidget {
         children: [
           if (Platform.isAndroid)
             ListTile(
-                title: Text("Follow Central Times"),
                 subtitle: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
