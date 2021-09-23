@@ -1,11 +1,14 @@
 import 'package:app/models/post_model.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressPostsService {
   static WordPressAPI? api;
   static final Logger log = new Logger("WordpressPostsService");
+
+  static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
 
   static Map<int, PostsPage> pageCache = {};
 
@@ -52,8 +55,8 @@ class WordpressPostsService {
       if (!(post.categories.contains(123) || post.content == ""))
         posts.add(new PostModel(
             post.id,
-            DateTime.parse(post.dateGmt),
-            DateTime.parse(post.modified),
+            dateFormat.parse(post.dateGmt, true).toLocal(),
+            dateFormat.parse(post.modifiedGmt, true).toLocal(),
             post.guid,
             post.slug,
             post.link,

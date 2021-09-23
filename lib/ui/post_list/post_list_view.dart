@@ -53,7 +53,6 @@ class _PostListViewState extends State<PostListView> {
             padding: EdgeInsets.all(16),
             child: FloatingActionButton(
               onPressed: () {
-                refresh();
                 scrollToTop();
               },
               child: Icon(Icons.arrow_upward),
@@ -97,6 +96,10 @@ class _PostListViewState extends State<PostListView> {
     log.info("Refreshed!");
     WordpressPostsService.clearCache();
     _pagingController.refresh();
+    scrollToTop();
+  }
+
+  void scrollToTop() {
     _scrollController.animateTo(0,
         duration: Duration(seconds: 3), curve: Curves.linear);
   }
