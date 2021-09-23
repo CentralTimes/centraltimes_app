@@ -1,6 +1,5 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
-import 'package:app/ui/media_loading_indicator.dart';
 import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -103,7 +102,7 @@ class ArticleView extends StatelessWidget {
           image: provider,
           fit: BoxFit.fitWidth);
     }, (context, url) {
-      return new MediaLoadingIndicator();
+      return AspectRatio(aspectRatio: 1.38);
     });
   }
 }

@@ -65,6 +65,26 @@ class SearchNewsDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Placeholder();
+    return FutureBuilder<PostsResults>(
+      future: WordpressSearchService.getPostsResults(query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            !snapshot.hasError)
+          return new Expanded(
+            flex: 1,
+            child: new SingleChildScrollView(
+              scrollDirection: Axis.vertical, //.horizontal
+              child: new Text(
+                snapshot.data!.results.toString(),
+              ),
+            ),
+          );
+        else
+          return ErrorScreen(
+            title: "Search failed",
+            message: "Application Error",
+          );
+      },
+    );
   }
 }

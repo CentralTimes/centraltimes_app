@@ -1,6 +1,5 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
-import 'package:app/ui/media_loading_indicator.dart';
 import 'package:app/views/article.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -74,13 +73,14 @@ class PostPreviewCard extends StatelessWidget {
     return WordpressMediaService.getImage(id, (context, provider) {
       return AspectRatio(
           aspectRatio: 1.38,
-          child: FadeInImage( // TODO ideally this image would have ink property
-              placeholder: MemoryImage(transparentImage),
-              image: provider,
-              fit: BoxFit.cover,
+          child: FadeInImage(
+            // TODO ideally this image would have ink property
+            placeholder: MemoryImage(transparentImage),
+            image: provider,
+            fit: BoxFit.cover,
           ));
     }, (context, url) {
-      return new MediaLoadingIndicator();
+      return AspectRatio(aspectRatio: 1.38);
     });
   }
 }
