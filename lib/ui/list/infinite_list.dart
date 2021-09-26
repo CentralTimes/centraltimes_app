@@ -23,7 +23,9 @@ class InfiniteListState<T> extends State<StatefulWidget> {
   Widget buildFirstPageErrorIndicator(BuildContext context) {
     final error = _pagingController.error.toString();
     log.severe(error);
-    return ErrorScreen(title: "Application Error", message: error);
+    return RefreshIndicator(
+        onRefresh: () => Future.sync(() => refresh()),
+        child: ErrorScreen(title: "Application Error", message: error));
   }
 
   @override
@@ -31,7 +33,7 @@ class InfiniteListState<T> extends State<StatefulWidget> {
     if (scrollToTop)
       return ScrollWrapper(
         scrollController: _scrollController,
-        child: _listNoScroll(),
+        child: _commonList(),
         promptAlignment: Alignment.bottomRight,
         promptReplacementBuilder: (BuildContext context, Function scrollToTop) {
           return Padding(
@@ -45,10 +47,10 @@ class InfiniteListState<T> extends State<StatefulWidget> {
         },
       );
     else
-      return _listNoScroll();
+      return _commonList();
   }
 
-  RefreshIndicator _listNoScroll() {
+  RefreshIndicator _commonList() {
     return RefreshIndicator(
       onRefresh: () => Future.sync(() => refresh()),
       child: PagedListView.separated(

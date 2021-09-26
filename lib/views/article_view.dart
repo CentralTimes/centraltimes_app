@@ -51,7 +51,7 @@ class ArticleView extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.symmetric(vertical: 12),
                 child: Html(
-                  data: post.content,
+                  data: post.renderedContent,
                   onLinkTap: (String? url, RenderContext context,
                       Map<String, String> attributes, element) async {
                     await launch(url!);

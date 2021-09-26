@@ -7,7 +7,8 @@ class PostModel {
   final String slug;
   final String link;
   final String title;
-  final String content;
+  final String renderedContent;
+  final String rawContent;
   final String excerpt;
   final int author;
   final int featuredMedia;
@@ -23,7 +24,8 @@ class PostModel {
       this.slug,
       this.link,
       this.title,
-      this.content,
+      this.renderedContent,
+      this.rawContent,
       this.excerpt,
       this.author,
       this.featuredMedia,

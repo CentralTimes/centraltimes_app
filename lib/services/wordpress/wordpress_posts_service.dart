@@ -5,16 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
-class WordpressPostsService {
+class WordpressPostService {
   static WordPressAPI? api;
-  static final Logger log = new Logger("WordpressPostsService");
+  static final Logger log = new Logger("WordpressPostService");
 
   static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
 
   static Map<int, ListPage<PostModel>> pageCache = {};
 
   static void init(WordPressAPI api) {
-    WordpressPostsService.api = api;
+    WordpressPostService.api = api;
     log.info("Initialized!");
   }
 
@@ -24,7 +24,7 @@ class WordpressPostsService {
         log.info("Cache hit!");
       } else {
         final WPResponse res =
-            await WordpressPostsService.api!.posts.fetch(args: {
+        await WordpressPostService.api!.fetch('posts/', args: {
           "page": page,
           "per_page": 10,
         });
@@ -32,7 +32,8 @@ class WordpressPostsService {
         List<PostModel> posts = _blacklistPosts(res);
         pageCache[page] = new ListPage<PostModel>(posts, res.data.length < 10);
         log.info(
-            "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
+            "Fetched ${res.data.length} posts from API. (${posts
+                .length} after blacklist)");
       }
       return pageCache[page]!;
     } catch (e) {
@@ -53,22 +54,27 @@ class WordpressPostsService {
       // TODO add post preprocessing service
       // Blacklist posts with video category (ID 123)
       // Blacklist posts with no pages
-      if (!(post.categories.contains(123) || post.content == ""))
+
+      // We also have to interpret data as a map since we fetch with a modified
+      // API, so we can't use the wordpress_api package utility class.
+      if (!(List<int>.from(post["categories"] ?? []).contains(123) ||
+          post["content"] == ""))
         posts.add(new PostModel(
-            post.id,
-            dateFormat.parse(post.dateGmt, true).toLocal(),
-            dateFormat.parse(post.modifiedGmt, true).toLocal(),
-            post.guid,
-            post.slug,
-            post.link,
-            unescape.convert(post.title),
-            post.content,
-            post.excerpt,
-            post.author,
-            post.featuredMedia,
-            post.categories,
-            post.tags,
-            post.commentStatus));
+            post["id"],
+            dateFormat.parse(post["date_gmt"], true).toLocal(),
+            dateFormat.parse(post["modified_gmt"], true).toLocal(),
+            post['guid']?['rendered'],
+            post["slug"],
+            post["link"],
+            unescape.convert(post['title']?['rendered']),
+            post['content']?['rendered'],
+            post["ct_raw"],
+            post['excerpt']?['rendered'],
+            post["author"],
+            post["featured_media"],
+            List<int>.from(post["categories"] ?? []),
+            List<int>.from(post["tags"] ?? []),
+            post["comment_status"]));
     }
     return posts;
   }

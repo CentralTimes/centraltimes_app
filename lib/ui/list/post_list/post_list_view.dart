@@ -22,18 +22,18 @@ class _PostListViewState extends InfiniteListState<PostModel> {
 
   @override
   Future<ListPage<PostModel>> fetchPage(int pageKey) {
-    return WordpressPostsService.getPostsPage(pageKey);
+    return WordpressPostService.getPostsPage(pageKey);
   }
 
   @override
   void dispose() {
-    WordpressPostsService.clearCache();
+    WordpressPostService.clearCache();
     super.dispose();
   }
 
   @override
   void refresh() {
-    WordpressPostsService.clearCache();
+    WordpressPostService.clearCache();
     super.refresh();
   }
 }

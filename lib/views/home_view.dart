@@ -68,8 +68,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       },
                       icon: Icon(Icons.search))
                 ],
-                pinned: false,
-                floating: true,
+                pinned: true,
+                floating: false,
               )
             ];
           },
