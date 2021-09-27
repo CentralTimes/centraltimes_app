@@ -6,6 +6,6 @@ import 'package:flutter/src/widgets/framework.dart';
 class UnsupportedSection implements ArticleSection {
   @override
   Widget useShortcode(Shortcode shortcode) {
-    return Text(shortcode.toString());
+    return Text("Unsupported Shortcode: ${shortcode.toString()}");
   }
 }
