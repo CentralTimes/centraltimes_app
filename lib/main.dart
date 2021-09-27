@@ -1,3 +1,5 @@
+import 'package:app/services/ct/ct_shortcode_service.dart';
+import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
@@ -18,6 +20,9 @@ void main() async {
   WordpressPostService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
+  WordpressShortcodeService.init(api);
+  ShortcodeParserService.init(
+      await WordpressShortcodeService.getShortcodeNames());
 
   WidgetsFlutterBinding.ensureInitialized();
   SharedPrefsService.initialize();
