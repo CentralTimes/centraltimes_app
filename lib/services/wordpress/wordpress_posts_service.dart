@@ -92,6 +92,7 @@ class WordpressPostService {
         postMap["featured_media"],
         List<int>.from(postMap["categories"] ?? []),
         List<int>.from(postMap["tags"] ?? []),
+        List<int>.from(postMap["staff_name"] ?? []),
         postMap["comment_status"]);
   }
 }
