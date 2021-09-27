@@ -60,7 +60,7 @@ class WordpressPostService {
   }
 
   static List<PostModel> _blacklistPosts(WPResponse res) {
-    List<PostModel> posts = List.empty(growable: true);
+    List<PostModel> posts = [];
     for (final post in res.data) {
       // Temporary fix for posts with invalid pages/formatting
       // TODO add featured content support

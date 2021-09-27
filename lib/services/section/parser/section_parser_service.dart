@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/section/sections/caption_section.dart';
 import 'package:app/services/section/sections/pullquote_section.dart';
+import 'package:app/services/section/sections/related_section.dart';
 import 'package:app/services/section/sections/unsupported_section.dart';
 import 'package:app/services/section/sections/video_section.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +56,8 @@ class SectionParserService {
         return CaptionSection().useShortcode(shortcode);
       case 'pullquote':
         return PullquoteSection().useShortcode(shortcode);
+      case 'related':
+        return RelatedSection().useShortcode(shortcode);
       default:
         return UnsupportedSection().useShortcode(shortcode);
     }
