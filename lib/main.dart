@@ -1,6 +1,6 @@
 import 'package:app/services/ct/ct_shortcode_service.dart';
+import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
-import 'package:app/services/shared_prefs_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_search_service.dart';
@@ -17,6 +17,10 @@ void main() async {
         '[${record.level.name}]-${record.loggerName}: ${record.time}: ${record.message}');
   });
 
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SavedPostsService.init();
+
   final api = WordPressAPI('www.centraltimes.org');
   WordpressPostService.init(api);
   WordpressStaffNameService.init(api);
@@ -26,8 +30,6 @@ void main() async {
   ShortcodeParserService.init(
       await WordpressShortcodeService.getShortcodeNames());
 
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPrefsService.initialize();
   runApp(CentralTimesApp());
 }
 

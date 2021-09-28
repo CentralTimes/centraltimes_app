@@ -14,7 +14,7 @@ class ArticleView extends StatelessWidget {
   final PostModel post;
   final _scrollController = ScrollController();
 
-  ArticleView({required this.post});
+  ArticleView(this.post);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class ArticleView extends StatelessWidget {
         centerTitle: true,
         title: Text("Central Times"),
         actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
           IconButton(
               onPressed: () {
                 Share.share(post.link,

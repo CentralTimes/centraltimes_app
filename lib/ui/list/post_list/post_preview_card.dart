@@ -22,7 +22,7 @@ class PostPreviewCard extends StatelessWidget {
     return Material(
         child: InkWell(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ArticleView(post: post))),
+          .push(MaterialPageRoute(builder: (_) => ArticleView(post))),
       child: Ink(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -74,6 +74,11 @@ class PostPreviewCard extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                            true ? Icons.bookmark : Icons.bookmark_outline,
+                            color: Theme.of(context).primaryColor)),
                     IconButton(
                         onPressed: () {
                           Share.share(post.link,
