@@ -5,14 +5,16 @@ import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_staff_name_service.dart';
 import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class ArticleView extends StatelessWidget {
   final PostModel post;
+  final _scrollController = ScrollController();
 
-  const ArticleView({required this.post});
+  ArticleView({required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -29,52 +31,68 @@ class ArticleView extends StatelessWidget {
               icon: Icon(Icons.share)),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-              delegate: SliverChildListDelegate.fixed([
-            Padding(padding: EdgeInsets.all(8)),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(post.title,
-                    style: TextStyle(fontSize: 28, height: 1.5))),
-            if (post.staffNames.isNotEmpty) ...[
+      body: ScrollWrapper(
+        scrollController: _scrollController,
+        promptAlignment: Alignment.bottomRight,
+        promptReplacementBuilder: (BuildContext context, Function scrollToTop) {
+          return Padding(
+              padding: EdgeInsets.all(16),
+              child: FloatingActionButton(
+                onPressed: () {
+                  scrollToTop();
+                },
+                child: Icon(Icons.arrow_upward),
+              ));
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverList(
+                delegate: SliverChildListDelegate.fixed([
+              Padding(padding: EdgeInsets.all(8)),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(post.title,
+                      style: TextStyle(fontSize: 28, height: 1.5))),
+              if (post.staffNames.isNotEmpty) ...[
+                Padding(padding: EdgeInsets.all(4)),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: FutureBuilder<List<StaffNameModel>>(
+                        future: Future.wait(post.staffNames.map(
+                            (e) => WordpressStaffNameService.getStaffName(e))),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              !snapshot.hasError) {
+                            return Text(
+                              snapshot.data!.map((e) => e.name).join(", "),
+                              style: TextStyle(fontSize: 18),
+                            );
+                          } else
+                            return CircularProgressIndicator();
+                        })),
+              ],
               Padding(padding: EdgeInsets.all(4)),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: FutureBuilder<List<StaffNameModel>>(
-                      future: Future.wait(post.staffNames.map(
-                          (e) => WordpressStaffNameService.getStaffName(e))),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            !snapshot.hasError) {
-                          return Text(
-                            snapshot.data!.map((e) => e.name).join(", "),
-                            style: TextStyle(fontSize: 18),
-                          );
-                        } else
-                          return CircularProgressIndicator();
-                      })),
-            ],
-            Padding(padding: EdgeInsets.all(4)),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                    DateFormat("MMMM d, yyyy - h:mm a").format(post.date),
-                    style: TextStyle(
-                        fontSize: 18,
-                        height: 1.5,
-                        color: Colors.black.withOpacity(0.6)))),
-            Padding(padding: EdgeInsets.all(8)),
-            if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Column(
-                  children:
-                      SectionParserService.parseSections(post.rawContent)),
-            ),
-          ])),
-        ],
+                  child: Text(
+                      DateFormat("MMMM d, yyyy - h:mm a").format(post.date),
+                      style: TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
+                          color: Colors.black.withOpacity(0.6)))),
+              Padding(padding: EdgeInsets.all(8)),
+              if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Column(
+                    children:
+                        SectionParserService.parseSections(post.rawContent)),
+              ),
+            ])),
+          ],
+        ),
       ),
     );
   }
