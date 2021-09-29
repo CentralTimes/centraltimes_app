@@ -1,7 +1,7 @@
 import 'package:app/models/comment_model.dart';
 import 'package:app/ui/list/infinite_list.dart';
 import 'package:app/ui/list/list_page.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class CommentListView extends StatefulWidget {

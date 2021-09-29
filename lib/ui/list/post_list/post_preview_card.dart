@@ -1,7 +1,9 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/models/staff_name_model.dart';
+import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_staff_name_service.dart';
+import 'package:app/ui/save_button.dart';
 import 'package:app/views/article_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -74,11 +76,7 @@ class PostPreviewCard extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                            true ? Icons.bookmark : Icons.bookmark_outline,
-                            color: Theme.of(context).primaryColor)),
+                    SaveButton(post.id),
                     IconButton(
                         onPressed: () {
                           Share.share(post.link,

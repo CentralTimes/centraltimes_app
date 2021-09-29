@@ -3,6 +3,7 @@ import 'package:app/models/staff_name_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_staff_name_service.dart';
+import 'package:app/ui/save_button.dart';
 import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
@@ -23,7 +24,10 @@ class ArticleView extends StatelessWidget {
         centerTitle: true,
         title: Text("Central Times"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
+          SaveButton(
+            post.id,
+            iconColor: Colors.white,
+          ),
           IconButton(
               onPressed: () {
                 Share.share(post.link,

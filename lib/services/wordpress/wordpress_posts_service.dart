@@ -47,6 +47,7 @@ class WordpressPostService {
 
   static Future<PostModel> getPost(int postId) async {
     if (!postCache.containsKey(postId)) {
+      log.info("Attempting to fetch single post with id $postId...");
       final WPResponse res =
       await WordpressPostService.api!.fetch('posts/$postId');
       postCache[postId] = _postFromMap(res.data);
