@@ -1,11 +1,8 @@
-import 'package:app/ui/custom_dialogs.dart';
 import 'package:app/ui/drawer.dart';
-import 'package:app/ui/list/saved_list_view.dart';
 import 'package:app/ui/pages/posts_page.dart';
 import 'package:app/ui/pages/saveds_page.dart';
 import 'package:app/ui/search.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
   @override

@@ -20,8 +20,11 @@ class _SavedListViewState extends State<SavedListView> {
     return ScrollWrapper(
       scrollController: _scrollController,
       child: RefreshIndicator(
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,
           onRefresh: () async {
-            setState(() {});
+            setState(() {
+              savedPostIds = SavedPostsService.getPosts();
+            });
           },
           child: ListView.separated(
             controller: _scrollController,

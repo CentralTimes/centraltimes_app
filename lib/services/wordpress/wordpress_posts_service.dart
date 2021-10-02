@@ -21,35 +21,30 @@ class WordpressPostService {
   }
 
   static Future<ListPage<PostModel>> getPostsPage(int page) async {
-    try {
-      if (pageCache.containsKey(page)) {
-        log.info("Cache hit!");
-      } else {
-        final WPResponse res =
-            await WordpressPostService.api!.fetch('posts/', args: {
-          "page": page,
-          "per_page": 10,
-        });
+    if (pageCache.containsKey(page)) {
+      log.info("Cache hit!");
+    } else {
+      final WPResponse res =
+          await WordpressPostService.api!.fetch('posts/', args: {
+        "page": page,
+        "per_page": 10,
+      });
 
-        List<PostModel> posts = _blacklistPosts(res);
-        pageCache[page] = new ListPage<PostModel>(posts, res.data.length < 10);
-        log.info(
-            "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
-        // Also add the posts we got into the post cache
-        for (PostModel post in posts) postCache[post.id] = post;
-      }
-      return pageCache[page]!;
-    } catch (e) {
-      log.severe(e.toString());
-      return ListPage<PostModel>(List.empty(), false);
+      List<PostModel> posts = _blacklistPosts(res);
+      pageCache[page] = new ListPage<PostModel>(posts, res.data.length < 10);
+      log.info(
+          "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
+      // Also add the posts we got into the post cache
+      for (PostModel post in posts) postCache[post.id] = post;
     }
+    return pageCache[page]!;
   }
 
   static Future<PostModel> getPost(int postId) async {
     if (!postCache.containsKey(postId)) {
       log.info("Attempting to fetch single post with id $postId...");
       final WPResponse res =
-      await WordpressPostService.api!.fetch('posts/$postId');
+          await WordpressPostService.api!.fetch('posts/$postId');
       postCache[postId] = _postFromMap(res.data);
     }
     return postCache[postId]!;
@@ -89,7 +84,12 @@ class WordpressPostService {
         postMap['content']?['rendered'],
         postMap["ct_raw"],
         postMap['excerpt']?['rendered'],
+        (postMap['ct_subtitle'] as List).map((e) => e as String).toList(),
         postMap["author"],
+        (postMap['ct_writer'] as List).map((e) => e as String).toList(),
+        (postMap['ct_jobtitle'] as List).map((e) => e as String).toList(),
+        (postMap['ct_video'] as List).map((e) => e as String).toList(),
+        (postMap['ct_videographer'] as List).map((e) => e as String).toList(),
         postMap["featured_media"],
         List<int>.from(postMap["categories"] ?? []),
         List<int>.from(postMap["tags"] ?? []),

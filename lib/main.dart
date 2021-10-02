@@ -4,7 +4,6 @@ import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_search_service.dart';
-import 'package:app/services/wordpress/wordpress_staff_name_service.dart';
 import 'package:app/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +22,6 @@ void main() async {
 
   final api = WordPressAPI('www.centraltimes.org');
   WordpressPostService.init(api);
-  WordpressStaffNameService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
   WordpressShortcodeService.init(api);

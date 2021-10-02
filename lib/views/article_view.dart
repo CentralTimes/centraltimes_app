@@ -1,8 +1,6 @@
 import 'package:app/models/post_model.dart';
-import 'package:app/models/staff_name_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
-import 'package:app/services/wordpress/wordpress_staff_name_service.dart';
 import 'package:app/ui/save_button.dart';
 import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
@@ -63,20 +61,10 @@ class ArticleView extends StatelessWidget {
                 Padding(padding: EdgeInsets.all(4)),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: FutureBuilder<List<StaffNameModel>>(
-                        future: Future.wait(post.staffNames.map(
-                            (e) => WordpressStaffNameService.getStaffName(e))),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                                  ConnectionState.done &&
-                              !snapshot.hasError) {
-                            return Text(
-                              snapshot.data!.map((e) => e.name).join(", "),
-                              style: TextStyle(fontSize: 18),
-                            );
-                          } else
-                            return CircularProgressIndicator();
-                        })),
+                    child: Text(
+                      post.writers.join(", "),
+                      style: TextStyle(fontSize: 18),
+                    )),
               ],
               Padding(padding: EdgeInsets.all(4)),
               Padding(

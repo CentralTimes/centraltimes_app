@@ -1,5 +1,3 @@
-import 'package:app/models/comment_model.dart';
-import 'package:app/ui/list/list_page.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
