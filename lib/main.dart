@@ -1,3 +1,4 @@
+import 'package:app/services/ct/ct_ngg_gallery_service.dart';
 import 'package:app/services/ct/ct_shortcode_service.dart';
 import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
@@ -24,9 +25,10 @@ void main() async {
   WordpressPostService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
-  WordpressShortcodeService.init(api);
+  CtNggGalleryService.init(api);
+  CtShortcodeService.init(api);
   ShortcodeParserService.init(
-      await WordpressShortcodeService.getShortcodeNames());
+      await CtShortcodeService.getShortcodeNames());
 
   runApp(CentralTimesApp());
 }

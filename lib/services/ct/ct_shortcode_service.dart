@@ -1,18 +1,18 @@
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
-class WordpressShortcodeService {
+class CtShortcodeService {
   static WordPressAPI? api;
-  static final Logger log = new Logger("WordpressShortcodeService");
+  static final Logger log = new Logger("CtShortcodeService");
 
   static void init(WordPressAPI api) {
-    WordpressShortcodeService.api = api;
+    CtShortcodeService.api = api;
     log.info("Initialized!");
   }
 
   static Future<List<String>> getShortcodeNames() async {
-    final WPResponse res = await WordpressShortcodeService.api!.fetch(
-        'shortcodes', namespace: 'centraltimes/v1');
-    return res.data.keys.toList();
+    final WPResponse res = await CtShortcodeService.api!
+        .fetch('shortcodes', namespace: 'centraltimes/v1');
+    return (res.data as List).map((e) => e.toString()).toList();
   }
 }
