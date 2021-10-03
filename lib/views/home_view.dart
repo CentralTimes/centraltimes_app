@@ -10,19 +10,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
-  late TabController tabController;
   int bottomIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,5 +50,4 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           body: [PostsPage(), SavedsPage()][bottomIndex],
         ));
   }
-
 }

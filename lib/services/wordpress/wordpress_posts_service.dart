@@ -13,31 +13,37 @@ class WordpressPostService {
 
   // Caches are references to the same objects TODO test if they actually are
   static Map<int, PostModel> postCache = {};
-  static Map<int, ListPage<PostModel>> pageCache = {};
+
+  // 1st int category, 2nd int page number
+  static Map<int, Map<int, ListPage<PostModel>>> pageCache = {};
 
   static void init(WordPressAPI api) {
     WordpressPostService.api = api;
     log.info("Initialized!");
   }
 
-  static Future<ListPage<PostModel>> getPostsPage(int page) async {
+  static Future<ListPage<PostModel>> getPostsPage(
+      int category, int page) async {
     if (pageCache.containsKey(page)) {
       log.info("Cache hit!");
     } else {
-      final WPResponse res =
-          await WordpressPostService.api!.fetch('posts/', args: {
-        "page": page,
-        "per_page": 10,
-      });
+      final WPResponse res = await WordpressPostService.api!.fetch('posts/',
+          args: {
+            "page": page,
+            "per_page": 10,
+            if (category != 0) "categories": category
+          });
 
       List<PostModel> posts = _blacklistPosts(res);
-      pageCache[page] = new ListPage<PostModel>(posts, res.data.length < 10);
+      if (!pageCache.containsKey(category)) pageCache[category] = {};
+      pageCache[category]![page] =
+          new ListPage<PostModel>(posts, res.data.length < 10);
       log.info(
           "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
       // Also add the posts we got into the post cache
       for (PostModel post in posts) postCache[post.id] = post;
     }
-    return pageCache[page]!;
+    return pageCache[category]![page]!;
   }
 
   static Future<PostModel> getPost(int postId) async {

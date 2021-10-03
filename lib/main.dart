@@ -1,5 +1,6 @@
 import 'package:app/services/ct/ct_ngg_gallery_service.dart';
 import 'package:app/services/ct/ct_shortcode_service.dart';
+import 'package:app/services/ct/ct_tab_category_service.dart';
 import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
@@ -26,6 +27,7 @@ void main() async {
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
   CtNggGalleryService.init(api);
+  CtTabCategoryService.init(api);
   CtShortcodeService.init(api);
   ShortcodeParserService.init(
       await CtShortcodeService.getShortcodeNames());

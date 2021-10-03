@@ -7,13 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class PostListView extends StatefulWidget {
+
+  final int category;
+
+  const PostListView({Key? key, this.category = 0}) : super(key: key);
+
   @override
-  _PostListViewState createState() => _PostListViewState();
+  _PostListViewState createState() => _PostListViewState(category);
 }
 
 class _PostListViewState extends InfiniteListState<PostModel> {
+  final int category;
   @override
   final log = new Logger("PostListView");
+
+  _PostListViewState(this.category);
 
   @override
   Widget buildItem(context, data, index) {
@@ -22,7 +30,7 @@ class _PostListViewState extends InfiniteListState<PostModel> {
 
   @override
   Future<ListPage<PostModel>> fetchPage(int pageKey) {
-    return WordpressPostService.getPostsPage(pageKey);
+    return WordpressPostService.getPostsPage(category, pageKey);
   }
 
   @override
