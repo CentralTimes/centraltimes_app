@@ -6,7 +6,6 @@ import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
