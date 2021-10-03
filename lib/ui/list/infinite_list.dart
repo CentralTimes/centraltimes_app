@@ -100,7 +100,7 @@ class InfiniteListState<T> extends State<StatefulWidget> {
   @override
   void dispose() {
     log.info("Disposed!");
-    _pagingController.dispose();
+    //_pagingController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
