@@ -28,6 +28,7 @@ class PostsPageState extends State<PostsPage> with TickerProviderStateMixin {
                       child: TabBar(
                           controller: tabController,
                           isScrollable: true,
+                          indicatorColor: Colors.white,
                           tabs: [
                             Tab(child: Text("All")),
                             ...snapshot.data!
