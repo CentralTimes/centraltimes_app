@@ -1,16 +1,37 @@
-import 'package:app/models/app_user.dart';
-import 'package:app/services/auth_service.dart';
-import 'package:app/services/shared_prefs_service.dart';
-import 'package:app/views/home.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:app/services/ct/ct_ngg_gallery_service.dart';
+import 'package:app/services/ct/ct_shortcode_service.dart';
+import 'package:app/services/ct/ct_tab_category_service.dart';
+import 'package:app/services/saved_posts_service.dart';
+import 'package:app/services/section/parser/shortcode_parser_service.dart';
+import 'package:app/services/wordpress/wordpress_media_service.dart';
+import 'package:app/services/wordpress/wordpress_posts_service.dart';
+import 'package:app/services/wordpress/wordpress_search_service.dart';
+import 'package:app/views/home_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:logging/logging.dart';
+import 'package:wordpress_api/wordpress_api.dart';
 
 void main() async {
+  Logger.root.level = Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    print(
+        '[${record.level.name}]-${record.loggerName}: ${record.time}: ${record.message}');
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  AuthService.initialize();
-  SharedPrefsService.initialize();
+
+  await SavedPostsService.init();
+
+  final api = WordPressAPI('www.centraltimes.org');
+  WordpressPostService.init(api);
+  WordpressMediaService.init(api);
+  WordpressSearchService.init(api);
+  CtNggGalleryService.init(api);
+  CtTabCategoryService.init(api);
+  CtShortcodeService.init(api);
+  ShortcodeParserService.init(
+      await CtShortcodeService.getShortcodeNames());
+
   runApp(CentralTimesApp());
 }
 
@@ -23,46 +44,16 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
   @override
   void initState() {
     super.initState();
-    
   }
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<AppUser?>.value(
-            value: AuthService.onUserChanged, initialData: null),
-      ],
-      child: MaterialApp(
-        title: 'Central Times',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        home: HomeView(),
+    return MaterialApp(
+      title: 'Central Times',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
       ),
+      home: HomeView(),
     );
   }
 }
-
-/*
-class CentralTimesApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<AppUser?>.value(
-            value: AuthService.onUserChanged, initialData: null),
-        FutureProvider<ValueNotifier<SharedPreferences?>>(create: (context) async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          return ValueNotifier(prefs);
-        }, initialData: ValueNotifier(null)),
-      ],
-      child: MaterialApp(
-        title: 'Central Times',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        home: HomeView(),
-      ),
-    );
-  }
-}*/

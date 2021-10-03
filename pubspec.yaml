@@ -43,6 +43,12 @@ dependencies:
   flutter_launcher_icons: ^0.9.0
   font_awesome_flutter: ^9.1.0
   shared_preferences: ^2.0.6
+  wordpress_api: ^1.2.0
+  flutter_html: ^2.1.2
+  infinite_scroll_pagination: ^3.1.0
+  logging: ^1.0.2
+  flutter_scroll_to_top: ^1.1.0
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:
