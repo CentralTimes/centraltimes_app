@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class PostListView extends StatefulWidget {
-
   final int category;
 
   const PostListView({Key? key, this.category = 0}) : super(key: key);
@@ -35,13 +34,13 @@ class _PostListViewState extends InfiniteListState<PostModel> {
 
   @override
   void dispose() {
-    WordpressPostService.clearCache();
+    WordpressPostService.clearPageCache(category: category);
     super.dispose();
   }
 
   @override
   void refresh() {
-    WordpressPostService.clearCache();
+    WordpressPostService.clearPageCache(category: category);
     super.refresh();
   }
 }

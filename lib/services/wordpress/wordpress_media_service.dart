@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressMediaService {
-  static WordPressAPI? api;
+  static late WordPressAPI api;
   static final Logger log = new Logger("WordpressMediaService");
 
   // This cache shouldn't need to be cleared during app runtime, as media IDs
@@ -40,7 +40,7 @@ class WordpressMediaService {
       return mediaCache[id]!;
     } else {
       log.info("Retrieving media data for media $id...");
-      WPResponse media = await WordpressMediaService.api!.media.fetch(id: id);
+      WPResponse media = await WordpressMediaService.api.media.fetch(id: id);
       mediaCache[id] = media;
       return media;
     }

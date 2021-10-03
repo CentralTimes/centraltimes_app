@@ -1,6 +1,6 @@
 class ShortcodeParserService {
-  static RegExp? shortcodeRegExp;
-  static RegExp? argumentsRegExp;
+  static late RegExp shortcodeRegExp;
+  static late RegExp argumentsRegExp;
 
   static init(List<String> shortcodeStrings) {
     shortcodeRegExp = _createShortcodeRegExp(shortcodeStrings);
@@ -8,12 +8,12 @@ class ShortcodeParserService {
   }
 
   static bool containsShortcode(String shortcodeString) {
-    return shortcodeRegExp!.hasMatch(shortcodeString);
+    return shortcodeRegExp.hasMatch(shortcodeString);
   }
 
   static List<Shortcode> parseShortcodes(String shortcodeString) {
     List<RegExpMatch> matches =
-        shortcodeRegExp!.allMatches(shortcodeString).toList();
+        shortcodeRegExp.allMatches(shortcodeString).toList();
     List<Shortcode> shortcodes = [];
 
     for (RegExpMatch match in matches) {
@@ -31,7 +31,7 @@ class ShortcodeParserService {
     Map<String, String> arguments = {};
 
     List<RegExpMatch> matches =
-        argumentsRegExp!.allMatches(argsString).toList();
+        argumentsRegExp.allMatches(argsString).toList();
     for (RegExpMatch match in matches) {
       if (match.group(1) != null) {
         arguments[match.group(1)!] = match.group(2) ?? "";

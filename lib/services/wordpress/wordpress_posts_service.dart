@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressPostService {
-  static WordPressAPI? api;
+  static late WordPressAPI api;
   static final Logger log = new Logger("WordpressPostService");
 
   static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
@@ -22,12 +22,12 @@ class WordpressPostService {
     log.info("Initialized!");
   }
 
-  static Future<ListPage<PostModel>> getPostsPage(
-      int category, int page) async {
+  static Future<ListPage<PostModel>> getPostsPage(int category,
+      int page) async {
     if (pageCache.containsKey(page)) {
       log.info("Cache hit!");
     } else {
-      final WPResponse res = await WordpressPostService.api!.fetch('posts/',
+      final WPResponse res = await WordpressPostService.api.fetch('posts/',
           args: {
             "page": page,
             "per_page": 10,
@@ -37,11 +37,13 @@ class WordpressPostService {
       List<PostModel> posts = _blacklistPosts(res);
       if (!pageCache.containsKey(category)) pageCache[category] = {};
       pageCache[category]![page] =
-          new ListPage<PostModel>(posts, res.data.length < 10);
+      new ListPage<PostModel>(posts, res.data.length < 10);
       log.info(
-          "Fetched ${res.data.length} posts from API. (${posts.length} after blacklist)");
+          "Fetched ${res.data.length} posts from API. (${posts
+              .length} after blacklist)");
       // Also add the posts we got into the post cache
-      for (PostModel post in posts) postCache[post.id] = post;
+      for (PostModel post in posts)
+        postCache[post.id] = post;
     }
     return pageCache[category]![page]!;
   }
@@ -50,15 +52,25 @@ class WordpressPostService {
     if (!postCache.containsKey(postId)) {
       log.info("Attempting to fetch single post with id $postId...");
       final WPResponse res =
-          await WordpressPostService.api!.fetch('posts/$postId');
+      await WordpressPostService.api.fetch('posts/$postId');
       postCache[postId] = _postFromMap(res.data);
     }
     return postCache[postId]!;
   }
 
   static void clearCache() {
+    clearPostCache();
+    clearPageCache();
+  }
+
+  static void clearPageCache({int category = -1}) {
+    if (category != -1)
+      pageCache[category] = {};
+    else pageCache = {};
+  }
+
+  static void clearPostCache() {
     postCache = {};
-    pageCache = {};
   }
 
   static List<PostModel> _blacklistPosts(WPResponse res) {

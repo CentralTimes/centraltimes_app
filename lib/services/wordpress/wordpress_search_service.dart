@@ -2,7 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressSearchService {
-  static WordPressAPI? api;
+  static late WordPressAPI api;
   static final Logger log = new Logger("WordpressSearchService");
 
   static void init(WordPressAPI api) {
@@ -12,7 +12,7 @@ class WordpressSearchService {
 
   static Future<PostsResults> getPostsResults(query) async {
     try {
-      WPResponse res = await api!.search.search(args: {
+      WPResponse res = await api.search.search(args: {
         "search": query,
         "type": "post",
       });

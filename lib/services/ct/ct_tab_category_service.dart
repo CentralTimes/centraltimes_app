@@ -3,7 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class CtTabCategoryService {
-  static WordPressAPI? api;
+  static late WordPressAPI api;
   static final Logger log = new Logger("CtTabCategoryService");
 
   static List<TabCategoryModel> cache = [];
@@ -15,7 +15,7 @@ class CtTabCategoryService {
 
   static Future<List<TabCategoryModel>> getTabCategories() async {
     if (cache.isEmpty) {
-      final WPResponse res = await CtTabCategoryService.api!
+      final WPResponse res = await CtTabCategoryService.api
           .fetch('tab-categories', namespace: 'centraltimes/v1');
       cache = (res.data as List)
           .map((e) => TabCategoryModel(e["name"], e["id"]))
