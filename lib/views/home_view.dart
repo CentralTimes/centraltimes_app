@@ -1,8 +1,11 @@
+import 'package:app/models/tab_category_model.dart';
+import 'package:app/ui/page_template.dart';
 import 'package:app/ui/drawer.dart';
 import 'package:app/ui/pages/posts_page.dart';
 import 'package:app/ui/pages/saveds_page.dart';
 import 'package:app/ui/search.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -11,43 +14,23 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   int bottomIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        drawer: AppDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-            onTap: (value) => setState(() {
-                  bottomIndex = value;
-                }),
-            currentIndex: bottomIndex,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.article_outlined), label: "News"),
-              //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
-            ]),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                centerTitle: true,
-                title: Text("Central Times"),
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        showSearch(
-                            context: context, delegate: SearchNewsDelegate());
-                      },
-                      icon: Icon(Icons.search))
-                ],
-                pinned: true,
-                floating: false,
-              )
-            ];
-          },
-          body: [PostsPage(), SavedsPage()][bottomIndex],
-        ));
+    return Scaffold(
+      drawer: AppDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) => setState(() {
+                bottomIndex = value;
+              }),
+          currentIndex: bottomIndex,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.article_outlined), label: "News"),
+            //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
+          ]),
+      body: [PostsPage(), SavedsPage()][bottomIndex],
+    );
   }
 }
