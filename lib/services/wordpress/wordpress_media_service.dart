@@ -18,18 +18,19 @@ class WordpressMediaService {
     log.info("Initialized!");
   }
 
-  static FutureBuilder<WPResponse> getImage(id, builder, placeholder) {
-    return new FutureBuilder(
+  static FutureBuilder<WPResponse> getImage(int id, Widget Function(BuildContext, ImageProvider) builder, Widget Function(BuildContext, String) placeholder) {
+    return FutureBuilder(
       future: _getMedia(id),
       builder: (context, res) {
         if (res.connectionState == ConnectionState.done && !res.hasError)
-          return new CachedNetworkImage(
+          return CachedNetworkImage(
             imageUrl: res.data!.data.sourceUrl,
             imageBuilder: builder,
             placeholder: placeholder,
+            fit: BoxFit.contain,
           );
         else
-          return new MediaLoadingIndicator();
+          return MediaLoadingIndicator();
       },
     );
   }

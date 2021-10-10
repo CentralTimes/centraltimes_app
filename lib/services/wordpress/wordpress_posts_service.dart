@@ -36,8 +36,7 @@ class WordpressPostService {
 
       List<PostModel> posts = _blacklistPosts(res);
       if (!pageCache.containsKey(category)) pageCache[category] = {};
-      pageCache[category]![page] =
-      new ListPage<PostModel>(posts, res.data.length < 10);
+      pageCache[category]![page] = ListPage<PostModel>(posts, res.data.length < 10);
       log.info(
           "Fetched ${res.data.length} posts from API. (${posts
               .length} after blacklist)");

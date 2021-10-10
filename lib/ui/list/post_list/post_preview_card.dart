@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/save_button.dart';
 import 'package:app/views/article_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
@@ -18,13 +22,24 @@ class PostPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        child: InkWell(
+    return InkWell(
       onTap: () => Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => ArticleView(post))),
       child: Ink(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, blur),
+              blurRadius: blur,
+              spreadRadius: -2 * blur,
+            ),
+            BoxShadow(
+              offset: Offset(0, -blur),
+              blurRadius: blur,
+              spreadRadius: -2 * blur,
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,21 +90,54 @@ class PostPreviewCard extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 
   FutureBuilder<WPResponse> getFeaturedMedia(id) {
     return WordpressMediaService.getImage(id, (context, provider) {
-      return AspectRatio(
-          aspectRatio: 1.38,
-          child: FadeInImage(
+      ValueNotifier<ImageInfo?> imgInfo = ValueNotifier(null);
+      provider.resolve(ImageConfiguration())
+        ..addListener(
+            ImageStreamListener((ImageInfo info, _) => imgInfo.value = info));
+      return ValueListenableBuilder<ImageInfo?>(
+          valueListenable: imgInfo,
+          builder: (context, data, child) {
+            if (data != null) {
+              return Ink.image(
+                  image: provider,
+                  width: min(data.image.width.toDouble(),
+                      MediaQuery.of(context).size.width.toDouble()),
+                  height: min(data.image.height.toDouble(),
+                          MediaQuery.of(context).size.width.toDouble()) *
+                      data.image.height.toDouble() /
+                      data.image.width.toDouble(),
+                  fit: BoxFit.scaleDown);
+            }
+            return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
+          });
+      /*
+      return StatefulBuilder(builder: (context, setState) {
+        provider.resolve(ImageConfiguration())..addListener(ImageStreamListener((ImageInfo info, _) => setState(() => imageInfo = info)));
+        
+      });
+      return FutureBuilder<ui.Image>(
+        future: completer.future,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Ink.image(image: provider, width: snapshot.data!.width.toDouble(), height: snapshot.data!.height.toDouble(), fit: BoxFit.scaleDown);
+          }
+          return CircularProgressIndicator();
+        }
+      );*/
+    }, (context, url) {
+      return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
+    });
+  }
+}
+/*
+ FadeInImage(
             // TODO ideally this image would have ink property
             placeholder: MemoryImage(transparentImage),
             image: provider,
             fit: BoxFit.cover,
-          ));
-    }, (context, url) {
-      return AspectRatio(aspectRatio: 1.38);
-    });
-  }
-}
+          )*/
