@@ -1,6 +1,7 @@
 import 'package:app/models/tab_category_model.dart';
 import 'package:app/services/ct/ct_ngg_gallery_service.dart';
 import 'package:app/services/ct/ct_shortcode_service.dart';
+import 'package:app/services/ct/ct_sno_gallery_service.dart';
 import 'package:app/services/ct/ct_tab_category_service.dart';
 import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
@@ -16,7 +17,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 void main() async {
   Logger.root.level = Level.INFO;
   Logger.root.onRecord.listen((record) {
-    print(
+    debugPrint(
         '[${record.level.name}]-${record.loggerName}: ${record.time}: ${record.message}');
   });
 
@@ -29,10 +30,10 @@ void main() async {
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
   CtNggGalleryService.init(api);
+  CtSnoGalleryService.init(api);
   CtTabCategoryService.init(api);
   CtShortcodeService.init(api);
-  ShortcodeParserService.init(
-      await CtShortcodeService.getShortcodeNames());
+  ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
 
   runApp(CentralTimesApp());
 }
@@ -52,7 +53,9 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        FutureProvider<List<TabCategoryModel>>.value(value: CtTabCategoryService.getTabCategories(), initialData: List.empty()),
+        FutureProvider<List<TabCategoryModel>>.value(
+            value: CtTabCategoryService.getTabCategories(),
+            initialData: List.empty()),
       ],
       child: MaterialApp(
         title: 'Central Times',
