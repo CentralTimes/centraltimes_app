@@ -25,7 +25,7 @@ class SectionParserService {
       List<Shortcode> shortcodes = ShortcodeParserService.parseShortcodes(raw);
       if (shortcodes.isEmpty)
         sections.add(Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Html(
               data: raw,
               onLinkTap: (String? url, RenderContext context,
@@ -36,8 +36,8 @@ class SectionParserService {
                 "*": Style(
                   margin: EdgeInsets.all(0),
                   padding: EdgeInsets.all(0),
-                  fontSize: FontSize(20),
-                  lineHeight: LineHeight(1.0),
+                  fontSize: FontSize(18),
+                  lineHeight: LineHeight(1.5),
                 )
               },
             )));
