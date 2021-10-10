@@ -113,7 +113,7 @@ class PostPreviewCard extends StatelessWidget {
                       data.image.width.toDouble(),
                   fit: BoxFit.scaleDown);
             }
-            return AspectRatio(aspectRatio: 1.38, child: CircularProgressIndicator());
+            return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
           });
       /*
       return StatefulBuilder(builder: (context, setState) {
