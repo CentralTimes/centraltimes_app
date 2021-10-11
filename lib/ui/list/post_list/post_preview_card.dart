@@ -1,18 +1,15 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/save_button.dart';
 import 'package:app/views/article_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:app/views/featured_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/src/helpers.dart';
-
-import '../../transparent_image.dart';
 
 class PostPreviewCard extends StatelessWidget {
   final PostModel post;
@@ -77,6 +74,13 @@ class PostPreviewCard extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (post.video.length != 0)
+                      IconButton(
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => FeaturedView(post))),
+                          icon: Icon(Icons.auto_awesome),
+                          color: Theme.of(context).primaryColor),
                     SaveButton(post.id),
                     IconButton(
                         onPressed: () {
@@ -113,12 +117,14 @@ class PostPreviewCard extends StatelessWidget {
                       data.image.width.toDouble(),
                   fit: BoxFit.scaleDown);
             }
-            return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
+            return AspectRatio(
+                aspectRatio: 1.38,
+                child: Center(child: CircularProgressIndicator()));
           });
       /*
       return StatefulBuilder(builder: (context, setState) {
         provider.resolve(ImageConfiguration())..addListener(ImageStreamListener((ImageInfo info, _) => setState(() => imageInfo = info)));
-        
+
       });
       return FutureBuilder<ui.Image>(
         future: completer.future,
@@ -130,7 +136,8 @@ class PostPreviewCard extends StatelessWidget {
         }
       );*/
     }, (context, url) {
-      return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
+      return AspectRatio(
+          aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
     });
   }
 }
