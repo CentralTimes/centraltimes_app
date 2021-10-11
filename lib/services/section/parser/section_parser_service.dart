@@ -1,4 +1,3 @@
-
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/section/sections/caption_section.dart';
 import 'package:app/services/section/sections/gallery_section.dart';
@@ -59,6 +58,7 @@ class SectionParserService {
       case 'related':
         return RelatedSection().useShortcode(shortcode);
       case 'ngg':
+      case 'gallery':
         return GallerySection().useShortcode(shortcode);
       default:
         return UnsupportedSection().useShortcode(shortcode);
