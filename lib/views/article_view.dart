@@ -64,7 +64,7 @@ class ArticleView extends StatelessWidget {
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
             if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
-            if (post.video.length != 0)
+            if (post.video.length != 0 && post.video[0].trim().isNotEmpty)
               ElevatedButton(
                 onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => FeaturedView(post))),
