@@ -1,4 +1,4 @@
-import 'package:app/models/ngg_image_model.dart';
+import 'package:app/models/gallery_image_model.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
@@ -11,30 +11,29 @@ class CtNggGalleryService {
     log.info("Initialized!");
   }
 
-  static Future<List<NggImageModel>> getGalleryImageData(int id) async {
-    final WPResponse res = await CtNggGalleryService.api.fetch('ngg-gallery/$id', namespace: 'centraltimes/v1');
+  static Future<List<GalleryImageModel>> getGalleryImageData(int id) async {
+    final WPResponse res = await CtNggGalleryService.api
+        .fetch('ngg-gallery/$id', namespace: 'centraltimes/v1');
 
     log.config(res);
 
-    List<NggImageModel> result = [];
+    List<GalleryImageModel> result = [];
     for (Map<String, dynamic> nggImageMap in res.data) {
-      result.add(_nggImageFromMap(nggImageMap));
+      result.add(_galleryImageFromMap(nggImageMap));
     }
 
     return result;
   }
 
-  static NggImageModel _nggImageFromMap(Map<String, dynamic> nggImageMap) {
-    return new NggImageModel(
+  static GalleryImageModel _galleryImageFromMap(Map<String, dynamic> nggImageMap) {
+    return new GalleryImageModel(
         nggImageMap["pid"],
-        nggImageMap["image_slug"],
-        nggImageMap["filename"],
         nggImageMap["description"],
         nggImageMap["alttext"],
-        nggImageMap["path"]);
+        _generateImageFileUrl(nggImageMap["filename"], nggImageMap["path"]));
   }
 
-  static String generateImageFileUrl(NggImageModel nggImage) {
+  static String _generateImageFileUrl(String filename, String path) {
     /*
     TODO we just do string concatenation here, and that's fine for now as the
      API seems to return consistent results, but something such as a uri join
@@ -42,6 +41,6 @@ class CtNggGalleryService {
      function isn't suited to this, as it uses the platform's separator instead
      of the one consistent to web URIs: "/".
      */
-    return Uri.https(api.site, nggImage.path + nggImage.filename).toString();
+    return Uri.https(api.site, path + filename).toString();
   }
 }

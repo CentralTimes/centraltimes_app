@@ -1,23 +1,27 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/wordpress/wordpress_posts_service.dart';
-import 'package:app/ui/list/infinite_list.dart';
 import 'package:app/ui/list/list_page.dart';
 import 'package:app/ui/list/post_list/post_preview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:logging/logging.dart';
 
 class PostListView extends StatefulWidget {
   final int category;
 
   const PostListView({Key? key, this.category = 0}) : super(key: key);
+
   @override
   _PostListViewState createState() => _PostListViewState();
 }
 
-class _PostListViewState extends State<PostListView> {
+class _PostListViewState extends State<PostListView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final PagingController<int, PostModel> _pagingController =
       PagingController(firstPageKey: 1);
+
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
@@ -52,7 +56,8 @@ class _PostListViewState extends State<PostListView> {
             builderDelegate: PagedChildBuilderDelegate<PostModel>(
                 itemBuilder: (context, data, index) =>
                     PostPreviewCard(post: data)),
-            separatorBuilder: (context, index) => Padding(padding: EdgeInsets.all(8))),
+            separatorBuilder: (context, index) =>
+                Padding(padding: EdgeInsets.all(8))),
       ),
     );
   }

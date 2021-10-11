@@ -1,5 +1,4 @@
 import 'package:app/models/tab_category_model.dart';
-import 'package:app/services/ct/ct_tab_category_service.dart';
 import 'package:app/ui/list/post_list/post_list_view.dart';
 import 'package:app/ui/page_template.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +24,9 @@ class PostsPageState extends State<PostsPage> with TickerProviderStateMixin {
           Tab(child: Text("All")),
           ...tabCategories.map((e) => Tab(child: Text(e.name))).toList()
         ]),
-        child: Flexible(
-            child: TabBarView(controller: tabController, children: [
+        child: TabBarView(controller: tabController, children: [
           PostListView(),
           ...tabCategories.map((e) => PostListView(category: e.id))
-        ])));
+        ]));
   }
 }

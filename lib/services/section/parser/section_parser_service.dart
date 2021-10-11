@@ -1,4 +1,3 @@
-
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/section/sections/caption_section.dart';
 import 'package:app/services/section/sections/gallery_section.dart';
@@ -25,7 +24,7 @@ class SectionParserService {
       List<Shortcode> shortcodes = ShortcodeParserService.parseShortcodes(raw);
       if (shortcodes.isEmpty)
         sections.add(Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Html(
               data: raw,
               onLinkTap: (String? url, RenderContext context,
@@ -36,8 +35,8 @@ class SectionParserService {
                 "*": Style(
                   margin: EdgeInsets.all(0),
                   padding: EdgeInsets.all(0),
-                  fontSize: FontSize(20),
-                  lineHeight: LineHeight(1.0),
+                  fontSize: FontSize(18),
+                  lineHeight: LineHeight(1.5),
                 )
               },
             )));
@@ -59,6 +58,7 @@ class SectionParserService {
       case 'related':
         return RelatedSection().useShortcode(shortcode);
       case 'ngg':
+      case 'gallery':
         return GallerySection().useShortcode(shortcode);
       default:
         return UnsupportedSection().useShortcode(shortcode);
