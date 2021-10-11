@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_api/wordpress_api.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   Logger.root.level = Level.INFO;
@@ -61,6 +62,7 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
         title: 'Central Times',
         theme: ThemeData(
           primarySwatch: Colors.red,
+          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
         ),
         home: HomeView(),
       ),
