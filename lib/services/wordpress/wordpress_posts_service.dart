@@ -22,8 +22,8 @@ class WordpressPostService {
     log.info("Initialized!");
   }
 
-  static Future<ListPage<PostModel>> getPostsPage(int category,
-      int page) async {
+  static Future<ListPage<PostModel>> getPostsPage(
+      int category, int page) async {
     if (pageCache.containsKey(page)) {
       log.info("Cache hit!");
     } else {
@@ -34,15 +34,14 @@ class WordpressPostService {
             if (category != 0) "categories": category
           });
 
-      List<PostModel> posts = _blacklistPosts(res);
+      List<PostModel> posts = _processPosts(res);
       if (!pageCache.containsKey(category)) pageCache[category] = {};
-      pageCache[category]![page] = ListPage<PostModel>(posts, res.data.length < 10);
+      pageCache[category]![page] =
+          ListPage<PostModel>(posts, res.data.length < 10);
       log.info(
-          "Fetched ${res.data.length} posts from API. (${posts
-              .length} after blacklist)");
+          "Fetched ${res.data.length} posts from API.");
       // Also add the posts we got into the post cache
-      for (PostModel post in posts)
-        postCache[post.id] = post;
+      for (PostModel post in posts) postCache[post.id] = post;
     }
     return pageCache[category]![page]!;
   }
@@ -51,7 +50,7 @@ class WordpressPostService {
     if (!postCache.containsKey(postId)) {
       log.info("Attempting to fetch single post with id $postId...");
       final WPResponse res =
-      await WordpressPostService.api.fetch('posts/$postId');
+          await WordpressPostService.api.fetch('posts/$postId');
       postCache[postId] = _postFromMap(res.data);
     }
     return postCache[postId]!;
@@ -65,23 +64,18 @@ class WordpressPostService {
   static void clearPageCache({int category = -1}) {
     if (category != -1)
       pageCache[category] = {};
-    else pageCache = {};
+    else
+      pageCache = {};
   }
 
   static void clearPostCache() {
     postCache = {};
   }
 
-  static List<PostModel> _blacklistPosts(WPResponse res) {
+  static List<PostModel> _processPosts(WPResponse res) {
     List<PostModel> posts = [];
     for (final post in res.data) {
-      // Temporary fix for posts with invalid pages/formatting
-      // TODO add featured content support
-      // Blacklist posts with video category (ID 123)
-      // Blacklist posts with no pages
-      if (!(List<int>.from(post["categories"] ?? []).contains(123) ||
-          post["content"].toString().trim() == ""))
-        posts.add(_postFromMap(post));
+      posts.add(_postFromMap(post));
     }
     return posts;
   }

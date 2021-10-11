@@ -2,12 +2,12 @@ import 'package:app/models/post_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/save_button.dart';
-import 'package:app/ui/transparent_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/wordpress_api.dart';
+
+import 'featured_view.dart';
 
 class ArticleView extends StatelessWidget {
   final PostModel post;
@@ -64,6 +64,15 @@ class ArticleView extends StatelessWidget {
                         color: Colors.black.withOpacity(0.6)))),
             Padding(padding: EdgeInsets.all(8)),
             if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
+            if (post.video.length != 0 && post.video[0].trim().isNotEmpty)
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => FeaturedView(post))),
+                child: Row(children: [
+                  Icon(Icons.auto_awesome),
+                  Text("View Featured Content")
+                ]),
+              ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12),
               child: Column(
@@ -80,7 +89,8 @@ class ArticleView extends StatelessWidget {
     return WordpressMediaService.getImage(id, (context, provider) {
       return Image(image: provider);
     }, (context, url) {
-      return AspectRatio(aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
+      return AspectRatio(
+          aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
     });
   }
 }
