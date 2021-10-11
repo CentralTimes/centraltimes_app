@@ -21,13 +21,22 @@ class _PostListViewState extends State<PostListView>
 
   final PagingController<int, PostModel> _pagingController =
       PagingController(firstPageKey: 1);
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -53,6 +62,7 @@ class _PostListViewState extends State<PostListView>
         onRefresh: () async => _pagingController.refresh(),
         child: PagedListView.separated(
             pagingController: _pagingController,
+            scrollController: _scrollController,
             builderDelegate: PagedChildBuilderDelegate<PostModel>(
                 itemBuilder: (context, data, index) =>
                     PostPreviewCard(post: data)),
