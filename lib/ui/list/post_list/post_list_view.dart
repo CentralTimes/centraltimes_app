@@ -55,6 +55,7 @@ class _PostListViewState extends State<PostListView>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,

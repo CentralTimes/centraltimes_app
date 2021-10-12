@@ -2,6 +2,7 @@ import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -20,8 +21,7 @@ class PullquoteSection implements ArticleSection {
               WordpressMediaService.getImage(
                   int.parse(shortcode.arguments["photo"] ?? ""),
                   (context, provider) {
-                return FadeInImage(
-                    placeholder: MemoryImage(transparentImage),
+                return Image(
                     image: provider,
                     fit: BoxFit.fitWidth);
               }, (context, url) {

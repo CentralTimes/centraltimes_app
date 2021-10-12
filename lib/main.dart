@@ -52,20 +52,13 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        FutureProvider<List<TabCategoryModel>>.value(
-            value: CtTabCategoryService.getTabCategories(),
-            initialData: List.empty()),
-      ],
-      child: MaterialApp(
-        title: 'Central Times',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-        ),
-        home: HomeView(),
+    return MaterialApp(
+      title: 'Central Times',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
       ),
+      home: HomeView(),
     );
   }
 }
