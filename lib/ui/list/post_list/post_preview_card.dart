@@ -74,7 +74,8 @@ class PostPreviewCard extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (post.video.length != 0 && post.video[0].trim().isNotEmpty)
+                    if (post.video.length != 0 &&
+                        post.video[0].trim().isNotEmpty)
                       IconButton(
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(

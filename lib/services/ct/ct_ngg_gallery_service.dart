@@ -25,7 +25,8 @@ class CtNggGalleryService {
     return result;
   }
 
-  static GalleryImageModel _galleryImageFromMap(Map<String, dynamic> nggImageMap) {
+  static GalleryImageModel _galleryImageFromMap(
+      Map<String, dynamic> nggImageMap) {
     return new GalleryImageModel(
         nggImageMap["pid"],
         nggImageMap["description"],

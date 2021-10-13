@@ -27,7 +27,10 @@ class PullquoteSection implements ArticleSection {
               }, (context, url) {
                 return AspectRatio(aspectRatio: 1.38);
               }),
-            Text('"${shortcode.nested}"', style: TextStyle(fontStyle: FontStyle.italic),),
+            Text(
+              '"${shortcode.nested}"',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
             Text("--${shortcode.arguments["speaker"] ?? ""}")
           ],
         ));

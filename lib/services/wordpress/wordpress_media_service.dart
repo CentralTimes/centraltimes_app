@@ -18,7 +18,10 @@ class WordpressMediaService {
     log.info("Initialized!");
   }
 
-  static FutureBuilder<WPResponse> getImage(int id, Widget Function(BuildContext, ImageProvider) builder, Widget Function(BuildContext, String) placeholder) {
+  static FutureBuilder<WPResponse> getImage(
+      int id,
+      Widget Function(BuildContext, ImageProvider) builder,
+      Widget Function(BuildContext, String) placeholder) {
     return FutureBuilder(
       future: _getMedia(id),
       builder: (context, res) {

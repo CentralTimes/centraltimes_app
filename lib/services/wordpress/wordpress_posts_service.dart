@@ -38,8 +38,7 @@ class WordpressPostService {
       if (!pageCache.containsKey(category)) pageCache[category] = {};
       pageCache[category]![page] =
           ListPage<PostModel>(posts, res.data.length < 10);
-      log.info(
-          "Fetched ${res.data.length} posts from API.");
+      log.info("Fetched ${res.data.length} posts from API.");
       // Also add the posts we got into the post cache
       for (PostModel post in posts) postCache[post.id] = post;
     }

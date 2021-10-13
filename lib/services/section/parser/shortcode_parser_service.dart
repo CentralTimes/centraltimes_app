@@ -30,8 +30,7 @@ class ShortcodeParserService {
   static Map<String, String> parseArguments(String argsString) {
     Map<String, String> arguments = {};
 
-    List<RegExpMatch> matches =
-        argumentsRegExp.allMatches(argsString).toList();
+    List<RegExpMatch> matches = argumentsRegExp.allMatches(argsString).toList();
     for (RegExpMatch match in matches) {
       if (match.group(1) != null) {
         arguments[match.group(1)!] = match.group(2) ?? "";
