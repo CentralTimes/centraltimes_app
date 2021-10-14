@@ -14,7 +14,9 @@ class PageTemplate extends StatelessWidget {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverOverlapAbsorber(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
+            SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
             SliverAppBar(
               centerTitle: true,
               title: Text('Central Times', style: GoogleFonts.roboto()),

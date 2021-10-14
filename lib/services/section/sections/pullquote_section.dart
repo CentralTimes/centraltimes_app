@@ -18,9 +18,7 @@ class PullquoteSection implements ArticleSection {
               WordpressMediaService.getImage(
                   int.parse(shortcode.arguments["photo"] ?? ""),
                   (context, provider) {
-                return Image(
-                    image: provider,
-                    fit: BoxFit.fitWidth);
+                return Image(image: provider, fit: BoxFit.fitWidth);
               }, (context, url) {
                 return const AspectRatio(aspectRatio: 1.38);
               }),

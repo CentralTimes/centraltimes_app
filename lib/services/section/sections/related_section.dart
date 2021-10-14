@@ -18,24 +18,25 @@ class RelatedSection implements ArticleSection {
 
     List<Widget> stories = storyIds
         .map((e) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder<PostModel>(
-              future: WordpressPostService.getPost(e),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    !snapshot.hasError) {
-                  return PostPreviewCard(post: snapshot.data!);
-                } else {
-                  return const MediaLoadingIndicator();
-                }
-              }),
-        ))
+              padding: const EdgeInsets.all(8.0),
+              child: FutureBuilder<PostModel>(
+                  future: WordpressPostService.getPost(e),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        !snapshot.hasError) {
+                      return PostPreviewCard(post: snapshot.data!);
+                    } else {
+                      return const MediaLoadingIndicator();
+                    }
+                  }),
+            ))
         .toList();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         children: [
-          Text(shortcode.arguments["title"] ?? "", style: const TextStyle(fontSize: 30)),
+          Text(shortcode.arguments["title"] ?? "",
+              style: const TextStyle(fontSize: 30)),
           Column(
             children: stories,
           )

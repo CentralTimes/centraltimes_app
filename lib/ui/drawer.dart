@@ -14,7 +14,9 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Theme(
-        data: Theme.of(context).copyWith(textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
+        data: Theme.of(context).copyWith(
+            textTheme:
+                GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
         child: ListView(
           children: [
             if (Platform.isAndroid)
@@ -79,7 +81,8 @@ class AppDrawer extends StatelessWidget {
                       icon: const Icon(FontAwesomeIcons.facebook),
                       color: Theme.of(context).primaryColor),
                   IconButton(
-                      onPressed: () => launch("https://twitter.com/centraltimes"),
+                      onPressed: () =>
+                          launch("https://twitter.com/centraltimes"),
                       icon: const Icon(FontAwesomeIcons.twitter),
                       color: Theme.of(context).primaryColor),
                   IconButton(
