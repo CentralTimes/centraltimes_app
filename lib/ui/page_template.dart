@@ -17,7 +17,7 @@ class PageTemplate extends StatelessWidget {
             SliverOverlapAbsorber(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
             SliverAppBar(
               centerTitle: true,
-              title: const Text('Central Times', style: GoogleFonts.roboto()),
+              title: Text('Central Times', style: GoogleFonts.roboto()),
               actions: [
                 IconButton(
                     onPressed: () {

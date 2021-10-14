@@ -23,18 +23,19 @@ class RelatedSection implements ArticleSection {
               future: WordpressPostService.getPost(e),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
-                    !snapshot.hasError)
+                    !snapshot.hasError) {
                   return PostPreviewCard(post: snapshot.data!);
-                else
-                  return MediaLoadingIndicator();
+                } else {
+                  return const MediaLoadingIndicator();
+                }
               }),
         ))
         .toList();
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         children: [
-          Text(shortcode.arguments["title"] ?? "", style: TextStyle(fontSize: 30)),
+          Text(shortcode.arguments["title"] ?? "", style: const TextStyle(fontSize: 30)),
           Column(
             children: stories,
           )

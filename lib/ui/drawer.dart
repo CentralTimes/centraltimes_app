@@ -24,46 +24,46 @@ class AppDrawer extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   IconButton(
-                      onPressed: () => AndroidIntent(
+                      onPressed: () => const AndroidIntent(
                               action:
                                   "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
                               data: "com.facebook.katana")
                           .launch()
                           .onError<PlatformException>((error, stackTrace) => launch(
                               "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
-                      icon: Icon(FontAwesomeIcons.facebook),
+                      icon: const Icon(FontAwesomeIcons.facebook),
                       color: Theme.of(context).primaryColor),
                   IconButton(
-                      onPressed: () => AndroidIntent(
+                      onPressed: () => const AndroidIntent(
                               action: "twitter://user?screen_name=centraltimes",
                               data: "com.twitter.android")
                           .launch()
                           .onError<PlatformException>((error, stackTrace) =>
                               launch("https://twitter.com/centraltimes")),
-                      icon: Icon(FontAwesomeIcons.twitter),
+                      icon: const Icon(FontAwesomeIcons.twitter),
                       color: Theme.of(context).primaryColor),
                   IconButton(
-                      onPressed: () => AndroidIntent(
+                      onPressed: () => const AndroidIntent(
                               action: "http://instagram.com/_u/centraltimes",
                               data: "com.instagram.android")
                           .launch()
                           .onError<PlatformException>((error, stackTrace) =>
                               launch("https://instagram.com/centraltimes")),
-                      icon: Icon(FontAwesomeIcons.instagram),
+                      icon: const Icon(FontAwesomeIcons.instagram),
                       color: Theme.of(context).primaryColor),
                   IconButton(
-                      onPressed: () => AndroidIntent(
+                      onPressed: () => const AndroidIntent(
                               action:
                                   "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
                               data: "com.google.android.youtube")
                           .launch()
                           .onError<PlatformException>((error, stackTrace) => launch(
                               "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
-                      icon: Icon(FontAwesomeIcons.youtube),
+                      icon: const Icon(FontAwesomeIcons.youtube),
                       color: Theme.of(context).primaryColor),
                   IconButton(
                       onPressed: () => launch("https://www.centraltimes.org/"),
-                      icon: Icon(Icons.language_outlined),
+                      icon: const Icon(Icons.language_outlined),
                       color: Theme.of(context).primaryColor),
                 ],
               ))
@@ -76,25 +76,25 @@ class AppDrawer extends StatelessWidget {
                   IconButton(
                       onPressed: () => launch(
                           "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
-                      icon: Icon(FontAwesomeIcons.facebook),
+                      icon: const Icon(FontAwesomeIcons.facebook),
                       color: Theme.of(context).primaryColor),
                   IconButton(
                       onPressed: () => launch("https://twitter.com/centraltimes"),
-                      icon: Icon(FontAwesomeIcons.twitter),
+                      icon: const Icon(FontAwesomeIcons.twitter),
                       color: Theme.of(context).primaryColor),
                   IconButton(
                       onPressed: () =>
                           launch("http://instagram.com/_u/centraltimes"),
-                      icon: Icon(FontAwesomeIcons.instagram),
+                      icon: const Icon(FontAwesomeIcons.instagram),
                       color: Theme.of(context).primaryColor),
                   IconButton(
                       onPressed: () => launch(
                           "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
-                      icon: Icon(FontAwesomeIcons.youtube),
+                      icon: const Icon(FontAwesomeIcons.youtube),
                       color: Theme.of(context).primaryColor),
                   IconButton(
                       onPressed: () => launch("https://www.centraltimes.org/"),
-                      icon: Icon(Icons.language_outlined),
+                      icon: const Icon(Icons.language_outlined),
                       color: Theme.of(context).primaryColor),
                 ],
               ))
