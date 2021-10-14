@@ -1,5 +1,6 @@
 import 'package:app/ui/search.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PageTemplate extends StatelessWidget {
   final Widget child;
@@ -13,9 +14,12 @@ class PageTemplate extends StatelessWidget {
     return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
+            SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
             SliverAppBar(
               centerTitle: true,
-              title: const Text("Central Times"),
+              title: Text('Central Times', style: GoogleFonts.roboto()),
               actions: [
                 IconButton(
                     onPressed: () {

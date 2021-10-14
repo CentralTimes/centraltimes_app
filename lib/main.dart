@@ -1,4 +1,3 @@
-import 'package:app/models/tab_category_model.dart';
 import 'package:app/services/ct/ct_ngg_gallery_service.dart';
 import 'package:app/services/ct/ct_shortcode_service.dart';
 import 'package:app/services/ct/ct_sno_gallery_service.dart';
@@ -12,7 +11,6 @@ import 'package:app/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 void main() async {
@@ -59,20 +57,13 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        FutureProvider<List<TabCategoryModel>>.value(
-            value: CtTabCategoryService.getTabCategories(),
-            initialData: List.empty()),
-      ],
-      child: MaterialApp(
-        title: 'Central Times',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-          textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
-        ),
-        home: const HomeView(),
+    return MaterialApp(
+      title: 'Central Times',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
       ),
+      home: const HomeView(),
     );
   }
 }
