@@ -6,7 +6,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressMediaService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("WordpressMediaService");
+  static final Logger log = Logger("WordpressMediaService");
 
   // This cache shouldn't need to be cleared during app runtime, as media IDs
   // should be intrinsically linked to its API metadata and content.
@@ -18,18 +18,23 @@ class WordpressMediaService {
     log.info("Initialized!");
   }
 
-  static FutureBuilder<WPResponse> getImage(id, builder, placeholder) {
-    return new FutureBuilder(
+  static FutureBuilder<WPResponse> getImage(
+      int id,
+      Widget Function(BuildContext, ImageProvider) builder,
+      Widget Function(BuildContext, String) placeholder) {
+    return FutureBuilder(
       future: _getMedia(id),
       builder: (context, res) {
-        if (res.connectionState == ConnectionState.done && !res.hasError)
-          return new CachedNetworkImage(
+        if (res.connectionState == ConnectionState.done && !res.hasError) {
+          return CachedNetworkImage(
             imageUrl: res.data!.data.sourceUrl,
             imageBuilder: builder,
             placeholder: placeholder,
+            fit: BoxFit.contain,
           );
-        else
-          return new MediaLoadingIndicator();
+        } else {
+          return const MediaLoadingIndicator();
+        }
       },
     );
   }

@@ -5,7 +5,6 @@ import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/ui/list/post_list/post_preview_card.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class RelatedSection implements ArticleSection {
   @override
@@ -18,22 +17,26 @@ class RelatedSection implements ArticleSection {
     List<int> storyIds = storyIdsSplit.map((e) => int.parse(e)).toList();
 
     List<Widget> stories = storyIds
-        .map((e) => FutureBuilder<PostModel>(
-            future: WordpressPostService.getPost(e),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  !snapshot.hasError)
-                return PostPreviewCard(post: snapshot.data!);
-              else
-                return MediaLoadingIndicator();
-            }))
+        .map((e) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FutureBuilder<PostModel>(
+                  future: WordpressPostService.getPost(e),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        !snapshot.hasError) {
+                      return PostPreviewCard(post: snapshot.data!);
+                    } else {
+                      return const MediaLoadingIndicator();
+                    }
+                  }),
+            ))
         .toList();
-
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         children: [
-          Text(shortcode.arguments["title"] ?? ""),
+          Text(shortcode.arguments["title"] ?? "",
+              style: const TextStyle(fontSize: 30)),
           Column(
             children: stories,
           )

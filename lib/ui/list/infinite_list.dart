@@ -1,3 +1,4 @@
+/*
 import 'package:app/ui/list/list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
@@ -6,6 +7,7 @@ import 'package:logging/logging.dart';
 
 import '../error_screens/error_screen.dart';
 import '../error_screens/no_results_error_screen.dart';
+
 
 class InfiniteListState<T> extends State<StatefulWidget> {
   final _pagingController = PagingController<int, T>(firstPageKey: 1);
@@ -30,7 +32,6 @@ class InfiniteListState<T> extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (scrollToTop)
       return ScrollWrapper(
         scrollController: _scrollController,
         child: _commonList(),
@@ -109,4 +110,4 @@ class InfiniteListState<T> extends State<StatefulWidget> {
     log.info("Refreshed!");
     _pagingController.refresh();
   }
-}
+}*/

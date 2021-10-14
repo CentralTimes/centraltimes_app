@@ -4,9 +4,10 @@ import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/ui/list/post_list/post_preview_card.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_scroll_to_top/flutter_scroll_to_top.dart';
 
 class SavedListView extends StatefulWidget {
+  const SavedListView({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _SavedListViewState();
 }
@@ -17,37 +18,28 @@ class _SavedListViewState extends State<SavedListView> {
   @override
   Widget build(BuildContext context) {
     List<int> savedPostIds = SavedPostsService.getPosts();
-    return ScrollWrapper(
-      scrollController: _scrollController,
-      child: RefreshIndicator(
-        triggerMode: RefreshIndicatorTriggerMode.anywhere,
-          onRefresh: () async {
-            setState(() {
-              savedPostIds = SavedPostsService.getPosts();
-            });
+    return ListView.separated(
+      controller: _scrollController,
+      padding: const EdgeInsets.symmetric(vertical: 0),
+      itemCount: savedPostIds.length,
+      itemBuilder: (context, i) {
+        return FutureBuilder<PostModel>(
+          future: WordpressPostService.getPost(savedPostIds[i]),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return PostPreviewCard(post: snapshot.data!);
+            } else {
+              return const MediaLoadingIndicator();
+            }
           },
-          child: ListView.separated(
-            controller: _scrollController,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            itemCount: savedPostIds.length,
-            itemBuilder: (context, i) {
-              return FutureBuilder<PostModel>(
-                future: WordpressPostService.getPost(savedPostIds[i]),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return PostPreviewCard(post: snapshot.data!);
-                  } else {
-                    return MediaLoadingIndicator();
-                  }
-                },
-              );
-            },
-            separatorBuilder: (context, index) => Divider(
-              height: 2,
-              color: Colors.grey,
-              thickness: 2,
-            ),
-          )),
+        );
+      },
+      separatorBuilder: (context, index) =>
+          const Padding(padding: EdgeInsets.all(8)),
+    );
+  }
+}
+/*
       promptAlignment: Alignment.bottomRight,
       promptReplacementBuilder: (BuildContext context, Function scrollToTop) {
         return Padding(
@@ -58,7 +50,4 @@ class _SavedListViewState extends State<SavedListView> {
               },
               child: Icon(Icons.arrow_upward),
             ));
-      },
-    );
-  }
-}
+      },*/
