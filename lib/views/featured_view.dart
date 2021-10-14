@@ -9,7 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class FeaturedView extends StatefulWidget {
   final PostModel post;
 
-  FeaturedView(this.post);
+  const FeaturedView(this.post, {Key? key}) : super(key: key);
 
   @override
   State<FeaturedView> createState() => _FeaturedViewState();
@@ -21,7 +21,7 @@ class _FeaturedViewState extends State<FeaturedView> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Central Times"),
+          title: const Text("Central Times"),
           actions: [
             SaveButton(
               widget.post.id,
@@ -32,11 +32,10 @@ class _FeaturedViewState extends State<FeaturedView> {
                   Share.share(widget.post.link,
                       subject: "${widget.post.title} - Central Times");
                 },
-                icon: Icon(Icons.share)),
+                icon: const Icon(Icons.share)),
           ],
         ),
-        body: Container(
-            child: WebView(
+        body: WebView(
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
@@ -45,7 +44,7 @@ class _FeaturedViewState extends State<FeaturedView> {
                     encoding: Encoding.getByName('utf-8'))
                 .toString());
           },
-        )));
+        ));
   }
 
   _generateHtml() {

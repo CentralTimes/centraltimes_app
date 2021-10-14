@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PostsPage extends StatefulWidget {
+  const PostsPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => PostsPageState();
 }
@@ -17,15 +19,15 @@ class PostsPageState extends State<PostsPage> with TickerProviderStateMixin {
     TabController tabController =
         TabController(vsync: this, length: tabCategories.length + 1);
     if (tabCategories.isEmpty) {
-      return PageTemplate(child: PostListView());
+      return const PageTemplate(child: PostListView());
     }
     return PageTemplate(
         bottom: TabBar(isScrollable: true, controller: tabController, tabs: [
-          Tab(child: Text("All")),
+          const Tab(child: Text("All")),
           ...tabCategories.map((e) => Tab(child: Text(e.name))).toList()
         ]),
         child: TabBarView(controller: tabController, children: [
-          PostListView(),
+          const PostListView(),
           ...tabCategories.map((e) => PostListView(category: e.id))
         ]));
   }

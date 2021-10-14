@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MediaLoadingIndicator extends StatelessWidget {
+  const MediaLoadingIndicator({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return new AspectRatio(
+    return const AspectRatio(
         aspectRatio: 1.38,
-        child: new Center(
+        child: Center(
           child: CircularProgressIndicator(),
         ));
   }

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class PageTemplate extends StatelessWidget {
   final Widget child;
   final PreferredSizeWidget? bottom;
-  const PageTemplate({this.bottom, required this.child});
+
+  const PageTemplate({Key? key, this.bottom, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +15,14 @@ class PageTemplate extends StatelessWidget {
           return [
             SliverAppBar(
               centerTitle: true,
-              title: Text("Central Times"),
+              title: const Text("Central Times"),
               actions: [
                 IconButton(
                     onPressed: () {
                       showSearch(
                           context: context, delegate: SearchNewsDelegate());
                     },
-                    icon: Icon(Icons.search)),
+                    icon: const Icon(Icons.search)),
               ],
               bottom: bottom,
               pinned: true,

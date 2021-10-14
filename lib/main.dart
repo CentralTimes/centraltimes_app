@@ -24,14 +24,14 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  const FIREBASE_KEY = String.fromEnvironment('FIREBASE_KEY', defaultValue: '');
-  assert(FIREBASE_KEY != '');
-  const API_BASE =
+  const firebaseKey = String.fromEnvironment('FIREBASE_KEY', defaultValue: '');
+  assert(firebaseKey != '');
+  const apiBase =
       String.fromEnvironment('API_BASE', defaultValue: 'www.centraltimes.org');
 
   await SavedPostsService.init();
 
-  final api = WordPressAPI(API_BASE);
+  final api = WordPressAPI(apiBase);
   WordpressPostService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
@@ -41,10 +41,12 @@ void main() async {
   CtShortcodeService.init(api);
   ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
 
-  runApp(CentralTimesApp());
+  runApp(const CentralTimesApp());
 }
 
 class CentralTimesApp extends StatefulWidget {
+  const CentralTimesApp({Key? key}) : super(key: key);
+
   @override
   _CentralTimesAppState createState() => _CentralTimesAppState();
 }
@@ -69,7 +71,7 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
           primarySwatch: Colors.red,
           textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
         ),
-        home: HomeView(),
+        home: const HomeView(),
       ),
     );
   }

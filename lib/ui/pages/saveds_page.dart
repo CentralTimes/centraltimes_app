@@ -3,8 +3,10 @@ import 'package:app/ui/page_template.dart';
 import 'package:flutter/material.dart';
 
 class SavedsPage extends StatelessWidget {
+  const SavedsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return PageTemplate(child: SavedListView());
+    return const PageTemplate(child: SavedListView());
   }
 }

@@ -3,7 +3,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class CtShortcodeService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("CtShortcodeService");
+  static final Logger log = Logger("CtShortcodeService");
 
   static void init(WordPressAPI api) {
     CtShortcodeService.api = api;

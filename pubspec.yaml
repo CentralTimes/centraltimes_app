@@ -40,7 +40,6 @@ dependencies:
   flutter_markdown: ^0.6.2
   share_plus: ^2.1.4
   android_intent_plus: ^1.0.2
-  flutter_launcher_icons: ^0.9.0
   font_awesome_flutter: ^9.1.0
   shared_preferences: ^2.0.6
   wordpress_api: ^1.2.0
@@ -58,6 +57,7 @@ dev_dependencies:
     sdk: flutter
   flutter_native_splash: ^1.2.0
   flutter_launcher_icons: ^0.9.2
+  flutter_lints: ^1.0.4
 
 flutter_icons:
   android: true
@@ -79,9 +79,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - .git/HEAD         # This file points out the current branch of the project.
-    - .git/ORIG_HEAD    # This file points to the commit id at origin (last commit id of the remote repository).
-    - .git/refs/heads/  # This directory includes files for each branch which points to the last commit id (local repo).
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

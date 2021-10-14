@@ -6,28 +6,23 @@ class SaveButton extends StatefulWidget {
   final Color? iconColor;
 
   @override
-  State<StatefulWidget> createState() => _SaveButtonState(id, iconColor);
+  State<StatefulWidget> createState() => _SaveButtonState();
 
-  SaveButton(this.id, {this.iconColor});
+  const SaveButton(this.id, {Key? key, this.iconColor}) : super(key: key);
 }
 
 class _SaveButtonState extends State<SaveButton> {
-  final int id;
-  final Color? iconColor;
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          SavedPostsService.togglePost(this.id)
+          SavedPostsService.togglePost(widget.id)
               .then((value) => setState(() => {}));
         },
         icon: Icon(
-            SavedPostsService.isPostSaved(this.id)
+            SavedPostsService.isPostSaved(widget.id)
                 ? Icons.bookmark
                 : Icons.bookmark_add_outlined,
-            color: iconColor ?? Theme.of(context).primaryColor));
+            color: widget.iconColor ?? Theme.of(context).primaryColor));
   }
-
-  _SaveButtonState(this.id, this.iconColor);
 }

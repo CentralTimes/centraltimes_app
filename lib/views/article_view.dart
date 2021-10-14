@@ -13,14 +13,14 @@ class ArticleView extends StatelessWidget {
   final PostModel post;
   final _scrollController = ScrollController();
 
-  ArticleView(this.post);
+  ArticleView(this.post, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Central Times"),
+        title: const Text("Central Times"),
         actions: [
           SaveButton(
             post.id,
@@ -31,7 +31,7 @@ class ArticleView extends StatelessWidget {
                 Share.share(post.link,
                     subject: "${post.title} - Central Times");
               },
-              icon: Icon(Icons.share)),
+              icon: const Icon(Icons.share)),
         ],
       ),
       body: CustomScrollView(
@@ -39,42 +39,42 @@ class ArticleView extends StatelessWidget {
         slivers: [
           SliverList(
               delegate: SliverChildListDelegate.fixed([
-            Padding(padding: EdgeInsets.all(8)),
+            const Padding(padding: EdgeInsets.all(8)),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(post.title,
-                    style: TextStyle(fontSize: 28, height: 1.5))),
+                    style: const TextStyle(fontSize: 28, height: 1.5))),
             if (post.staffNames.isNotEmpty) ...[
-              Padding(padding: EdgeInsets.all(4)),
+              const Padding(padding: EdgeInsets.all(4)),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     post.writers.join(", "),
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   )),
             ],
-            Padding(padding: EdgeInsets.all(4)),
+            const Padding(padding: EdgeInsets.all(4)),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                     DateFormat("MMMM d, yyyy - h:mm a").format(post.date),
                     style: TextStyle(
                         fontSize: 18,
                         height: 1.5,
                         color: Colors.black.withOpacity(0.6)))),
-            Padding(padding: EdgeInsets.all(8)),
+            const Padding(padding: EdgeInsets.all(8)),
             if (post.featuredMedia != 0) getFeaturedMedia(post.featuredMedia),
-            if (post.video.length != 0 && post.video[0].trim().isNotEmpty)
+            if (post.video.isNotEmpty && post.video[0].trim().isNotEmpty)
               ElevatedButton(
                 onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => FeaturedView(post))),
-                child: Row(children: [
+                child: Row(children: const [
                   Icon(Icons.auto_awesome),
                   Text("View Featured Content")
                 ]),
               ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: Column(
                   children:
                       SectionParserService.parseSections(post.rawContent)),
@@ -89,7 +89,7 @@ class ArticleView extends StatelessWidget {
     return WordpressMediaService.getImage(id, (context, provider) {
       return Image(image: provider);
     }, (context, url) {
-      return AspectRatio(
+      return const AspectRatio(
           aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
     });
   }

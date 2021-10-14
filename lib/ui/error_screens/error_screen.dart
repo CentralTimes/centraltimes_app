@@ -11,7 +11,7 @@ class ErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 Text(
