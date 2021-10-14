@@ -10,10 +10,10 @@ import 'package:app/services/wordpress/wordpress_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_search_service.dart';
 import 'package:app/views/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_api/wordpress_api.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   Logger.root.level = Level.INFO;
@@ -24,9 +24,14 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  const firebaseKey = String.fromEnvironment('FIREBASE_KEY', defaultValue: '');
+  assert(firebaseKey != '');
+  const apiBase =
+      String.fromEnvironment('API_BASE', defaultValue: 'www.centraltimes.org');
+
   await SavedPostsService.init();
 
-  final api = WordPressAPI('www.centraltimes.org');
+  final api = WordPressAPI(apiBase);
   WordpressPostService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);
@@ -36,10 +41,12 @@ void main() async {
   CtShortcodeService.init(api);
   ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
 
-  runApp(CentralTimesApp());
+  runApp(const CentralTimesApp());
 }
 
 class CentralTimesApp extends StatefulWidget {
+  const CentralTimesApp({Key? key}) : super(key: key);
+
   @override
   _CentralTimesAppState createState() => _CentralTimesAppState();
 }

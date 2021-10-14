@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
+  const AppDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -111,6 +113,8 @@ class AppDrawer extends StatelessWidget {
 }
 
 class NotificationAccordion extends StatefulWidget {
+  const NotificationAccordion({Key? key}) : super(key: key);
+
   @override
   _NotificationAccordionState createState() => _NotificationAccordionState();
 }
@@ -130,31 +134,31 @@ class _NotificationAccordionState extends State<NotificationAccordion> {
       children: [
         ExpansionPanel(
           backgroundColor: Theme.of(context).canvasColor,
-          headerBuilder: (context, isExpanded) => ListTile(
+          headerBuilder: (context, isExpanded) => const ListTile(
               leading: Icon(Icons.notifications), title: Text("Notifications")),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ListTile(
-                  title: Text("Latest News"),
-                  subtitle: Text("Important articles and stories."),
+                  title: const Text("Latest News"),
+                  subtitle: const Text("Important articles and stories."),
                   trailing: Switch(value: false, onChanged: (_) {})),
               ListTile(
-                  title: Text("Community"),
+                  title: const Text("Community"),
                   trailing: Switch(value: false, onChanged: (_) {})),
               ListTile(
-                  title: Text("Profiles"),
+                  title: const Text("Profiles"),
                   trailing: Switch(value: false, onChanged: (_) {})),
               ListTile(
-                  title: Text("Entertainment"),
+                  title: const Text("Entertainment"),
                   trailing: Switch(value: false, onChanged: (_) {})),
               ListTile(
-                  title: Text("Sports"),
+                  title: const Text("Sports"),
                   trailing: Switch(value: false, onChanged: (_) {})),
               ListTile(
-                  title: Text("Surveys"),
+                  title: const Text("Surveys"),
                   trailing: Switch(value: false, onChanged: (_) {})),
-              Divider(),
+              const Divider(),
             ],
           ),
           isExpanded: expanded,

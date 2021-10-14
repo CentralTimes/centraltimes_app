@@ -1,0 +1,29 @@
+name: Dart/Flutter Tests
+
+on:
+  push:
+    branches:
+      - main
+      - canary
+  pull_request:
+    branches:
+      - main
+      - canary
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+#       - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.x'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+      - name: Analyze project source
+        run: dart analyze
+#       - name: Run tests
+#         run: flutter test

@@ -9,13 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:wordpress_api/src/helpers.dart';
 
 class PostPreviewCard extends StatelessWidget {
   final PostModel post;
   static const double blur = 1;
 
-  PostPreviewCard({required this.post}) : super();
+  const PostPreviewCard({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class PostPreviewCard extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               offset: Offset(0, blur),
               blurRadius: blur,
@@ -45,41 +44,42 @@ class PostPreviewCard extends StatelessWidget {
               Center(
                 child: getFeaturedMedia(post.featuredMedia),
               ),
-            Padding(padding: EdgeInsets.all(8)),
+            const Padding(padding: EdgeInsets.all(8)),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(post.title, style: TextStyle(fontSize: 28))),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(post.title, style: const TextStyle(fontSize: 28))),
             if (post.staffNames.isNotEmpty) ...[
-              Padding(padding: EdgeInsets.all(4)),
+              const Padding(padding: EdgeInsets.all(4)),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(post.writers.join(", "),
-                      style: TextStyle(fontSize: 18))),
+                      style: const TextStyle(fontSize: 18))),
             ],
             if (post.excerpt != "") ...[
-              Padding(padding: EdgeInsets.all(4)),
+              const Padding(padding: EdgeInsets.all(4)),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Html(data: post.excerpt, style: {
                     "*": Style(
-                      fontSize: FontSize(18),
-                      color: Color(0xFF666666),
-                      margin: EdgeInsets.symmetric(horizontal: 0),
+                      fontSize: const FontSize(18),
+                      color: const Color(0xFF666666),
+                      margin: const EdgeInsets.symmetric(horizontal: 0),
                     )
                   })),
             ],
             ListTile(
                 title: Text(DateFormat("MMMM d").format(post.date),
-                    style: TextStyle(fontSize: 18)),
+                    style: const TextStyle(fontSize: 18)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (post.video.length != 0 && post.video[0].trim().isNotEmpty)
+                    if (post.video.isNotEmpty &&
+                        post.video[0].trim().isNotEmpty)
                       IconButton(
                           onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) => FeaturedView(post))),
-                          icon: Icon(Icons.auto_awesome),
+                          icon: const Icon(Icons.auto_awesome),
                           color: Theme.of(context).primaryColor),
                     SaveButton(post.id),
                     IconButton(
@@ -87,7 +87,7 @@ class PostPreviewCard extends StatelessWidget {
                           Share.share(post.link,
                               subject: "${post.title} - Central Times");
                         },
-                        icon: Icon(Icons.share),
+                        icon: const Icon(Icons.share),
                         color: Theme.of(context).primaryColor),
                   ],
                 )),
@@ -97,12 +97,11 @@ class PostPreviewCard extends StatelessWidget {
     );
   }
 
-  FutureBuilder<WPResponse> getFeaturedMedia(id) {
+  FutureBuilder getFeaturedMedia(id) {
     return WordpressMediaService.getImage(id, (context, provider) {
       ValueNotifier<ImageInfo?> imgInfo = ValueNotifier(null);
-      provider.resolve(ImageConfiguration())
-        ..addListener(
-            ImageStreamListener((ImageInfo info, _) => imgInfo.value = info));
+      provider.resolve(const ImageConfiguration()).addListener(
+          ImageStreamListener((ImageInfo info, _) => imgInfo.value = info));
       return ValueListenableBuilder<ImageInfo?>(
           valueListenable: imgInfo,
           builder: (context, data, child) {
@@ -117,7 +116,7 @@ class PostPreviewCard extends StatelessWidget {
                       data.image.width.toDouble(),
                   fit: BoxFit.scaleDown);
             }
-            return AspectRatio(
+            return const AspectRatio(
                 aspectRatio: 1.38,
                 child: Center(child: CircularProgressIndicator()));
           });
@@ -136,7 +135,7 @@ class PostPreviewCard extends StatelessWidget {
         }
       );*/
     }, (context, url) {
-      return AspectRatio(
+      return const AspectRatio(
           aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
     });
   }

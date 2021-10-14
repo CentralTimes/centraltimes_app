@@ -5,8 +5,7 @@ class GalleryImageModel {
 
   final String url;
 
-  GalleryImageModel(this.id, this.caption,
-      this.alt, this.url);
+  GalleryImageModel(this.id, this.caption, this.alt, this.url);
 
   @override
   String toString() {

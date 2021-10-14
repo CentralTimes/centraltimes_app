@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PostsPage extends StatefulWidget {
+  const PostsPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => PostsPageState();
 }

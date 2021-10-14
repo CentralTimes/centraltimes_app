@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 class PageTemplate extends StatelessWidget {
   final Widget child;
   final PreferredSizeWidget? bottom;
-  const PageTemplate({this.bottom, required this.child});
+
+  const PageTemplate({Key? key, this.bottom, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +17,14 @@ class PageTemplate extends StatelessWidget {
             SliverOverlapAbsorber(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
             SliverAppBar(
               centerTitle: true,
-              title: Text('Central Times', style: GoogleFonts.roboto()),
+              title: const Text('Central Times', style: GoogleFonts.roboto()),
               actions: [
                 IconButton(
                     onPressed: () {
                       showSearch(
                           context: context, delegate: SearchNewsDelegate());
                     },
-                    icon: Icon(Icons.search)),
+                    icon: const Icon(Icons.search)),
               ],
               bottom: bottom,
               pinned: true,

@@ -6,6 +6,8 @@ import 'package:app/ui/media_loading_indicator.dart';
 import 'package:flutter/material.dart';
 
 class SavedListView extends StatefulWidget {
+  const SavedListView({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _SavedListViewState();
 }
@@ -27,12 +29,13 @@ class _SavedListViewState extends State<SavedListView> {
             if (snapshot.hasData) {
               return PostPreviewCard(post: snapshot.data!);
             } else {
-              return MediaLoadingIndicator();
+              return const MediaLoadingIndicator();
             }
           },
         );
       },
-      separatorBuilder: (context, index) => Padding(padding: EdgeInsets.all(8)),
+      separatorBuilder: (context, index) =>
+          const Padding(padding: EdgeInsets.all(8)),
     );
   }
 }

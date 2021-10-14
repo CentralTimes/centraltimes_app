@@ -36,7 +36,7 @@ class SavedPostsService {
 
   static Future<bool> removePost(int id) async {
     List<String> idList = (preferences.getStringList("savedPosts") ?? []);
-    idList.remove(id);
+    idList.remove(id.toString());
     return await preferences.setStringList("savedPosts", idList);
   }
 }

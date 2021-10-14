@@ -8,7 +8,6 @@ import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class GallerySection implements ArticleSection {
   @override
@@ -39,7 +38,7 @@ class GallerySection implements ArticleSection {
           if (snapshot.hasData) {
             return Gallery(galleryImages: snapshot.data!);
           } else {
-            return MediaLoadingIndicator();
+            return const MediaLoadingIndicator();
           }
         });
   }
@@ -51,27 +50,23 @@ class Gallery extends StatefulWidget {
   const Gallery({Key? key, required this.galleryImages}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _GalleryState(galleryImages);
+  State<StatefulWidget> createState() => _GalleryState();
 }
 
 class _GalleryState extends State<Gallery> {
-  final List<GalleryImageModel> galleryImages;
-
   int imageIndex = 0;
 
   List<CachedNetworkImage> images = [];
 
-  _GalleryState(this.galleryImages);
-
   @override
   Widget build(BuildContext context) {
-    for (GalleryImageModel galleryImage in galleryImages) {
+    for (GalleryImageModel galleryImage in widget.galleryImages) {
       images.add(CachedNetworkImage(imageUrl: galleryImage.url));
     }
     return Column(
       children: [
-        Text("Gallery"),
-        Text("${imageIndex + 1}/${galleryImages.length}"),
+        const Text("Gallery"),
+        Text("${imageIndex + 1}/${widget.galleryImages.length}"),
         Container(
           color: Colors.grey,
           child: AspectRatio(
@@ -79,7 +74,7 @@ class _GalleryState extends State<Gallery> {
             child: images[imageIndex],
           ),
         ),
-        Text(galleryImages[imageIndex].caption),
+        Text(widget.galleryImages[imageIndex].caption),
         Row(
           children: [
             ElevatedButton.icon(
@@ -88,16 +83,17 @@ class _GalleryState extends State<Gallery> {
                     imageIndex = max(imageIndex - 1, 0);
                   });
                 },
-                icon: Icon(Icons.arrow_left),
-                label: Text("Previous")),
+                icon: const Icon(Icons.arrow_left),
+                label: const Text("Previous")),
             ElevatedButton.icon(
                 onPressed: () {
                   setState(() {
-                    imageIndex = min(imageIndex + 1, galleryImages.length - 1);
+                    imageIndex =
+                        min(imageIndex + 1, widget.galleryImages.length - 1);
                   });
                 },
-                icon: Icon(Icons.arrow_right),
-                label: Text("Next")),
+                icon: const Icon(Icons.arrow_right),
+                label: const Text("Next")),
           ],
         )
       ],

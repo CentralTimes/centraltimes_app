@@ -68,7 +68,7 @@ class _PostListViewState extends State<PostListView>
                 itemBuilder: (context, data, index) =>
                     PostPreviewCard(post: data)),
             separatorBuilder: (context, index) =>
-                Padding(padding: EdgeInsets.all(8))),
+                const Padding(padding: EdgeInsets.all(8))),
       ),
     );
   }

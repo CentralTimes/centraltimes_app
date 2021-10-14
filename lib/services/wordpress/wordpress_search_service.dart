@@ -3,7 +3,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressSearchService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("WordpressSearchService");
+  static final Logger log = Logger("WordpressSearchService");
 
   static void init(WordPressAPI api) {
     WordpressSearchService.api = api;
@@ -19,7 +19,7 @@ class WordpressSearchService {
       return PostsResults(res.data);
     } catch (e) {
       log.severe(e.toString());
-      return new PostsResults(List.empty());
+      return PostsResults(List.empty());
     }
   }
 }

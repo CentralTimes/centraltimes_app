@@ -4,7 +4,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class CtNggGalleryService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("CtNggGalleryService");
+  static final Logger log = Logger("CtNggGalleryService");
 
   static void init(WordPressAPI api) {
     CtNggGalleryService.api = api;
@@ -25,8 +25,9 @@ class CtNggGalleryService {
     return result;
   }
 
-  static GalleryImageModel _galleryImageFromMap(Map<String, dynamic> nggImageMap) {
-    return new GalleryImageModel(
+  static GalleryImageModel _galleryImageFromMap(
+      Map<String, dynamic> nggImageMap) {
+    return GalleryImageModel(
         nggImageMap["pid"],
         nggImageMap["description"],
         nggImageMap["alttext"],

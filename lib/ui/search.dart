@@ -29,13 +29,13 @@ class SearchNewsDelegate extends SearchDelegate {
           onPressed: () {
             close(context, null);
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    return IconButton(onPressed: () {}, icon: Icon(Icons.search));
+    return IconButton(onPressed: () {}, icon: const Icon(Icons.search));
   }
 
   @override
@@ -44,21 +44,22 @@ class SearchNewsDelegate extends SearchDelegate {
       future: WordpressSearchService.getPostsResults(query),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
-            !snapshot.hasError)
-          return new Expanded(
+            !snapshot.hasError) {
+          return Expanded(
             flex: 1,
-            child: new SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.vertical, //.horizontal
-              child: new Text(
+              child: Text(
                 snapshot.data!.results.toString(),
               ),
             ),
           );
-        else
-          return ErrorScreen(
+        } else {
+          return const ErrorScreen(
             title: "Search failed",
             message: "Application Error",
           );
+        }
       },
     );
   }
@@ -69,21 +70,22 @@ class SearchNewsDelegate extends SearchDelegate {
       future: WordpressSearchService.getPostsResults(query),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
-            !snapshot.hasError)
-          return new Expanded(
+            !snapshot.hasError) {
+          return Expanded(
             flex: 1,
-            child: new SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.vertical, //.horizontal
-              child: new Text(
+              child: Text(
                 snapshot.data!.results.toString(),
               ),
             ),
           );
-        else
-          return ErrorScreen(
+        } else {
+          return const ErrorScreen(
             title: "Search failed",
             message: "Application Error",
           );
+        }
       },
     );
   }

@@ -7,7 +7,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressPostService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("WordpressPostService");
+  static final Logger log = Logger("WordpressPostService");
 
   static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
 
@@ -38,10 +38,11 @@ class WordpressPostService {
       if (!pageCache.containsKey(category)) pageCache[category] = {};
       pageCache[category]![page] =
           ListPage<PostModel>(posts, res.data.length < 10);
-      log.info(
-          "Fetched ${res.data.length} posts from API.");
+      log.info("Fetched ${res.data.length} posts from API.");
       // Also add the posts we got into the post cache
-      for (PostModel post in posts) postCache[post.id] = post;
+      for (PostModel post in posts) {
+        postCache[post.id] = post;
+      }
     }
     return pageCache[category]![page]!;
   }
@@ -62,10 +63,11 @@ class WordpressPostService {
   }
 
   static void clearPageCache({int category = -1}) {
-    if (category != -1)
+    if (category != -1) {
       pageCache[category] = {};
-    else
+    } else {
       pageCache = {};
+    }
   }
 
   static void clearPostCache() {
@@ -84,7 +86,7 @@ class WordpressPostService {
     // We also have to interpret data as a map since we fetch with a modified
     // API, so we can't use the wordpress_api package utility class.
     final unescape = HtmlUnescape();
-    return new PostModel(
+    return PostModel(
         postMap["id"],
         dateFormat.parse(postMap["date_gmt"], true).toLocal(),
         dateFormat.parse(postMap["modified_gmt"], true).toLocal(),

@@ -4,7 +4,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 
 class CtTabCategoryService {
   static late WordPressAPI api;
-  static final Logger log = new Logger("CtTabCategoryService");
+  static final Logger log = Logger("CtTabCategoryService");
 
   static List<TabCategoryModel> cache = [];
 

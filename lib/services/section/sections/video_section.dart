@@ -1,7 +1,6 @@
 import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class VideoSection extends ArticleSection {
@@ -17,13 +16,13 @@ class VideoSection extends ArticleSection {
           data: shortcode.nested,
           style: {
             "*": Style(
-              margin: EdgeInsets.all(0),
-              padding: EdgeInsets.all(0),
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
             )
           },
         ),
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(shortcode.arguments["credit"] ?? ""))
       ],
     );
