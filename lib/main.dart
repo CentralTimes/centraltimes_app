@@ -59,25 +59,24 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
 
   void initDynamicLinks() async {
     FirebaseDynamicLinks.instance.onLink(
-      onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-        final Uri? deepLink = dynamicLink?.link;
-        if (deepLink != null) {
-          switch (deepLink.path) {
-            case 'android':
-              break;
-            case 'ios':
-              break;
-            default:
-          }
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      final Uri? deepLink = dynamicLink?.link;
+      if (deepLink != null) {
+        switch (deepLink.path) {
+          case 'android':
+            break;
+          case 'ios':
+            break;
+          default:
         }
-      },
-      onError: (OnLinkErrorException e) async {
-        debugPrint('onLinkError');
-        debugPrint(e.message);
       }
-    );
-    
-    final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+    }, onError: (OnLinkErrorException e) async {
+      debugPrint('onLinkError');
+      debugPrint(e.message);
+    });
+
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
     if (deepLink != null) {
       switch (deepLink.path) {
