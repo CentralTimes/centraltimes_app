@@ -1,0 +1,36 @@
+on:
+  release:
+    types: [ created ]
+name: Android Release
+jobs:
+  generate:
+    name: Create Android Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+
+      - name: Decode Google services config
+        run: echo "${{ secrets.ANDROID_GOOGLE_SERVICES }}" | base64 --decode > android/app/google-services.json
+      - name: Decode keystore
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE_JKS }}" | base64 --decode > android/app/upload-keystore.jks
+      - name: Decode keystore properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > android/key.properties
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.x'
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --split-per-abi --release --build-name ${{ github.event.release.tag_name }} --build-number ${{ github.run_id }}
+      - name: Build AAB
+        run: flutter build appbundle --release --build-name ${{ github.event.release.tag_name }} --build-number ${{ github.run_id }}
+
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: "build/app/outputs/bundle/release/app.aab,build/app/outputs/apk/release/*.apk"
