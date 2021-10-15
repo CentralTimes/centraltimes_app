@@ -1,4 +1,3 @@
-import 'package:app/ui/search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,14 +19,14 @@ class PageTemplate extends StatelessWidget {
             SliverAppBar(
               centerTitle: true,
               title: Text('Central Times', style: GoogleFonts.roboto()),
-              actions: [
+              /*actions: [
                 IconButton(
                     onPressed: () {
                       showSearch(
                           context: context, delegate: SearchNewsDelegate());
                     },
                     icon: const Icon(Icons.search)),
-              ],
+              ],*/
               bottom: bottom,
               pinned: true,
               floating: true,
