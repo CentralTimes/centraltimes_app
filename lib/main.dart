@@ -1,4 +1,5 @@
 import 'package:app/services/ct/ct_ngg_gallery_service.dart';
+import 'package:app/services/ct/ct_rules_service.dart';
 import 'package:app/services/ct/ct_shortcode_service.dart';
 import 'package:app/services/ct/ct_sno_gallery_service.dart';
 import 'package:app/services/ct/ct_tab_category_service.dart';
@@ -31,6 +32,9 @@ void main() async {
 
   await Firebase.initializeApp();
   final api = WordPressAPI(apiBase);
+
+  CtRulesService.init(api);
+  await CtRulesService.getRules();
   WordpressPostService.init(api);
   WordpressMediaService.init(api);
   WordpressSearchService.init(api);

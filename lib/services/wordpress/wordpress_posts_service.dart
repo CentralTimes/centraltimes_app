@@ -1,4 +1,5 @@
 import 'package:app/models/post_model.dart';
+import 'package:app/services/ct/ct_rules_service.dart';
 import 'package:app/ui/list/list_page.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
@@ -77,7 +78,9 @@ class WordpressPostService {
   static List<PostModel> _processPosts(WPResponse res) {
     List<PostModel> posts = [];
     for (final post in res.data) {
-      posts.add(_postFromMap(post));
+      if (!CtRulesService.applyRuleList("blacklist", post)) {
+        posts.add(_postFromMap(post));
+      }
     }
     return posts;
   }
