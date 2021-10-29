@@ -1,5 +1,5 @@
 import 'package:app/models/post_model.dart';
-import 'package:app/services/ct/ct_rules_service.dart';
+//import 'package:app/services/ct/ct_rules_service.dart';
 import 'package:app/ui/list/list_page.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
@@ -77,11 +77,19 @@ class WordpressPostService {
 
   static List<PostModel> _processPosts(WPResponse res) {
     List<PostModel> posts = [];
+    /* sorry brian
     for (final post in res.data) {
       if (!CtRulesService.applyRuleList("blacklist", post)) {
         posts.add(_postFromMap(post));
       }
+    }*/
+
+    for (final post in res.data) {
+      if (!post["tags"].contains(794)) {
+        posts.add(_postFromMap(post));
+      }
     }
+
     return posts;
   }
 
