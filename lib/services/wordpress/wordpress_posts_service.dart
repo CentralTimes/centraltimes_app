@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/models/post_model.dart';
 //import 'package:app/services/ct/ct_rules_service.dart';
 import 'package:app/ui/list/list_page.dart';
@@ -85,9 +87,9 @@ class WordpressPostService {
     }*/
 
     for (final post in res.data) {
-      if (!post["tags"].contains(794)) {
-        posts.add(_postFromMap(post));
-      }
+      if (post["tags"].contains(794) && !Platform.isAndroid) continue;
+      if (post["tags"].contains(1081)) continue;
+      posts.add(_postFromMap(post));
     }
 
     return posts;
