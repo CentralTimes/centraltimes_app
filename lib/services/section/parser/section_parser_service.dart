@@ -10,42 +10,19 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SectionParserService {
-  /*
-   * The section parses assumes that each newline in ct_raw is a new section,
-   * identifies whether that section contains a shortcode or not, and renders
-   * the section as HTML or a shortcode section depending on the identification.
-   */
-
-  static List<Widget> parseSections(String rawContent) {
+  static List<Widget> parseSections(String raw) {
     List<Widget> sections = [];
-    List<String> raws = rawContent.split("\r\n\r\n");
-    for (String raw in raws) {
-      if (raw.trim().isEmpty) continue;
-      List<Shortcode> shortcodes = ShortcodeParserService.parseShortcodes(raw);
-      if (shortcodes.isEmpty) {
-        sections.add(Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: Html(
-              data: raw,
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, element) async {
-                await launch(url!);
-              },
-              style: {
-                "*": Style(
-                  margin: const EdgeInsets.all(0),
-                  padding: const EdgeInsets.all(0),
-                  fontSize: const FontSize(18),
-                  lineHeight: const LineHeight(1.5),
-                )
-              },
-            )));
-      } else {
-        for (Shortcode shortcode in shortcodes) {
-          sections.add(_applyShortcode(shortcode));
-        }
-      }
+
+    List<Shortcode> shortcodes = ShortcodeParserService.parseShortcodes(raw);
+    int position = 0;
+    for (Shortcode shortcode in shortcodes) {
+      sections.addAll(_generateParagraphs(
+          raw.substring(position, shortcode.sourceStartIndex)));
+      sections.add(_applyShortcode(shortcode));
+      position = shortcode.sourceEndIndex;
     }
+    sections.addAll(_generateParagraphs(raw.substring(position, raw.length)));
+
     return sections;
   }
 
@@ -65,5 +42,37 @@ class SectionParserService {
       default:
         return UnsupportedSection().useShortcode(shortcode);
     }
+  }
+
+  static List<Widget> _generateParagraphs(String sourceHtml) {
+    List<Widget> paragraphs = [];
+    List<String> paragraphHtmls = sourceHtml.trim().split("\r\n\r\n");
+
+    for (String paragraphHtml in paragraphHtmls) {
+      if (paragraphHtml.trim().isEmpty) continue;
+      paragraphs.add(_generateParagraph(paragraphHtml));
+    }
+
+    return paragraphs;
+  }
+
+  static Widget _generateParagraph(String htmlData) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: Html(
+          data: htmlData,
+          onLinkTap: (String? url, RenderContext context,
+              Map<String, String> attributes, element) async {
+            await launch(url!);
+          },
+          style: {
+            "*": Style(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              fontSize: const FontSize(18),
+              lineHeight: const LineHeight(1.5),
+            )
+          },
+        ));
   }
 }

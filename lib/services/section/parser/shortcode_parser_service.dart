@@ -21,7 +21,8 @@ class ShortcodeParserService {
       Map<String, String> arguments = parseArguments(match.group(3) ?? "");
       String nested = match.group(5) ?? "";
 
-      shortcodes.add(Shortcode(name, arguments, nested));
+      shortcodes
+          .add(Shortcode(name, arguments, nested, match.start, match.end));
     }
 
     return shortcodes;
@@ -91,11 +92,14 @@ class Shortcode {
   final String name;
   final Map<String, String> arguments;
   final String nested;
+  final int sourceStartIndex;
+  final int sourceEndIndex;
 
-  Shortcode(this.name, this.arguments, this.nested);
+  Shortcode(this.name, this.arguments, this.nested, this.sourceStartIndex,
+      this.sourceEndIndex);
 
   @override
   String toString() {
-    return 'Shortcode{name: $name, arguments: $arguments, nested: $nested}';
+    return 'Shortcode{name: $name, arguments: $arguments, nested: $nested, sourceStartIndex: $sourceStartIndex, sourceEndIndex: $sourceEndIndex}';
   }
 }
