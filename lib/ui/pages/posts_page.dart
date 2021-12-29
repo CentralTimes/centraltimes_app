@@ -1,5 +1,5 @@
 import 'package:app/models/tab_category_model.dart';
-import 'package:app/services/ct/ct_tab_category_service.dart';
+import 'package:app/services/wordpress/v1/ct_tab_category_service.dart';
 import 'package:app/ui/list/post_list/post_list_view.dart';
 import 'package:app/ui/page_template.dart';
 import 'package:flutter/material.dart';

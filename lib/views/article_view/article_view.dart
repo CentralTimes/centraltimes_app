@@ -1,7 +1,8 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
-import 'package:app/services/wordpress/wordpress_media_service.dart';
-import 'package:app/ui/save_button.dart';
+import 'package:app/services/wordpress/v2/wordpress_media_service.dart';
+import 'package:app/ui/custom_buttons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -121,6 +122,7 @@ class ArticleImageBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //return CachedNetworkImage(imageUrl: imageUrl)
     return WordpressMediaService.getImage(id, (context, provider) {
       return Image(image: provider);
     }, (context, url) {
