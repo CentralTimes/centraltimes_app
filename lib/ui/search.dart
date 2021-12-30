@@ -1,4 +1,4 @@
-import 'package:app/services/wordpress/v2/wordpress_search_service.dart';
+import 'package:app/services/wordpress/wordpress_search_service.dart';
 import 'package:app/ui/error_screens/error_screen.dart';
 import 'package:flutter/material.dart';
 

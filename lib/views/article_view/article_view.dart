@@ -1,6 +1,6 @@
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
-import 'package:app/services/wordpress/v2/wordpress_media_service.dart';
+import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/custom_buttons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
