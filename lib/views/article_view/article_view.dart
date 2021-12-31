@@ -1,20 +1,41 @@
+import 'package:app/logic/media_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
+import 'package:app/services/logic_locator.dart';
 import 'package:app/services/wordpress/wordpress_media_service.dart';
 import 'package:app/ui/custom_buttons.dart';
+import 'package:app/views/article_view/article_view_logic.dart';
+import 'package:app/widgets/media_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 import '../featured_view.dart';
 
-class ArticleView extends StatelessWidget {
+class ArticleView extends StatefulWidget {
   final PostModel post;
-  final _scrollController = ScrollController();
+  const ArticleView({Key? key, required this.post}) : super(key: key);
 
-  ArticleView(this.post, {Key? key}) : super(key: key);
+  @override
+  _ArticleViewState createState() => _ArticleViewState();
+}
+
+class _ArticleViewState extends State<ArticleView> {
+  final ScrollController _scrollController = ScrollController();
+  final MediaLogic mediaLogic = getIt<MediaLogic>();
+  final ArticleViewLogic logic = getIt<ArticleViewLogic>();
+  @override
+  void initState() {
+    super.initState();
+    if (widget.post.featuredMedia != 0) {
+      mediaLogic
+          .getMediaSingle(widget.post.featuredMedia)
+          .then((value) => logic.finishInitialization());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,54 +45,65 @@ class ArticleView extends StatelessWidget {
         title: const Text("Central Times"),
         actions: [
           SaveButton(
-            post.id,
+            widget.post.id,
             iconColor: Colors.white,
           ),
           IconButton(
               onPressed: () {
-                Share.share(post.link,
-                    subject: "${post.title} - Central Times");
+                Share.share(widget.post.link,
+                    subject: "${widget.post.title} - Central Times");
               },
               icon: const Icon(Icons.share)),
         ],
       ),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverList(
-              delegate: SliverChildListDelegate.fixed([
-            const Padding(padding: EdgeInsets.all(8)),
-            ArticleTitle(title: post.title),
-            if (post.staffNames.isNotEmpty) ...[
-              const Padding(padding: EdgeInsets.all(4)),
-              ArticleAuthors(authors: post.writers.join(", ")),
-            ],
-            const Padding(padding: EdgeInsets.all(4)),
-            ArticleDate(date: post.date),
-            const Padding(padding: EdgeInsets.all(8)),
-            if (post.featuredMedia != 0)
-              ArticleImageBuilder(id: post.featuredMedia),
-            if (post.video.isNotEmpty && post.video[0].trim().isNotEmpty)
-              ArticleFeaturedButton(
-                  onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => FeaturedView(post)))),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Column(
-                  children:
-                      SectionParserService.parseSections(post.rawContent)),
-            ),
-          ])),
-        ],
-      ),
+      body: ValueListenableBuilder<bool>(
+          valueListenable: logic.viewInitializedNotifier,
+          builder: (context, value, child) {
+            if (value == false) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverList(
+                    delegate: SliverChildListDelegate.fixed([
+                  const Padding(padding: EdgeInsets.all(8)),
+                  _ArticleTitle(title: widget.post.title),
+                  if (widget.post.staffNames.isNotEmpty) ...[
+                    const Padding(padding: EdgeInsets.all(4)),
+                    _ArticleAuthors(authors: widget.post.writers.join(", ")),
+                  ],
+                  const Padding(padding: EdgeInsets.all(4)),
+                  _ArticleDate(date: widget.post.date),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  if (widget.post.featuredMedia != 0)
+                    MediaImageWidget(
+                        media: mediaLogic
+                            .getMediaFromCache(widget.post.featuredMedia)!),
+                  if (widget.post.video.isNotEmpty &&
+                      widget.post.video[0].trim().isNotEmpty)
+                    _ArticleFeaturedButton(
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => FeaturedView(widget.post)))),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Column(
+                        children: SectionParserService.parseSections(
+                            widget.post.rawContent)),
+                  ),
+                ])),
+              ],
+            );
+          }),
     );
   }
 }
 
-class ArticleTitle extends StatelessWidget {
+class _ArticleTitle extends StatelessWidget {
   final String? title;
 
-  const ArticleTitle({Key? key, required this.title}) : super(key: key);
+  const _ArticleTitle({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +114,10 @@ class ArticleTitle extends StatelessWidget {
   }
 }
 
-class ArticleAuthors extends StatelessWidget {
+class _ArticleAuthors extends StatelessWidget {
   final String? authors;
 
-  const ArticleAuthors({Key? key, required this.authors}) : super(key: key);
+  const _ArticleAuthors({Key? key, required this.authors}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +130,10 @@ class ArticleAuthors extends StatelessWidget {
   }
 }
 
-class ArticleDate extends StatelessWidget {
+class _ArticleDate extends StatelessWidget {
   final DateTime date;
 
-  const ArticleDate({Key? key, required this.date}) : super(key: key);
+  const _ArticleDate({Key? key, required this.date}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +147,11 @@ class ArticleDate extends StatelessWidget {
   }
 }
 
-class ArticleImageBuilder extends StatelessWidget {
+/*
+class _ArticleImageBuilder extends StatelessWidget {
   final int id;
 
-  const ArticleImageBuilder({Key? key, required this.id}) : super(key: key);
+  const _ArticleImageBuilder({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +163,11 @@ class ArticleImageBuilder extends StatelessWidget {
           aspectRatio: 1.38, child: Center(child: CircularProgressIndicator()));
     });
   }
-}
+}*/
 
-class ArticleFeaturedButton extends StatelessWidget {
+class _ArticleFeaturedButton extends StatelessWidget {
   final void Function()? onPressed;
-  const ArticleFeaturedButton({Key? key, required this.onPressed})
+  const _ArticleFeaturedButton({Key? key, required this.onPressed})
       : super(key: key);
 
   @override

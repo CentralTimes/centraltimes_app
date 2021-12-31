@@ -20,7 +20,7 @@ class PostPreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ArticleView(post))),
+          .push(MaterialPageRoute(builder: (_) => ArticleView(post: post))),
       child: Ink(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,

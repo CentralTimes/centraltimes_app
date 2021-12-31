@@ -1,3 +1,4 @@
+import 'package:app/services/logic_locator.dart';
 import 'package:app/services/wordpress/ct_ngg_gallery_service.dart';
 import 'package:app/services/wordpress/ct_rules_service.dart';
 import 'package:app/services/wordpress/ct_shortcode_service.dart';
@@ -43,6 +44,8 @@ void main() async {
   CtTabCategoryService.init(api);
   CtShortcodeService.init(api);
   ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
+
+  setupGetIt();
 
   runApp(const CentralTimesApp());
 }
