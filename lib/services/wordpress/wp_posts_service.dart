@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/models/post_model.dart';
+import 'package:app/services/wordpress/wordpress_init.dart';
 //import 'package:app/services/ct/ct_rules_service.dart';
 import 'package:app/ui/list/list_page.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -9,7 +10,6 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressPostService {
-  static late WordPressAPI api;
   static final Logger log = Logger("WordpressPostService");
 
   static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
@@ -20,22 +20,16 @@ class WordpressPostService {
   // 1st int category, 2nd int page number
   static Map<int, Map<int, ListPage<PostModel>>> pageCache = {};
 
-  static void init(WordPressAPI api) {
-    WordpressPostService.api = api;
-    log.info("Initialized!");
-  }
-
   static Future<ListPage<PostModel>> getPostsPage(
       int category, int page) async {
     if (pageCache.containsKey(page)) {
       log.info("Cache hit!");
     } else {
-      final WPResponse res = await WordpressPostService.api.fetch('posts/',
-          args: {
-            "page": page,
-            "per_page": 10,
-            if (category != 0) "categories": category
-          });
+      final WPResponse res = await wpApi.fetch('posts/', args: {
+        "page": page,
+        "per_page": 10,
+        if (category != 0) "categories": category
+      });
 
       List<PostModel> posts = _processPosts(res);
       if (!pageCache.containsKey(category)) pageCache[category] = {};
@@ -53,8 +47,7 @@ class WordpressPostService {
   static Future<PostModel> getPost(int postId) async {
     if (!postCache.containsKey(postId)) {
       log.info("Attempting to fetch single post with id $postId...");
-      final WPResponse res =
-          await WordpressPostService.api.fetch('posts/$postId');
+      final WPResponse res = await wpApi.fetch('posts/$postId');
       postCache[postId] = _postFromMap(res.data);
     }
     return postCache[postId]!;

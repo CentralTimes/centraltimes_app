@@ -1,19 +1,14 @@
 import 'package:app/models/gallery_image_model.dart';
+import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class CtNggGalleryService {
-  static late WordPressAPI api;
   static final Logger log = Logger("CtNggGalleryService");
 
-  static void init(WordPressAPI api) {
-    CtNggGalleryService.api = api;
-    log.info("Initialized!");
-  }
-
   static Future<List<GalleryImageModel>> getGalleryImageData(int id) async {
-    final WPResponse res = await CtNggGalleryService.api
-        .fetch('ngg-gallery/$id', namespace: 'centraltimes/v1');
+    final WPResponse res =
+        await wpApi.fetch('ngg-gallery/$id', namespace: 'centraltimes/v1');
 
     log.config(res);
 
@@ -42,6 +37,6 @@ class CtNggGalleryService {
      function isn't suited to this, as it uses the platform's separator instead
      of the one consistent to web URIs: "/".
      */
-    return Uri.https(api.site, path + filename).toString();
+    return Uri.https(wpApi.site, path + filename).toString();
   }
 }

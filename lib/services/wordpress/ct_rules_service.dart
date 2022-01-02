@@ -1,22 +1,17 @@
 import 'dart:io';
 
+import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class CtRulesService {
-  static late WordPressAPI api;
   static final Logger log = Logger("CtRulesService");
 
   static Map<String, dynamic> rules = {};
 
-  static void init(WordPressAPI api) {
-    CtRulesService.api = api;
-    log.info("Initialized!");
-  }
-
   static Future<void> getRules() async {
     final WPResponse res =
-        await CtRulesService.api.fetch('rules', namespace: 'centraltimes/v1');
+        await wpApi.fetch('rules', namespace: 'centraltimes/v1');
     rules = res.data;
   }
 

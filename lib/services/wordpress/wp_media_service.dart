@@ -1,4 +1,5 @@
 import 'package:app/models/media_model.dart';
+import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +7,12 @@ import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressMediaService {
-  static late WordPressAPI api;
   static final Logger log = Logger("WordpressMediaService");
 
   // This cache shouldn't need to be cleared during app runtime, as media IDs
   // should be intrinsically linked to its API metadata and content.
   // Because of this we may want to TODO convert memory cache to local storage.
   static final Map<int, WPResponse> mediaCache = {};
-
-  static void init(WordPressAPI api) {
-    WordpressMediaService.api = api;
-    log.info("Initialized!");
-  }
 
   static FutureBuilder<WPResponse> getImage(
       int id,
@@ -46,7 +41,7 @@ class WordpressMediaService {
       return mediaCache[id]!;
     } else {
       log.info("Retrieving media data for media $id...");
-      WPResponse response = await WordpressMediaService.api.media.fetch(id: id);
+      WPResponse response = await wpApi.media.fetch(id: id);
       //log.info(response.data.mediaDetails["sizes"]["full"]);
       MediaModel media = MediaModel(
           id: id,
@@ -62,9 +57,10 @@ class WordpressMediaService {
     }
   }
 
-  static Future<MediaModel> fetchMedia(int id) async {
+  static Future<MediaModel> fetchMedia(
+      {required int id, String? caption}) async {
     log.info("Retrieving media data for media $id...");
-    WPResponse response = await WordpressMediaService.api.media.fetch(id: id);
+    WPResponse response = await wpApi.media.fetch(id: id);
     MediaModel media = MediaModel(
         id: id,
         url: response.data.mediaDetails["sizes"]["full"]["source_url"],

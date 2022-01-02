@@ -1,17 +1,13 @@
 import 'package:app/logic/media_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/parser/section_parser_service.dart';
-import 'package:app/services/logic_locator.dart';
-import 'package:app/services/wordpress/wordpress_media_service.dart';
+import 'package:app/services/logic_getit_init.dart';
 import 'package:app/ui/custom_buttons.dart';
 import 'package:app/views/article_view/article_view_logic.dart';
 import 'package:app/widgets/media_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:wordpress_api/wordpress_api.dart';
 
 import '../featured_view.dart';
 
@@ -33,7 +29,7 @@ class _ArticleViewState extends State<ArticleView> {
     if (widget.post.featuredMedia != 0) {
       mediaLogic
           .getMediaSingle(widget.post.featuredMedia)
-          .then((value) => logic.finishInitialization());
+          .then((value) => logic.initView());
     }
   }
 

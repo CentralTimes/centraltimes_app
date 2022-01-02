@@ -1,18 +1,13 @@
+import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:logging/logging.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
 class WordpressSearchService {
-  static late WordPressAPI api;
   static final Logger log = Logger("WordpressSearchService");
-
-  static void init(WordPressAPI api) {
-    WordpressSearchService.api = api;
-    log.info("Initialized!");
-  }
 
   static Future<PostsResults> getPostsResults(query) async {
     try {
-      WPResponse res = await api.search.search(args: {
+      WPResponse res = await wpApi.search.search(args: {
         "search": query,
         "type": "post",
       });

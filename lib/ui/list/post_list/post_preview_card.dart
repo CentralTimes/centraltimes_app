@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:app/models/post_model.dart';
-import 'package:app/services/wordpress/wordpress_media_service.dart';
+import 'package:app/services/wordpress/wp_media_service.dart';
 import 'package:app/ui/custom_buttons.dart';
 import 'package:app/views/article_view/article_view.dart';
 import 'package:app/views/featured_view.dart';

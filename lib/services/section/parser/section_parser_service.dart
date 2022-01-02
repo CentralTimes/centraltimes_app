@@ -1,3 +1,4 @@
+import 'package:app/models/section_model.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/services/section/sections/caption_section.dart';
 import 'package:app/services/section/sections/gallery_section.dart';
@@ -45,6 +46,16 @@ class SectionParserService {
           sections.add(_applyShortcode(shortcode));
         }
       }
+    }
+    return sections;
+  }
+
+  static List<SectionModel> parseSections2(String rawContent) {
+    List<SectionModel> sections = [];
+    List<String> raws = rawContent.split("\r\n\r\n");
+    for (String raw in raws) {
+      if (raw.trim().isEmpty) continue;
+      //List<Short>
     }
     return sections;
   }
