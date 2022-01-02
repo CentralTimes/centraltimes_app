@@ -1,4 +1,6 @@
-class CommentModel {
+import 'package:app/models/object_model.dart';
+
+class CommentModel extends ObjectModel {
   final int id;
   final int post;
   final int parent;
@@ -10,7 +12,7 @@ class CommentModel {
   final String link;
   final Map<String, dynamic> authorAvatorUrls;
 
-  CommentModel(
+  const CommentModel(
       this.id,
       this.post,
       this.parent,

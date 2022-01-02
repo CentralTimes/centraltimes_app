@@ -1,4 +1,5 @@
-import 'package:app/models/sections/media_model.dart';
+import 'package:app/models/media_model.dart';
+import 'package:app/models/sections/image_model.dart';
 import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -44,7 +45,6 @@ class WordpressMediaService {
       WPResponse response = await wpApi.media.fetch(id: id);
       //log.info(response.data.mediaDetails["sizes"]["full"]);
       MediaModel media = MediaModel(
-          id: id,
           url: response.data.mediaDetails["sizes"]["full"]["source_url"],
           type: response.data.mediaDetails["sizes"]["full"]["mime_type"],
           width:
@@ -57,12 +57,10 @@ class WordpressMediaService {
     }
   }
 
-  static Future<MediaModel> fetchMedia(
-      {required int id, String? caption}) async {
+  static Future<MediaModel> fetchMedia({required int id}) async {
     log.info("Retrieving media data for media $id...");
     WPResponse response = await wpApi.media.fetch(id: id);
     MediaModel media = MediaModel(
-        id: id,
         url: response.data.mediaDetails["sizes"]["full"]["source_url"],
         type: response.data.mediaDetails["sizes"]["full"]["mime_type"],
         width: response.data.mediaDetails["sizes"]["full"]["width"].toDouble(),

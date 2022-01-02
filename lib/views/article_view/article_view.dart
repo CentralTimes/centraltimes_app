@@ -34,6 +34,12 @@ class _ArticleViewState extends State<ArticleView> {
   }
 
   @override
+  void dispose() {
+    logic.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +80,7 @@ class _ArticleViewState extends State<ArticleView> {
                   const Padding(padding: EdgeInsets.all(8)),
                   if (widget.post.featuredMedia != 0)
                     MediaImageWidget(
-                        media: mediaLogic
+                        mediaModel: mediaLogic
                             .getMediaFromCache(widget.post.featuredMedia)!),
                   if (widget.post.video.isNotEmpty &&
                       widget.post.video[0].trim().isNotEmpty)

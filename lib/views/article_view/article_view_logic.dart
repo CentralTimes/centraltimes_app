@@ -8,4 +8,8 @@ class ArticleViewLogic {
   void initView() {
     viewInitializedNotifier.value = true;
   }
+
+  void dispose() {
+    viewInitializedNotifier.value = false;
+  }
 }

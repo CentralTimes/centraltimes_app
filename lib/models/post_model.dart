@@ -1,5 +1,7 @@
 // The PostModel contains the extra fields rawContent and staffNames.
-class PostModel {
+import 'package:app/models/object_model.dart';
+
+class PostModel extends ObjectModel {
   // Unique ID of the post
   final int id;
 
@@ -63,7 +65,7 @@ class PostModel {
   // Either "open" or "closed", depending on the ability to post new comments
   final String commentStatus;
 
-  PostModel(
+  const PostModel(
       this.id,
       this.date,
       this.modified,

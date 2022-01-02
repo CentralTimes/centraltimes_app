@@ -1,9 +1,10 @@
 import 'package:app/models/sections/section_model.dart';
 
-class HtmlModel extends SectionModel {
+class VideoHtmlModel extends SectionModel {
   final String html;
+  final String credit;
 
-  const HtmlModel({required this.html});
+  const VideoHtmlModel({required this.html, required this.credit});
 
   @override
   String toString() {

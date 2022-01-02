@@ -1,7 +1,9 @@
-import 'package:app/models/sections/media_model.dart';
+import 'package:app/models/media_model.dart';
 import 'package:app/services/wordpress/wp_media_service.dart';
+import 'package:logging/logging.dart';
 
 class MediaLogic {
+  final Logger log = Logger("MediaManager");
   final Map<int, MediaModel> _mediaCache;
   MediaLogic() : _mediaCache = {};
   Future<MediaModel> getMediaSingle(int id) async {
@@ -10,6 +12,7 @@ class MediaLogic {
     }
     MediaModel media = await WordpressMediaService.fetchMedia(id: id);
     _mediaCache[id] = media;
+    //log.info(media);
     return media;
   }
 
