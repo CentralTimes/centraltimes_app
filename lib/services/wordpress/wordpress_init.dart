@@ -7,6 +7,6 @@ final WordPressAPI wpApi = WordPressAPI(const String.fromEnvironment('API_BASE',
     defaultValue: 'www.centraltimes.org'));
 
 Future<void> setupWordpress() async {
-  await CtRulesService.getRules();
-  ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
+  await CtShortcodeService.init();
+  ShortcodeParserService.init(CtShortcodeService.getShortcodeNames());
 }

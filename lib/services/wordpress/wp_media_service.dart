@@ -1,4 +1,4 @@
-import 'package:app/models/media_model.dart';
+import 'package:app/models/sections/media_model.dart';
 import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';

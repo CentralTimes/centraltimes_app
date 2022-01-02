@@ -1,4 +1,4 @@
-import 'package:app/models/media_model.dart';
+import 'package:app/models/sections/media_model.dart';
 import 'package:app/services/wordpress/wp_media_service.dart';
 
 class MediaLogic {

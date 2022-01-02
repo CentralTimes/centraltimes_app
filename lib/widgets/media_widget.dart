@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:app/models/media_model.dart';
+import 'package:app/models/sections/media_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
