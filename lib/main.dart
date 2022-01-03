@@ -1,7 +1,7 @@
 import 'package:app/services/logic_getit_init.dart';
 import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_init.dart';
-import 'package:app/views/home_view.dart';
+import 'package:app/views/home_view/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

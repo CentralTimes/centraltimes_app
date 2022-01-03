@@ -40,7 +40,7 @@ class ArticleViewLogic {
     viewInitializedNotifier.value = true;
   }
 
-  void dispose() {
+  void reset() {
     viewInitializedNotifier.value = false;
     sections = [];
   }

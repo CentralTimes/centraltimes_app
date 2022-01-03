@@ -38,7 +38,7 @@ class _ArticleViewState extends State<ArticleView> {
 
   @override
   void dispose() {
-    logic.dispose();
+    logic.reset();
     super.dispose();
   }
 
