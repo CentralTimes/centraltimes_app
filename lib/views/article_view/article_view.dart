@@ -1,13 +1,20 @@
 import 'package:app/logic/media_logic.dart';
 import 'package:app/models/post_model.dart';
-import 'package:app/services/section/parser/section_parser_service.dart';
+import 'package:app/models/sections/html_model.dart';
+import 'package:app/models/sections/image_model.dart';
+import 'package:app/models/sections/pullquote_model.dart';
+import 'package:app/models/sections/related_posts_model.dart';
+import 'package:app/models/sections/unsupported_model.dart';
+import 'package:app/models/sections/video_html_model.dart';
 import 'package:app/services/logic_getit_init.dart';
 import 'package:app/ui/custom_buttons.dart';
 import 'package:app/views/article_view/article_view_logic.dart';
 import 'package:app/widgets/media_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../featured_view.dart';
 
@@ -26,11 +33,7 @@ class _ArticleViewState extends State<ArticleView> {
   @override
   void initState() {
     super.initState();
-    if (widget.post.featuredMedia != 0) {
-      mediaLogic
-          .getMediaSingle(widget.post.featuredMedia)
-          .then((value) => logic.initView());
-    }
+    logic.initView(widget.post);
   }
 
   @override
@@ -88,12 +91,14 @@ class _ArticleViewState extends State<ArticleView> {
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (_) => FeaturedView(widget.post)))),
+                  const _ArticleSections(),
+                  /*
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Column(
                         children: SectionParserService.parseSections(
                             widget.post.rawContent)),
-                  ),
+                  ),*/
                 ])),
               ],
             );
@@ -180,6 +185,96 @@ class _ArticleFeaturedButton extends StatelessWidget {
         Icon(Icons.auto_awesome),
         Text("View Featured Content")
       ]),
+    );
+  }
+}
+
+class _ArticleSections extends StatelessWidget {
+  const _ArticleSections({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ArticleViewLogic logic = getIt<ArticleViewLogic>();
+    MediaLogic mediaLogic = getIt<MediaLogic>();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+          children: logic.sections.map((section) {
+        switch (section.runtimeType) {
+          case HtmlModel:
+            HtmlModel html = section as HtmlModel;
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Html(
+                data: html.html,
+                onLinkTap: (String? url, RenderContext context,
+                    Map<String, String> attributes, element) async {
+                  await launch(url!);
+                },
+                style: {
+                  "*": Style(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    fontSize: const FontSize(18),
+                    lineHeight: const LineHeight(1.5),
+                  )
+                },
+              ),
+            );
+          case ImageModel:
+            ImageModel image = section as ImageModel;
+            return Column(children: [
+              if (image.id != 0)
+                MediaImageWidget(
+                    mediaModel: mediaLogic.getMediaFromCache(image.id)!),
+              if (image.caption != null)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Text(image.caption!),
+                )
+            ]);
+          case PullquoteModel:
+            PullquoteModel pullquoteModel = section as PullquoteModel;
+            return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                child: Column(children: [
+                  if (pullquoteModel.imageId != null &&
+                      pullquoteModel.imageId != 0)
+                    MediaImageWidget(
+                        mediaModel: mediaLogic
+                            .getMediaFromCache(pullquoteModel.imageId!)!),
+                  Text('"${pullquoteModel.quote}"'),
+                  Text("--${pullquoteModel.speaker ?? ""}"),
+                ]));
+          case VideoHtmlModel:
+            VideoHtmlModel videoHtmlModel = section as VideoHtmlModel;
+            return Column(
+              children: [
+                Html(
+                  data: videoHtmlModel.html,
+                  style: {
+                    "*": Style(
+                      margin: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
+                    ),
+                  },
+                ),
+                Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: Text(videoHtmlModel.credit))
+              ],
+            );
+          case RelatedPostsModel:
+            RelatedPostsModel relatedPostsModel = section as RelatedPostsModel;
+            return Text(relatedPostsModel.toString());
+          default:
+            UnsupportedModel unsupportedModel = section as UnsupportedModel;
+            return Text(unsupportedModel.text);
+        }
+      }).toList()),
     );
   }
 }

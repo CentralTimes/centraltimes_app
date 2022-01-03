@@ -1,5 +1,3 @@
-import 'package:app/services/section/parser/shortcode_parser_service.dart';
-import 'package:app/services/wordpress/ct_rules_service.dart';
 import 'package:app/services/wordpress/ct_shortcode_service.dart';
 import 'package:wordpress_api/wordpress_api.dart';
 
@@ -8,5 +6,4 @@ final WordPressAPI wpApi = WordPressAPI(const String.fromEnvironment('API_BASE',
 
 Future<void> setupWordpress() async {
   await CtShortcodeService.init();
-  ShortcodeParserService.init(CtShortcodeService.getShortcodeNames());
 }

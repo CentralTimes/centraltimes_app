@@ -1,3 +1,4 @@
+/*
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
@@ -44,4 +45,4 @@ class RelatedSection implements ArticleSection {
       ),
     );
   }
-}
+}*/
