@@ -1,7 +1,7 @@
 import 'package:app/logic/media_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/services/logic_getit_init.dart';
-import 'package:app/ui/custom_buttons.dart';
+import 'package:app/widgets/saved_button.dart';
 import 'package:app/views/article_view/article_view.dart';
 import 'package:app/views/featured_view.dart';
 import 'package:app/widgets/media_widget.dart';

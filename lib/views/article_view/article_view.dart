@@ -7,7 +7,7 @@ import 'package:app/models/sections/related_posts_model.dart';
 import 'package:app/models/sections/unsupported_model.dart';
 import 'package:app/models/sections/video_html_model.dart';
 import 'package:app/services/logic_getit_init.dart';
-import 'package:app/ui/custom_buttons.dart';
+import 'package:app/widgets/saved_button.dart';
 import 'package:app/views/article_view/article_view_logic.dart';
 import 'package:app/widgets/media_widget.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
+/*
+
 import 'package:app/services/wordpress/wp_search_service.dart';
-import 'package:app/ui/error_screens/error_screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchNewsDelegate extends SearchDelegate {
@@ -89,4 +90,4 @@ class SearchNewsDelegate extends SearchDelegate {
       },
     );
   }
-}
+}*/

@@ -11,7 +11,7 @@ class PostsLogic {
 
   Future<PostModel> getPost({required int postId}) async {
     if (_postsCache.containsKey(postId)) return _postsCache[postId]!;
-    PostModel postModel = await WordpressPostService.getPost1(postId: postId);
+    PostModel postModel = await WordpressPostService.getPost(postId: postId);
     _postsCache[postId] = postModel;
     return postModel;
   }

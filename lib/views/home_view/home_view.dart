@@ -25,7 +25,7 @@ class HomeView extends StatelessWidget {
             builder: (BuildContext context) {
               switch (index) {
                 case 1:
-                  return Container();
+                  return const _SavedPage();
                 default:
                   return const _PostsPage();
               }
@@ -125,6 +125,84 @@ class _PostListView extends StatelessWidget {
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (context, data, index) =>
                     PostPreviewCardWidget(post: data)),
+            separatorBuilder: (context, index) =>
+                const Padding(padding: EdgeInsets.all(8))),
+      ),
+    );
+  }
+}
+
+class _SavedPage extends StatefulWidget {
+  const _SavedPage({Key? key}) : super(key: key);
+
+  @override
+  __SavedPageState createState() => __SavedPageState();
+}
+
+class __SavedPageState extends State<_SavedPage> {
+  final HomeViewLogic logic = getIt<HomeViewLogic>();
+  @override
+  void initState() {
+    super.initState();
+    logic.initSavedPage();
+  }
+
+  @override
+  void dispose() {
+    logic.resetSavedPage();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const AppDrawer(),
+      body: ValueListenableBuilder<bool>(
+          valueListenable: logic.savedPageInitializedNotifier,
+          builder: (context, value, child) {
+            if (value == false) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverOverlapAbsorber(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context)),
+                  const SliverAppBar(
+                    centerTitle: true,
+                    title: Text('Central Times'),
+                    pinned: true,
+                    floating: false,
+                  )
+                ];
+              },
+              body: const _SavedListView(),
+            );
+          }),
+    );
+  }
+}
+
+class _SavedListView extends StatelessWidget {
+  const _SavedListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeViewLogic logic = getIt<HomeViewLogic>();
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          logic.savedPagingController!.refresh();
+        },
+        child: PagedListView<int, PostModel>.separated(
+            pagingController: logic.savedPagingController!,
+            builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (context, data, index) => PostPreviewCardWidget(
+                    post:
+                        data)), // TODO: Small bug, removing and then readding the same post moves the post to the bottom of the list, can be fixed by removing and readding by index than id
             separatorBuilder: (context, index) =>
                 const Padding(padding: EdgeInsets.all(8))),
       ),
