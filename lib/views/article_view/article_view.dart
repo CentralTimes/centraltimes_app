@@ -225,10 +225,10 @@ class _ArticleSections extends StatelessWidget {
           case ImageModel:
             ImageModel image = section as ImageModel;
             return Column(children: [
-              if (image.id != 0)
+              if (mediaLogic.cacheContainsMedia(image.id))
                 Center(
                   child: MediaImageWidget(
-                      mediaModel: mediaLogic.getMediaFromCache(image.id)!),
+                      mediaModel: mediaLogic.getMediaFromCache(image.id)),
                 ),
               if (image.caption != null)
                 Padding(

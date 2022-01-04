@@ -7,6 +7,7 @@ class WordpressMediaService {
   static final Logger log = Logger("WordpressMediaService");
 
   static Future<MediaModel?> fetchMedia({required int id}) async {
+    if (id == 0) return null;
     log.info("Retrieving media data for media $id...");
     try {
       WPResponse response = await wpApi.media.fetch(id: id);

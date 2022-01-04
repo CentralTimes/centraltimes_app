@@ -24,6 +24,6 @@ class MediaLogic {
   }
 
   bool cacheContainsMedia(int id) {
-    return _mediaCache.containsKey(id);
+    return (id != 0) && _mediaCache.containsKey(id);
   }
 }
