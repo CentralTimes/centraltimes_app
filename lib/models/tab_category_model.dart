@@ -5,4 +5,9 @@ class TabCategoryModel extends ObjectModel {
   final int id;
 
   const TabCategoryModel(this.name, this.id);
+
+  @override
+  String toString() {
+    return 'TabCategoryModel{name: $name, id: $id}';
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:app/models/object_model.dart';
 import 'package:app/models/sections/section_model.dart';
 
 class UnsupportedModel extends SectionModel {

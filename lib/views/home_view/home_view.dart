@@ -1,21 +1,14 @@
+import 'package:app/models/post_model.dart';
 import 'package:app/services/logic_getit_init.dart';
-import 'package:app/ui/drawer.dart';
-import 'package:app/ui/list/post_list/post_list_view.dart';
-import 'package:app/ui/pages/posts_page.dart';
-import 'package:app/ui/pages/saveds_page.dart';
+import 'package:app/widgets/drawer.dart';
 import 'package:app/views/home_view/home_view_logic.dart';
+import 'package:app/widgets/post_preview_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
-
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> /*with TickerProviderStateMixin*/ {
-  //int bottomIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +32,6 @@ class _HomeViewState extends State<HomeView> /*with TickerProviderStateMixin*/ {
             },
           );
         });
-    /*
-    return Scaffold(
-      drawer: const AppDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) => setState(() {
-                bottomIndex = value;
-              }),
-          currentIndex: bottomIndex,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.article_outlined), label: "News"),
-            //BottomNavigationBarItem(icon: Icon(Icons.poll_outlined), label: "Surveys"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.bookmarks_outlined), label: "Saved"),
-          ]),
-      body: [const PostsPage(), const SavedsPage()][bottomIndex],
-    );*/
   }
 }
 
@@ -83,6 +59,7 @@ class __PostsPageState extends State<_PostsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       body: ValueListenableBuilder<bool>(
           valueListenable: logic.postsPageInitializedNotifier,
           builder: (context, value, child) {
@@ -116,15 +93,41 @@ class __PostsPageState extends State<_PostsPage> with TickerProviderStateMixin {
                                 .toList()
                           ]),
                       pinned: true,
-                      floating: true,
+                      floating: false,
                     )
                   ];
                 },
-                body: TabBarView(controller: logic.tabController, children: [
-                  const PostListView(),
-                  ...logic.tabCategories.map((e) => Text("${e.id}")).toList()
-                ]));
+                body: TabBarView(
+                    controller: logic.tabController,
+                    children: List.generate(logic.tabController!.length,
+                        (index) => _PostListView(index: index))));
           }),
+    );
+  }
+}
+
+class _PostListView extends StatelessWidget {
+  final int index;
+  const _PostListView({Key? key, required this.index}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeViewLogic logic = getIt<HomeViewLogic>();
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          logic.pagingControllers[index].refresh();
+        },
+        child: PagedListView<int, PostModel>.separated(
+            pagingController: logic.pagingControllers[index],
+            builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (context, data, index) =>
+                    PostPreviewCardWidget(post: data)),
+            separatorBuilder: (context, index) =>
+                const Padding(padding: EdgeInsets.all(8))),
+      ),
     );
   }
 }

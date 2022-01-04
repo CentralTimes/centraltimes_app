@@ -92,6 +92,7 @@ class _ArticleViewState extends State<ArticleView> {
                             MaterialPageRoute(
                                 builder: (_) => FeaturedView(widget.post)))),
                   const _ArticleSections(),
+                  const Padding(padding: EdgeInsets.all(48)),
                   /*
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -225,8 +226,10 @@ class _ArticleSections extends StatelessWidget {
             ImageModel image = section as ImageModel;
             return Column(children: [
               if (image.id != 0)
-                MediaImageWidget(
-                    mediaModel: mediaLogic.getMediaFromCache(image.id)!),
+                Center(
+                  child: MediaImageWidget(
+                      mediaModel: mediaLogic.getMediaFromCache(image.id)!),
+                ),
               if (image.caption != null)
                 Padding(
                   padding:
@@ -268,11 +271,16 @@ class _ArticleSections extends StatelessWidget {
               ],
             );
           case RelatedPostsModel:
+            //TODO: implement related posts by fetching the posts in initstate and then fetching them from the cache here
             RelatedPostsModel relatedPostsModel = section as RelatedPostsModel;
             return Text(relatedPostsModel.toString());
           default:
-            UnsupportedModel unsupportedModel = section as UnsupportedModel;
-            return Text(unsupportedModel.text);
+            //TODO: implement galleries
+            if (section is UnsupportedModel) {
+              UnsupportedModel unsupportedModel = section;
+              return Text("Unsupported section: ${unsupportedModel.text}");
+            }
+            return Text("$section");
         }
       }).toList()),
     );

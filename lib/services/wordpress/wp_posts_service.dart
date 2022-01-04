@@ -12,7 +12,7 @@ import 'package:wordpress_api/wordpress_api.dart';
 class WordpressPostService {
   static final Logger log = Logger("WordpressPostService");
 
-  static final DateFormat dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
+  static final DateFormat _dateFormat = DateFormat("yyyy-MM-ddThh:mm:ss");
 
   // Caches are references to the same objects TODO test if they actually are
   static Map<int, PostModel> postCache = {};
@@ -42,6 +42,29 @@ class WordpressPostService {
       }
     }
     return pageCache[category]![page]!;
+  }
+
+  static Future<List<PostModel>> getPageOfPosts(
+      {required int pageId, required int postsPerPage, int? categoryId}) async {
+    //TODO: Implement error handling & null safety
+    final WPResponse res = await wpApi.fetch('posts/', args: {
+      "page": pageId,
+      "per_page": postsPerPage,
+      if (categoryId != null && categoryId != 0) "categories": categoryId,
+    });
+    // We also have to interpret data as a map since we fetch with a modified
+    // API, so we can't use the wordpress_api package utility class.
+    List<PostModel> posts = [];
+    for (Map<String, dynamic> postMap in res.data) {
+      posts.add(_postFromMap(postMap));
+    }
+    return posts;
+  }
+
+  static Future<PostModel> getPost1({required int postId}) async {
+    //TODO: Implement error handling & null safety
+    final WPResponse res = await wpApi.fetch('posts/$postId');
+    return _postFromMap(res.data);
   }
 
   static Future<PostModel> getPost(int postId) async {
@@ -91,15 +114,14 @@ class WordpressPostService {
   static PostModel _postFromMap(Map<String, dynamic> postMap) {
     // We also have to interpret data as a map since we fetch with a modified
     // API, so we can't use the wordpress_api package utility class.
-    final unescape = HtmlUnescape();
     return PostModel(
         postMap["id"],
-        dateFormat.parse(postMap["date_gmt"], true).toLocal(),
-        dateFormat.parse(postMap["modified_gmt"], true).toLocal(),
+        _dateFormat.parse(postMap["date_gmt"], true).toLocal(),
+        _dateFormat.parse(postMap["modified_gmt"], true).toLocal(),
         postMap['guid']?['rendered'],
         postMap["slug"],
         postMap["link"],
-        unescape.convert(postMap['title']?['rendered']),
+        HtmlUnescape().convert(postMap['title']?['rendered']),
         postMap['content']?['rendered'],
         postMap["ct_raw"],
         postMap['excerpt']?['rendered'],
