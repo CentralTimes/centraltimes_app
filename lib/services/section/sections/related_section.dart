@@ -1,7 +1,8 @@
+/*
 import 'package:app/models/post_model.dart';
 import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
-import 'package:app/services/wordpress/wordpress_posts_service.dart';
+import 'package:app/services/wordpress/wp_posts_service.dart';
 import 'package:app/ui/list/post_list/post_preview_card.dart';
 import 'package:app/ui/media_loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -44,4 +45,4 @@ class RelatedSection implements ArticleSection {
       ),
     );
   }
-}
+}*/

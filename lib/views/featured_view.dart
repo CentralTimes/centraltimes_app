@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/models/post_model.dart';
-import 'package:app/ui/save_button.dart';
+import 'package:app/widgets/saved_button.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';

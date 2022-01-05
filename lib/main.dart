@@ -1,19 +1,11 @@
-import 'package:app/services/ct/ct_ngg_gallery_service.dart';
-import 'package:app/services/ct/ct_rules_service.dart';
-import 'package:app/services/ct/ct_shortcode_service.dart';
-import 'package:app/services/ct/ct_sno_gallery_service.dart';
-import 'package:app/services/ct/ct_tab_category_service.dart';
+import 'package:app/services/logic_getit_init.dart';
 import 'package:app/services/saved_posts_service.dart';
-import 'package:app/services/section/parser/shortcode_parser_service.dart';
-import 'package:app/services/wordpress/wordpress_media_service.dart';
-import 'package:app/services/wordpress/wordpress_posts_service.dart';
-import 'package:app/services/wordpress/wordpress_search_service.dart';
-import 'package:app/views/home_view.dart';
+import 'package:app/services/wordpress/wordpress_init.dart';
+import 'package:app/views/home_view/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:wordpress_api/wordpress_api.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 void main() async {
@@ -25,24 +17,13 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  const apiBase =
-      String.fromEnvironment('API_BASE', defaultValue: 'www.centraltimes.org');
-
   await SavedPostsService.init();
 
   await Firebase.initializeApp();
-  final api = WordPressAPI(apiBase);
 
-  CtRulesService.init(api);
-  await CtRulesService.getRules();
-  WordpressPostService.init(api);
-  WordpressMediaService.init(api);
-  WordpressSearchService.init(api);
-  CtNggGalleryService.init(api);
-  CtSnoGalleryService.init(api);
-  CtTabCategoryService.init(api);
-  CtShortcodeService.init(api);
-  ShortcodeParserService.init(await CtShortcodeService.getShortcodeNames());
+  await setupWordpress();
+
+  setupGetIt();
 
   runApp(const CentralTimesApp());
 }

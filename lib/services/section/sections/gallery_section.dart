@@ -1,8 +1,8 @@
-import 'dart:math';
-
+//import 'dart:math';
+/*
 import 'package:app/models/gallery_image_model.dart';
-import 'package:app/services/ct/ct_ngg_gallery_service.dart';
-import 'package:app/services/ct/ct_sno_gallery_service.dart';
+import 'package:app/services/wordpress/ct_ngg_gallery_service.dart';
+import 'package:app/services/wordpress/ct_sno_gallery_service.dart';
 import 'package:app/services/section/article_section.dart';
 import 'package:app/services/section/parser/shortcode_parser_service.dart';
 import 'package:app/ui/media_loading_indicator.dart';
@@ -99,4 +99,4 @@ class _GalleryState extends State<Gallery> {
       ],
     );
   }
-}
+}*/

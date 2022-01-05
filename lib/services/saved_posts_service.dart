@@ -23,20 +23,32 @@ class SavedPostsService {
     if (idList.contains(id.toString())) {
       idList.remove(id.toString());
     } else {
-      idList.add(id.toString());
+      idList.insert(0, id.toString());
     }
     return await preferences.setStringList("savedPosts", idList);
   }
 
   static Future<bool> insertPost(int id) async {
     List<String> idList = (preferences.getStringList("savedPosts") ?? []);
-    idList.add(id.toString());
+    idList.insert(0, id.toString());
     return await preferences.setStringList("savedPosts", idList);
   }
 
   static Future<bool> removePost(int id) async {
     List<String> idList = (preferences.getStringList("savedPosts") ?? []);
     idList.remove(id.toString());
+    return await preferences.setStringList("savedPosts", idList);
+  }
+
+  static Future<bool> insertPostAtIndex(int index, int id) async {
+    List<String> idList = (preferences.getStringList("savedPosts") ?? []);
+    idList.insert(index, id.toString());
+    return await preferences.setStringList("savedPosts", idList);
+  }
+
+  static Future<bool> removePostByIndex(int index) async {
+    List<String> idList = (preferences.getStringList("savedPosts") ?? []);
+    idList.removeAt(index);
     return await preferences.setStringList("savedPosts", idList);
   }
 }

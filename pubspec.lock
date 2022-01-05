@@ -28,7 +28,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.1"
+    version: "2.8.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -63,7 +63,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   charcode:
     dependency: transitive
     description:
@@ -77,7 +77,7 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.1.0"
   chewie_audio:
     dependency: transitive
     description:
@@ -224,12 +224,12 @@ packages:
     source: hosted
     version: "1.0.4"
   flutter_math_fork:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_math_fork
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.3+1"
+    version: "0.5.0"
   flutter_native_splash:
     dependency: "direct dev"
     description:
@@ -250,7 +250,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.22.0"
+    version: "0.23.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -268,6 +268,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.1.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.2.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -358,7 +365,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.10"
+    version: "0.12.11"
   meta:
     dependency: transitive
     description:
@@ -493,12 +500,12 @@ packages:
     source: hosted
     version: "4.2.3"
   provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.0.1"
   quiver:
     dependency: transitive
     description:
@@ -671,7 +678,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2"
+    version: "0.4.3"
   tuple:
     dependency: transitive
     description:
@@ -748,7 +755,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   video_player:
     dependency: transitive
     description:
