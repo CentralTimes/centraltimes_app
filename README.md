@@ -12,6 +12,10 @@ provide support for [SNO FLEX](https://snosites.com/benefits/)
 , [NextGEN Gallery](https://wordpress.org/plugins/nextgen-gallery/), and other custom site and app
 configuration metadata.
 
+# App Links
+[Android](https://play.google.com/store/apps/details?id=com.centraltimes.app&hl=en_US&gl=US)
+[iOS/Apple](https://apps.apple.com/us/app/central-times/id1591266945?uo=4)
+
 # Installation For Android Builds
 
 Prerequisites:
