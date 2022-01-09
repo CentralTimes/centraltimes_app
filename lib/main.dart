@@ -79,7 +79,21 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
     return MaterialApp(
       title: 'Central Times',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        colorScheme: const ColorScheme(
+          primary: Color.fromRGBO(239, 72, 68, 1), 
+          primaryVariant: Color.fromRGBO(239, 72, 68, 1),
+          secondary: Color.fromRGBO(239, 72, 68, 1),
+          secondaryVariant: Color.fromRGBO(239, 72, 68, 1),
+          surface: Colors.white,
+          background: Colors.white,
+          error: Colors.black,
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+          onBackground: Colors.black,
+          onError: Colors.white,
+          brightness: Brightness.light,
+        ),
         textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
       ),
       home: const HomeView(),
