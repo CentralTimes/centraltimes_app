@@ -80,7 +80,7 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
       title: 'Central Times',
       theme: ThemeData(
         colorScheme: const ColorScheme(
-          primary: Color.fromRGBO(239, 72, 68, 1), 
+          primary: Color.fromRGBO(239, 72, 68, 1),
           primaryVariant: Color.fromRGBO(239, 72, 68, 1),
           secondary: Color.fromRGBO(239, 72, 68, 1),
           secondaryVariant: Color.fromRGBO(239, 72, 68, 1),
