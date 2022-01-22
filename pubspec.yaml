@@ -44,7 +44,6 @@ dev_dependencies:
   flutter_native_splash: ^1.2.0
   flutter_launcher_icons: ^0.9.2
   flutter_lints: ^1.0.4
-  flutter_math_fork: ^0.5.0
 
 flutter_icons:
   android: true
