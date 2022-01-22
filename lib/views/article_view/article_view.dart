@@ -289,7 +289,7 @@ class _ArticleSections extends StatelessWidget {
                     border: const Border(),
                   )
                 },
-                data: '',
+                data: sidebarModel.toString(),
               ),
             );
 
