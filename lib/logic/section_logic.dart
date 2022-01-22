@@ -79,73 +79,68 @@ class SectionLogic {
       shortcodes.add(_Shortcode(
           name: match.group(2) ?? "",
           arguments: arguments,
-          nested: match.group(5) ?? ""));
+          nested: match.group(5) ?? "",
+          sourceStartIndex: match.start,
+          sourceEndIndex: match.end));
     }
 
     return shortcodes;
   }
 
-  ///The section parser assumes that each part of the raw string separated by \r\n\r\n in ct_raw is a section.
-  ///For each section, the parser identifies whether that section contains a shortcode or not, and renders
-  ///the section as HTML or a shortcode section depending on the identification.
+  Iterable<HtmlModel> _stringToHtmls(String sourceHtml) {
+    List<String> htmls = sourceHtml.trim().split("\r\n\r\n")
+      ..removeWhere((paragraphHtml) => paragraphHtml.trim().isEmpty);
+    return htmls.map((html) => HtmlModel(html: html));
+  }
 
-  List<SectionModel> parseSections(String rawContent) {
-    List<SectionModel> sections = [];
-    List<String> raws = rawContent.split("\r\n\r\n");
-    for (String raw in raws) {
-      if (raw.trim().isEmpty) continue;
-      List<_Shortcode> shortcodes = _parseShortcodes(raw);
-      if (shortcodes.isEmpty) {
-        // no shortcode case: section is raw html
-        sections.add(HtmlModel(html: raw));
-      } else {
-        // shortcode exists case: add cooresponding model to sections list
-        for (_Shortcode shortcode in shortcodes) {
-          switch (shortcode.name) {
-            case 'video':
-              sections.add(VideoHtmlModel(
-                  html: shortcode.nested,
-                  credit: shortcode.arguments["credit"] ?? ""));
-              break;
-            case 'caption':
-              sections.add(ImageModel(
-                  id: int.parse(_intRegExp
-                          .firstMatch(shortcode.arguments["id"] ?? '0')!
-                          .group(0) ??
-                      '0'),
-                  caption: shortcode.nested.replaceAll(_tagRegExp, '').trim()));
-              break;
-            case 'pullquote':
-              sections.add(PullquoteModel(
-                  quote: shortcode.nested,
-                  speaker: shortcode.arguments["speaker"]));
-              break;
-            case 'related':
-              List<String> storyIdsSplit =
-                  (shortcode.arguments["stories"] ?? "").split(",");
-              storyIdsSplit.remove("");
-              sections.add(RelatedPostsModel(
-                  storyIds: storyIdsSplit.map((e) => int.parse(e)).toList(),
-                  title: shortcode.arguments["title"] ?? ""));
-              break;
-            case 'ngg':
-              break;
-            case 'gallery':
-              break;
-            case 'sidebar':
+  SectionModel _shortcodeToModel(_Shortcode shortcode) {
+    switch (shortcode.name) {
+      case 'video':
+        return VideoHtmlModel(
+            html: shortcode.nested,
+            credit: shortcode.arguments["credit"] ?? "");
+      case 'caption':
+        return ImageModel(
+            id: int.parse(_intRegExp
+                    .firstMatch(shortcode.arguments["id"] ?? '0')!
+                    .group(0) ??
+                '0'),
+            caption: shortcode.nested.replaceAll(_tagRegExp, '').trim());
+      case 'pullquote':
+        return PullquoteModel(
+            quote: shortcode.nested, speaker: shortcode.arguments["speaker"]);
+      case 'related':
+        List<String> storyIdsSplit =
+            (shortcode.arguments["stories"] ?? "").split(",");
+        storyIdsSplit.remove("");
+        return RelatedPostsModel(
+            storyIds: storyIdsSplit.map((e) => int.parse(e)).toList(),
+            title: shortcode.arguments["title"] ?? "");
+      case 'ngg':
+      case 'gallery':
+      case 'sidebar':
               sections.add(SidebarModel(
                   name: shortcode.nested,
                   rating: shortcode.arguments["rating"],
                   time: shortcode.arguments["time"],
                   where: shortcode.arguments["where"]));
               break;
-
-            default:
-              sections.add(UnsupportedModel(text: shortcode.toString()));
-          }
-        }
-      }
+      default:
+        return UnsupportedModel(text: shortcode.toString());
     }
+  }
+
+  List<SectionModel> parseSections(String raw) {
+    List<SectionModel> sections = [];
+    List<_Shortcode> shortcodes = _parseShortcodes(raw);
+    int position = 0;
+    for (_Shortcode shortcode in shortcodes) {
+      sections.addAll(
+          _stringToHtmls(raw.substring(position, shortcode.sourceStartIndex)));
+      sections.add(_shortcodeToModel(shortcode));
+      position = shortcode.sourceEndIndex;
+    }
+    sections.addAll(_stringToHtmls(raw.substring(position, raw.length)));
     return sections;
   }
 }
@@ -154,12 +149,18 @@ class _Shortcode {
   final String name;
   final Map<String, String> arguments;
   final String nested;
+  final int sourceStartIndex;
+  final int sourceEndIndex;
 
   const _Shortcode(
-      {required this.name, required this.arguments, required this.nested});
+      {required this.name,
+      required this.arguments,
+      required this.nested,
+      required this.sourceStartIndex,
+      required this.sourceEndIndex});
 
   @override
   String toString() {
-    return 'Shortcode{name: $name, arguments: $arguments, nested: $nested}';
+    return 'Shortcode{name: $name, arguments: $arguments, nested: $nested, sourceStartIndex: $sourceStartIndex, sourceEndIndex: $sourceEndIndex}';
   }
 }
