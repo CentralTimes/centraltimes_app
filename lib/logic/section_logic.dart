@@ -5,6 +5,8 @@ import 'package:app/models/sections/related_posts_model.dart';
 import 'package:app/models/sections/section_model.dart';
 import 'package:app/models/sections/unsupported_model.dart';
 import 'package:app/models/sections/video_html_model.dart';
+import 'package:app/models/sections/sidebar_model.dart';
+
 import 'package:app/services/wordpress/ct_shortcode_service.dart';
 
 class SectionLogic {
@@ -130,6 +132,14 @@ class SectionLogic {
               break;
             case 'gallery':
               break;
+            case 'sidebar':
+              sections.add(SidebarModel(
+                  name: shortcode.nested,
+                  rating: shortcode.arguments["rating"],
+                  time: shortcode.arguments["time"],
+                  where: shortcode.arguments["where"]));
+              break;
+
             default:
               sections.add(UnsupportedModel(text: shortcode.toString()));
           }
