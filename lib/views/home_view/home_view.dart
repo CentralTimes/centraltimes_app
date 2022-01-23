@@ -93,9 +93,9 @@ class __PostsPageState extends State<_PostsPage> with TickerProviderStateMixin {
                                 .map((e) => Tab(child: Text(e.name)))
                                 .toList()
                           ]),
-                          pinned: true,
-                          floating: false,
-                      )
+                        pinned: true,
+                        floating: false,
+                    )
                   ];
                 },
                 body: TabBarView(
