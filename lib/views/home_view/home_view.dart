@@ -86,15 +86,16 @@ class __PostsPageState extends State<_PostsPage> with TickerProviderStateMixin {
                       bottom: TabBar(
                           controller: logic.tabController,
                           isScrollable: true,
-                          indicatorColor: Theme.of(context).colorScheme.background,
+                          indicatorColor:
+                              Theme.of(context).colorScheme.background,
                           tabs: [
                             const Tab(child: Text("All")),
                             ...logic.tabCategories
                                 .map((e) => Tab(child: Text(e.name)))
                                 .toList()
                           ]),
-                        pinned: true,
-                        floating: false,
+                      pinned: true,
+                      floating: false,
                     )
                   ];
                 },
