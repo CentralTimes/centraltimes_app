@@ -34,7 +34,7 @@ class AppDrawer extends StatelessWidget {
                           .onError<PlatformException>((error, stackTrace) => launch(
                               "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
                       icon: const Icon(FontAwesomeIcons.facebook),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => const AndroidIntent(
                               action: "twitter://user?screen_name=centraltimes",
@@ -43,7 +43,7 @@ class AppDrawer extends StatelessWidget {
                           .onError<PlatformException>((error, stackTrace) =>
                               launch("https://twitter.com/centraltimes")),
                       icon: const Icon(FontAwesomeIcons.twitter),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => const AndroidIntent(
                               action: "http://instagram.com/_u/centraltimes",
@@ -52,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                           .onError<PlatformException>((error, stackTrace) =>
                               launch("https://instagram.com/centraltimes")),
                       icon: const Icon(FontAwesomeIcons.instagram),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => const AndroidIntent(
                               action:
@@ -62,11 +62,11 @@ class AppDrawer extends StatelessWidget {
                           .onError<PlatformException>((error, stackTrace) => launch(
                               "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
                       icon: const Icon(FontAwesomeIcons.youtube),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => launch("https://www.centraltimes.org/"),
                       icon: const Icon(Icons.language_outlined),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                 ],
               ))
             else ...[
@@ -79,26 +79,26 @@ class AppDrawer extends StatelessWidget {
                       onPressed: () => launch(
                           "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
                       icon: const Icon(FontAwesomeIcons.facebook),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () =>
                           launch("https://twitter.com/centraltimes"),
                       icon: const Icon(FontAwesomeIcons.twitter),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () =>
                           launch("http://instagram.com/_u/centraltimes"),
                       icon: const Icon(FontAwesomeIcons.instagram),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => launch(
                           "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
                       icon: const Icon(FontAwesomeIcons.youtube),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                   IconButton(
                       onPressed: () => launch("https://www.centraltimes.org/"),
                       icon: const Icon(Icons.language_outlined),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                 ],
               ))
             ],

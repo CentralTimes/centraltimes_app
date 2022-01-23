@@ -83,7 +83,7 @@ class PostPreviewCardWidget extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (_) => FeaturedView(post))),
                           icon: const Icon(Icons.auto_awesome),
-                          color: Theme.of(context).primaryColor),
+                          color: Theme.of(context).colorScheme.primary),
                     SaveButton(post.id),
                     IconButton(
                         onPressed: () {
@@ -91,7 +91,7 @@ class PostPreviewCardWidget extends StatelessWidget {
                               subject: "${post.title} - Central Times");
                         },
                         icon: const Icon(Icons.share),
-                        color: Theme.of(context).primaryColor),
+                        color: Theme.of(context).colorScheme.primary),
                   ],
                 )),
           ],
