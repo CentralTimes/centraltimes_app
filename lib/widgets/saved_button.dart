@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class SaveButton extends StatefulWidget {
   final int id;
   final Color? iconColor;
+  final Future<void> Function()? onSave;
 
   @override
   State<StatefulWidget> createState() => _SaveButtonState();
 
-  const SaveButton(this.id, {Key? key, this.iconColor}) : super(key: key);
+  const SaveButton(this.id, {Key? key, this.iconColor, this.onSave})
+      : super(key: key);
 }
 
 class _SaveButtonState extends State<SaveButton> {
@@ -16,8 +18,7 @@ class _SaveButtonState extends State<SaveButton> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          SavedPostsService.togglePost(widget.id)
-              .then((value) => setState(() => {}));
+          widget.onSave!.call().then((value) => setState(() {}));
         },
         icon: Icon(
             SavedPostsService.isPostSaved(widget.id)
