@@ -1,5 +1,7 @@
+import 'package:app/logic/posts_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/services/logic_getit_init.dart';
+import 'package:app/services/saved_posts_service.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/views/home_view/home_view_logic.dart';
 import 'package:app/widgets/post_preview_widget.dart';
@@ -125,8 +127,23 @@ class _PostListView extends StatelessWidget {
         child: PagedListView<int, PostModel>.separated(
             pagingController: logic.pagingControllers[index],
             builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, data, index) =>
-                    PostPreviewCardWidget(post: data)),
+                itemBuilder: (context, data, index) => PostPreviewCardWidget(
+                    post: data,
+                    onSave: () async {
+                      await SavedPostsService.togglePost(data.id,
+                          onAdd: (int index) {
+                        if (logic.savedListKey.currentState != null) {
+                          logic.savedListKey.currentState!.insertItem(index);
+                        }
+                      }, onRemove: (int index) {
+                        if (logic.savedListKey.currentState != null) {
+                          logic.savedListKey.currentState!.removeItem(index,
+                              (context, animation) {
+                            return SizeTransition(sizeFactor: animation);
+                          });
+                        }
+                      });
+                    })),
             separatorBuilder: (context, index) =>
                 const Padding(padding: EdgeInsets.all(8))),
       ),
@@ -186,27 +203,47 @@ class __SavedPageState extends State<_SavedPage> {
   }
 }
 
-class _SavedListView extends StatelessWidget {
+class _SavedListView extends StatefulWidget {
   const _SavedListView({Key? key}) : super(key: key);
 
   @override
+  __SavedListViewState createState() => __SavedListViewState();
+}
+
+class __SavedListViewState extends State<_SavedListView> {
+  final int initialItemCount = SavedPostsService.getPosts().length;
+
+  @override
   Widget build(BuildContext context) {
+    PostsLogic postsLogic = getIt<PostsLogic>();
     HomeViewLogic logic = getIt<HomeViewLogic>();
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
-      child: RefreshIndicator(
-        onRefresh: () async {
-          logic.savedPagingController!.refresh();
-        },
-        child: PagedListView<int, PostModel>.separated(
-            pagingController: logic.savedPagingController!,
-            builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, data, index) => PostPreviewCardWidget(
-                    post:
-                        data)), // TODO: Small bug, removing and then readding the same post moves the post to the bottom of the list, can be fixed by removing and readding by index than id
-            separatorBuilder: (context, index) =>
-                const Padding(padding: EdgeInsets.all(8))),
+      child: AnimatedList(
+        padding: const EdgeInsets.only(bottom: 80),
+        key: logic.savedListKey,
+        initialItemCount: initialItemCount,
+        itemBuilder: (context, index, animation) => Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: PostPreviewCardWidget(
+              post: postsLogic.getPostFromCache(
+                  postId: SavedPostsService.getPosts()[index])!,
+              onSave: () async {
+                int id = postsLogic
+                    .getPostFromCache(
+                        postId: SavedPostsService.getPosts()[index])!
+                    .id;
+                await SavedPostsService.togglePost(id, onAdd: (int index) {
+                  logic.savedListKey.currentState!.insertItem(index);
+                }, onRemove: (int index) {
+                  logic.savedListKey.currentState!.removeItem(index,
+                      (context, animation) {
+                    return SizeTransition(sizeFactor: animation);
+                  });
+                });
+              },
+            )),
       ),
     );
   }
