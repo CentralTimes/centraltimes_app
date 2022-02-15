@@ -28,4 +28,8 @@ class PostsLogic {
   PostModel? getPostFromCache({required int postId}) {
     return _postsCache[postId];
   }
+
+  List<PostModel?> getPostsFromCache({required List<int> postIds}) {
+    return postIds.map((postId) => getPostFromCache(postId: postId)).toList();
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:app/logic/media_logic.dart';
+import 'package:app/logic/posts_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/models/sections/html_model.dart';
 import 'package:app/models/sections/image_model.dart';
@@ -7,6 +8,7 @@ import 'package:app/models/sections/related_posts_model.dart';
 import 'package:app/models/sections/unsupported_model.dart';
 import 'package:app/models/sections/video_html_model.dart';
 import 'package:app/services/logic_getit_init.dart';
+import 'package:app/widgets/post_preview_widget.dart';
 import 'package:app/widgets/saved_button.dart';
 import 'package:app/views/article_view/article_view_logic.dart';
 import 'package:app/widgets/media_widget.dart';
@@ -197,6 +199,7 @@ class _ArticleSections extends StatelessWidget {
   Widget build(BuildContext context) {
     ArticleViewLogic logic = getIt<ArticleViewLogic>();
     MediaLogic mediaLogic = getIt<MediaLogic>();
+    PostsLogic postsLogic = getIt<PostsLogic>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
@@ -273,7 +276,15 @@ class _ArticleSections extends StatelessWidget {
           case RelatedPostsModel:
             //TODO: implement related posts by fetching the posts in initstate and then fetching them from the cache here
             RelatedPostsModel relatedPostsModel = section as RelatedPostsModel;
-            return Text(relatedPostsModel.toString());
+
+            return Column(
+                children: postsLogic
+                    .getPostsFromCache(postIds: relatedPostsModel.storyIds)
+                    .map((PostModel? postModel) => postModel != null
+                        ? PostPreviewCardWidget(post: postModel)
+                        : Container())
+                    .toList());
+
           default:
             //TODO: implement galleries
             if (section is UnsupportedModel) {
