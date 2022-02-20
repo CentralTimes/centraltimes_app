@@ -10,8 +10,11 @@ class SidebarModel extends SectionModel {
 
   @override
   String toString() {
-    // TODO: implement toString
-    return title;
+    return stripHtmlIfNeeded(title);
+  }
+
+  String stripHtmlIfNeeded(String text) {
+    return text.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ');
   }
   /*
   @override

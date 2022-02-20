@@ -121,7 +121,7 @@ class SectionLogic {
       case 'sidebar':
         return SidebarModel(
             title: shortcode.nested,
-            rating: shortcode.arguments["Rating"],
+            rating: shortcode.arguments["strong"],
             time: shortcode.arguments["Time"],
             where: shortcode.arguments["Where"]);
       default:
