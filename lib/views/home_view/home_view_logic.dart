@@ -20,6 +20,7 @@ class HomeViewLogic {
   final ValueNotifier<bool> savedPageInitializedNotifier =
       ValueNotifier<bool>(false);
   PagingController<int, PostModel>? savedPagingController;
+  GlobalKey<AnimatedListState> savedListKey = GlobalKey<AnimatedListState>();
   final Logger log = Logger("HomeViewLogic");
   final int _postsPerPage = 10;
   void initPostsPage(TickerProvider vsync) {
@@ -77,14 +78,18 @@ class HomeViewLogic {
     tabCategories = [];
   }
 
-  void initSavedPage() {
-    savedPagingController = PagingController(firstPageKey: 0);
-    savedPagingController!.addPageRequestListener((pageKey) {
-      _fetchSaved(savedPagingController!, pageKey);
-    });
+  Future<void> initSavedPage() async {
+    PostsLogic postsLogic = getIt<PostsLogic>();
+    List<PostModel> savedPosts =
+        await postsLogic.getPosts(postIds: SavedPostsService.getPosts());
+    List<int> mediaIds = [];
+    for (PostModel post in savedPosts) {
+      if (post.featuredMedia != 0) mediaIds.add(post.featuredMedia);
+    }
     savedPageInitializedNotifier.value = true;
   }
 
+  /*
   Future<void> _fetchSaved(
       PagingController<int, PostModel> controller, int pageKey) async {
     PostsLogic postsLogic = getIt<PostsLogic>();
@@ -103,11 +108,9 @@ class HomeViewLogic {
     } else {
       controller.appendPage(newItems, pageKey + _postsPerPage);
     }
-  }
+  }*/
 
   void resetSavedPage() {
-    savedPagingController!.dispose();
-    savedPagingController = null;
     savedPageInitializedNotifier.value = false;
   }
 }

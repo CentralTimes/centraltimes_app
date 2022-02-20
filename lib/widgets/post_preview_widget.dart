@@ -12,9 +12,11 @@ import 'package:share_plus/share_plus.dart';
 
 class PostPreviewCardWidget extends StatelessWidget {
   final PostModel post;
+  final Future<void> Function()? onSave;
   static const double blur = 1;
 
-  const PostPreviewCardWidget({Key? key, required this.post}) : super(key: key);
+  const PostPreviewCardWidget({Key? key, required this.post, this.onSave})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +85,15 @@ class PostPreviewCardWidget extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (_) => FeaturedView(post))),
                           icon: const Icon(Icons.auto_awesome),
-                          color: Theme.of(context).primaryColor),
-                    SaveButton(post.id),
+                          color: Theme.of(context).colorScheme.primary),
+                    SaveButton(post.id, onSave: onSave),
                     IconButton(
                         onPressed: () {
                           Share.share(post.link,
                               subject: "${post.title} - Central Times");
                         },
                         icon: const Icon(Icons.share),
-                        color: Theme.of(context).primaryColor),
+                        color: Theme.of(context).colorScheme.primary),
                   ],
                 )),
           ],

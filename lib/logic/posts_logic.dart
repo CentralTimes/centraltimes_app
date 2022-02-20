@@ -5,8 +5,12 @@ class PostsLogic {
   final Map<int, PostModel> _postsCache = {};
   Future<List<PostModel>> getPageOfPosts(
       {required int pageId, required int postsPerPage, int? categoryId}) async {
-    return WordpressPostService.getPageOfPosts(
+    List<PostModel> posts = await WordpressPostService.getPageOfPosts(
         pageId: pageId, postsPerPage: postsPerPage, categoryId: categoryId);
+    for (PostModel post in posts) {
+      _postsCache[post.id] = post;
+    }
+    return posts;
   }
 
   Future<PostModel> getPost({required int postId}) async {
@@ -27,5 +31,14 @@ class PostsLogic {
 
   PostModel? getPostFromCache({required int postId}) {
     return _postsCache[postId];
+  }
+
+  List<PostModel?> getPostsFromCache({required List<int> postIds}) {
+    return postIds.map((postId) => getPostFromCache(postId: postId)).toList();
+  }
+
+  @override
+  String toString() {
+    return _postsCache.toString();
   }
 }
