@@ -278,37 +278,13 @@ class _ArticleSections extends StatelessWidget {
           case SidebarModel:
             SidebarModel sidebarModel = section as SidebarModel;
             return Container(
-                //margin: const EdgeInsets.fromLTRB(0, 14, 0, 20),
-                //padding: const EdgeInsets.fromLTRB(18.0, 0, 18.0, 0),
                 margin: const EdgeInsets.all(35),
                 padding: const EdgeInsets.all(14.0),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 1.0, style: BorderStyle.solid)
               ),
               child: Text(sidebarModel.toString()));
-            /*
-            return Padding(
 
-                margin: const EdgeInsets.all(0),
-                padding: const EdgeInsets.all(8.0),
-                fontSize: const FontSize(21),
-                lineHeight: const LineHeight(1.5),
-                border: Border.all(color: Colors.black, width: 1.0, style: BorderStyle.solid),
-                child: Text(sidebarModel.toString()));
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Html(
-                style: {
-                  "*": Style(
-                    margin: const EdgeInsets.all(0),
-                    padding: const EdgeInsets.all(8.0),
-                    fontSize: const FontSize(21),
-                    lineHeight: const LineHeight(1.5),
-                    border: Border.all(color: Colors.black, width: 1.0, style: BorderStyle.solid),
-                  )
-                }, data: sidebarModel.name,*/
-             // ),
-            //);
 
 
           default:
