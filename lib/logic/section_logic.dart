@@ -119,12 +119,11 @@ class SectionLogic {
       case 'ngg':
       case 'gallery':
       case 'sidebar':
-        print(shortcode.toString());
         return SidebarModel(
-            name: shortcode.nested,
-            rating: shortcode.arguments["rating"],
-            time: shortcode.arguments["time"],
-            where: shortcode.arguments["where"]);
+            title: shortcode.nested,
+            rating: shortcode.arguments["Rating"],
+            time: shortcode.arguments["Time"],
+            where: shortcode.arguments["Where"]);
       default:
         return UnsupportedModel(text: shortcode.toString());
     }
