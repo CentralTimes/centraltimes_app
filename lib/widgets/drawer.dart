@@ -1,14 +1,21 @@
 import 'dart:io' show Platform;
 
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:app/logic/media_logic.dart';
+import 'package:app/logic/posts_logic.dart';
+import 'package:app/models/post_model.dart';
+import 'package:app/services/logic_getit_init.dart';
 import 'package:app/services/saved_posts_service.dart';
+import 'package:app/views/home_view/home_view_logic.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
+  static final Logger log = Logger("CTDebugTools (in Drawer)");
   const AppDrawer({Key? key}) : super(key: key);
 
   @override
@@ -116,7 +123,7 @@ class AppDrawer extends StatelessWidget {
         const ListTile(title: Text("Dev Tools")),
         ListTile(
             leading: const Icon(Icons.save),
-            title: const Text("Save Article by ID"),
+            title: const Text("Save/Unsave Article by ID"),
             onTap: () async {
               String id = "";
               bool? saved = await showDialog<bool>(
@@ -141,18 +148,39 @@ class AppDrawer extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop<bool>(context, true);
                             },
-                            child: const Text("Save"))
+                            child: const Text("Enter"))
                       ],
                     );
                   });
               if (saved == true) {
                 int? articleId = int.tryParse(id);
-                if (articleId != null &&
-                    articleId > 0 &&
-                    !SavedPostsService.isPostSaved(articleId)) {
-                  SavedPostsService.insertPost(articleId);
+                if (articleId != null && articleId > 0) {
+                  PostsLogic postsLogic = getIt<PostsLogic>();
+                  MediaLogic mediaLogic = getIt<MediaLogic>();
+                  PostModel post = await postsLogic.getPost(postId: articleId);
+                  await mediaLogic.getMediaSingle(post.featuredMedia);
+                  HomeViewLogic logic = getIt<HomeViewLogic>();
+                  await SavedPostsService.togglePost(articleId,
+                      onAdd: (int index) {
+                    if (logic.savedListKey.currentState != null) {
+                      logic.savedListKey.currentState!.insertItem(index);
+                    }
+                  }, onRemove: (int index) {
+                    if (logic.savedListKey.currentState != null) {
+                      logic.savedListKey.currentState!.removeItem(index,
+                          (context, animation) {
+                        return SizeTransition(sizeFactor: animation);
+                      });
+                    }
+                  });
                 }
               }
+            }),
+        ListTile(
+            leading: const Icon(Icons.bug_report),
+            title: const Text("Print Something"),
+            onTap: () async {
+              log.info("Something");
             }),
       ];
     }

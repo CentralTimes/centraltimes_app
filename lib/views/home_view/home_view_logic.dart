@@ -80,12 +80,14 @@ class HomeViewLogic {
 
   Future<void> initSavedPage() async {
     PostsLogic postsLogic = getIt<PostsLogic>();
+    MediaLogic mediaLogic = getIt<MediaLogic>();
     List<PostModel> savedPosts =
         await postsLogic.getPosts(postIds: SavedPostsService.getPosts());
     List<int> mediaIds = [];
     for (PostModel post in savedPosts) {
       if (post.featuredMedia != 0) mediaIds.add(post.featuredMedia);
     }
+    await mediaLogic.getMedia(mediaIds);
     savedPageInitializedNotifier.value = true;
   }
 
