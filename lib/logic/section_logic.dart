@@ -5,6 +5,8 @@ import 'package:app/models/sections/related_posts_model.dart';
 import 'package:app/models/sections/section_model.dart';
 import 'package:app/models/sections/unsupported_model.dart';
 import 'package:app/models/sections/video_html_model.dart';
+import 'package:app/models/sections/sidebar_model.dart';
+
 import 'package:app/services/wordpress/ct_shortcode_service.dart';
 
 class SectionLogic {
@@ -116,6 +118,8 @@ class SectionLogic {
             title: shortcode.arguments["title"] ?? "");
       case 'ngg':
       case 'gallery':
+      case 'sidebar':
+        return SidebarModel(title: shortcode.nested);
       default:
         return UnsupportedModel(text: shortcode.toString());
     }

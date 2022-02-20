@@ -6,6 +6,7 @@ import 'package:app/models/sections/pullquote_model.dart';
 import 'package:app/models/sections/related_posts_model.dart';
 import 'package:app/models/sections/unsupported_model.dart';
 import 'package:app/models/sections/video_html_model.dart';
+import 'package:app/models/sections/sidebar_model.dart';
 import 'package:app/services/logic_getit_init.dart';
 import 'package:app/widgets/saved_button.dart';
 import 'package:app/views/article_view/article_view_logic.dart';
@@ -274,6 +275,18 @@ class _ArticleSections extends StatelessWidget {
             //TODO: implement related posts by fetching the posts in initstate and then fetching them from the cache here
             RelatedPostsModel relatedPostsModel = section as RelatedPostsModel;
             return Text(relatedPostsModel.toString());
+          case SidebarModel:
+            SidebarModel sidebarModel = section as SidebarModel;
+            return Container(
+                margin: const EdgeInsets.all(35),
+                padding: const EdgeInsets.all(14.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 1.0, style: BorderStyle.solid)
+              ),
+              child: Text(sidebarModel.toString()));
+
+
+
           default:
             //TODO: implement galleries
             if (section is UnsupportedModel) {

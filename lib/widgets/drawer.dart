@@ -1,10 +1,11 @@
 import 'dart:io' show Platform;
 
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:app/services/saved_posts_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -13,105 +14,149 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Theme(
-        data: Theme.of(context).copyWith(
-            textTheme:
-                GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-        child: ListView(
-          children: [
-            if (Platform.isAndroid)
-              ListTile(
-                  subtitle: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () => const AndroidIntent(
-                              action:
-                                  "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
-                              data: "com.facebook.katana")
-                          .launch()
-                          .onError<PlatformException>((error, stackTrace) => launch(
-                              "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
-                      icon: const Icon(FontAwesomeIcons.facebook),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => const AndroidIntent(
-                              action: "twitter://user?screen_name=centraltimes",
-                              data: "com.twitter.android")
-                          .launch()
-                          .onError<PlatformException>((error, stackTrace) =>
-                              launch("https://twitter.com/centraltimes")),
-                      icon: const Icon(FontAwesomeIcons.twitter),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => const AndroidIntent(
-                              action: "http://instagram.com/_u/centraltimes",
-                              data: "com.instagram.android")
-                          .launch()
-                          .onError<PlatformException>((error, stackTrace) =>
-                              launch("https://instagram.com/centraltimes")),
-                      icon: const Icon(FontAwesomeIcons.instagram),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => const AndroidIntent(
-                              action:
-                                  "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
-                              data: "com.google.android.youtube")
-                          .launch()
-                          .onError<PlatformException>((error, stackTrace) => launch(
-                              "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
-                      icon: const Icon(FontAwesomeIcons.youtube),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => launch("https://www.centraltimes.org/"),
-                      icon: const Icon(Icons.language_outlined),
-                      color: Theme.of(context).colorScheme.primary),
-                ],
-              ))
-            else ...[
-              ListTile(
-                  title: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () => launch(
-                          "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
-                      icon: const Icon(FontAwesomeIcons.facebook),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () =>
-                          launch("https://twitter.com/centraltimes"),
-                      icon: const Icon(FontAwesomeIcons.twitter),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () =>
-                          launch("http://instagram.com/_u/centraltimes"),
-                      icon: const Icon(FontAwesomeIcons.instagram),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => launch(
-                          "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
-                      icon: const Icon(FontAwesomeIcons.youtube),
-                      color: Theme.of(context).colorScheme.primary),
-                  IconButton(
-                      onPressed: () => launch("https://www.centraltimes.org/"),
-                      icon: const Icon(Icons.language_outlined),
-                      color: Theme.of(context).colorScheme.primary),
-                ],
-              ))
-            ],
+      child: ListView(
+        children: [
+          if (Platform.isAndroid)
             ListTile(
-                leading: const Icon(Icons.email),
-                title: const Text("Contact Us"),
-                onTap: () async {
-                  launch('mailto:nchspaper.ct@gmail.com');
-                }),
+                subtitle: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () => const AndroidIntent(
+                            action:
+                                "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
+                            data: "com.facebook.katana")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) => launch(
+                            "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                    icon: const Icon(FontAwesomeIcons.facebook),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => const AndroidIntent(
+                            action: "twitter://user?screen_name=centraltimes",
+                            data: "com.twitter.android")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launch("https://twitter.com/centraltimes")),
+                    icon: const Icon(FontAwesomeIcons.twitter),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => const AndroidIntent(
+                            action: "http://instagram.com/_u/centraltimes",
+                            data: "com.instagram.android")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launch("https://instagram.com/centraltimes")),
+                    icon: const Icon(FontAwesomeIcons.instagram),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => const AndroidIntent(
+                            action:
+                                "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
+                            data: "com.google.android.youtube")
+                        .launch()
+                        .onError<PlatformException>((error, stackTrace) => launch(
+                            "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                    icon: const Icon(FontAwesomeIcons.youtube),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    icon: const Icon(Icons.language_outlined),
+                    color: Theme.of(context).primaryColor),
+              ],
+            ))
+          else ...[
+            ListTile(
+                title: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () => launch(
+                        "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
+                    icon: const Icon(FontAwesomeIcons.facebook),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://twitter.com/centraltimes"),
+                    icon: const Icon(FontAwesomeIcons.twitter),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () =>
+                        launch("http://instagram.com/_u/centraltimes"),
+                    icon: const Icon(FontAwesomeIcons.instagram),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch(
+                        "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
+                    icon: const Icon(FontAwesomeIcons.youtube),
+                    color: Theme.of(context).primaryColor),
+                IconButton(
+                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    icon: const Icon(Icons.language_outlined),
+                    color: Theme.of(context).primaryColor),
+              ],
+            ))
           ],
-        ),
+          ListTile(
+              leading: const Icon(Icons.email),
+              title: const Text("Contact Us"),
+              onTap: () async {
+                launch('mailto:nchspaper.ct@gmail.com');
+              }),
+          ..._devTools(context),
+        ],
       ),
     );
+  }
+
+  List<Widget> _devTools(BuildContext context) {
+    if (kDebugMode) {
+      return [
+        const ListTile(title: Text("Dev Tools")),
+        ListTile(
+            leading: const Icon(Icons.save),
+            title: const Text("Save Article by ID"),
+            onTap: () async {
+              String id = "";
+              bool? saved = await showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: "Enter article ID",
+                          hintText: "Enter article ID",
+                        ),
+                        onChanged: (value) {
+                          id = value;
+                        },
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop<bool>(context, true);
+                            },
+                            child: const Text("Save"))
+                      ],
+                    );
+                  });
+              if (saved == true) {
+                int? articleId = int.tryParse(id);
+                if (articleId != null &&
+                    articleId > 0 &&
+                    !SavedPostsService.isPostSaved(articleId)) {
+                  SavedPostsService.insertPost(articleId);
+                }
+              }
+            }),
+      ];
+    }
+    return [];
   }
 }
 
