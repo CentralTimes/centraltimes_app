@@ -281,7 +281,7 @@ class _ArticleSections extends StatelessWidget {
                 children: postsLogic
                     .getPostsFromCache(postIds: relatedPostsModel.storyIds)
                     .map((PostModel? postModel) => postModel != null
-                        ? PostPreviewCardWidget(post: postModel)
+                        ? PostPreviewCardRelatedWidget(post: postModel)
                         : Container())
                     .toList());
 

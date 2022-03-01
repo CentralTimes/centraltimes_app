@@ -10,6 +10,74 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
+class PostPreviewCardRelatedWidget extends StatelessWidget {
+  final PostModel post;
+  static const double blur = 1;
+  const PostPreviewCardRelatedWidget({Key? key, required this.post})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    MediaLogic mediaLogic = getIt<MediaLogic>();
+    return InkWell(
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => ArticleView(post: post))),
+        child: Ink(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              boxShadow: const [
+                BoxShadow(
+                  offset: Offset(0, blur),
+                  blurRadius: blur,
+                  spreadRadius: -2 * blur,
+                ),
+                BoxShadow(
+                  offset: Offset(0, -blur),
+                  blurRadius: blur,
+                  spreadRadius: -2 * blur,
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                //if (mediaLogic.cacheContainsMedia(post.featuredMedia))
+                //Expanded(
+                //child: Column(
+                //children: [
+                //MediaImageWidget(
+                // mediaModel:
+                // mediaLogic.getMediaFromCache(post.featuredMedia)),
+                //],
+                //),
+                //),
+
+                //const Padding(padding: EdgeInsets.all(8)),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(post.title,
+                              style: const TextStyle(fontSize: 20))),
+                      if (post.staffNames.isNotEmpty) ...[
+                        const Padding(padding: EdgeInsets.all(4)),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(post.writers.join(", "),
+                                style: const TextStyle(fontSize: 18))),
+                      ],
+                      SaveButton(post.id),
+                    ],
+                  ),
+                )
+              ],
+            )));
+  }
+}
+
 class PostPreviewCardWidget extends StatelessWidget {
   final PostModel post;
   static const double blur = 1;
