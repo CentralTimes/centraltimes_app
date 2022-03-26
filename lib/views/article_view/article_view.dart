@@ -276,7 +276,7 @@ class _ArticleSections extends StatelessWidget {
           case RelatedPostsModel:
             //TODO: implement related posts by fetching the posts in initstate and then fetching them from the cache here
             RelatedPostsModel relatedPostsModel = section as RelatedPostsModel;
-
+            //ImageModel image = section as ImageModel;
             return Column(
                 children: postsLogic
                     .getPostsFromCache(postIds: relatedPostsModel.storyIds)

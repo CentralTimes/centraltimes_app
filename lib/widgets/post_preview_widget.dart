@@ -42,6 +42,17 @@ class PostPreviewCardRelatedWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                //Container(
+                //width: 40,
+                //height: double.infinity,
+                Center(
+                  child: Placeholder(
+                    fallbackHeight: 40,
+                    fallbackWidth: 40,
+                  ),
+                ),
+                //),
+
                 //if (mediaLogic.cacheContainsMedia(post.featuredMedia))
                 //Expanded(
                 //child: Column(
@@ -53,7 +64,7 @@ class PostPreviewCardRelatedWidget extends StatelessWidget {
                 //),
                 //),
 
-                //const Padding(padding: EdgeInsets.all(8)),
+                const Padding(padding: EdgeInsets.all(8)),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
