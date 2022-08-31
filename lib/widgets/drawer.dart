@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AppDrawer extends StatelessWidget {
   static final Logger log = Logger("CTDebugTools (in Drawer)");
@@ -35,42 +36,47 @@ class AppDrawer extends StatelessWidget {
                                 "fb://facewebmodal/f?href=https://www.facebook.com/pages/The-Central-Times/244007425638003",
                             data: "com.facebook.katana")
                         .launch()
-                        .onError<PlatformException>((error, stackTrace) => launch(
-                            "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launchUrlString(
+                                "https://www.facebook.com/pages/The-Central-Times/244007425638003")),
                     icon: const Icon(FontAwesomeIcons.facebook),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
                     onPressed: () => const AndroidIntent(
                             action: "twitter://user?screen_name=centraltimes",
                             data: "com.twitter.android")
                         .launch()
                         .onError<PlatformException>((error, stackTrace) =>
-                            launch("https://twitter.com/centraltimes")),
+                            launchUrlString(
+                                "https://twitter.com/centraltimes")),
                     icon: const Icon(FontAwesomeIcons.twitter),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
                     onPressed: () => const AndroidIntent(
                             action: "http://instagram.com/_u/centraltimes",
                             data: "com.instagram.android")
                         .launch()
                         .onError<PlatformException>((error, stackTrace) =>
-                            launch("https://instagram.com/centraltimes")),
+                            launchUrlString(
+                                "https://instagram.com/centraltimes")),
                     icon: const Icon(FontAwesomeIcons.instagram),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
                     onPressed: () => const AndroidIntent(
                             action:
                                 "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA",
                             data: "com.google.android.youtube")
                         .launch()
-                        .onError<PlatformException>((error, stackTrace) => launch(
-                            "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
+                        .onError<PlatformException>((error, stackTrace) =>
+                            launchUrlString(
+                                "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA")),
                     icon: const Icon(FontAwesomeIcons.youtube),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
-                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    onPressed: () =>
+                        launchUrlString("https://www.centraltimes.org/"),
                     icon: const Icon(Icons.language_outlined),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
               ],
             ))
           else ...[
@@ -80,28 +86,30 @@ class AppDrawer extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 IconButton(
-                    onPressed: () => launch(
+                    onPressed: () => launchUrlString(
                         "https://www.facebook.com/pages/The-Central-Times/244007425638003"),
                     icon: const Icon(FontAwesomeIcons.facebook),
-                    color: Theme.of(context).primaryColor),
-                IconButton(
-                    onPressed: () => launch("https://twitter.com/centraltimes"),
-                    icon: const Icon(FontAwesomeIcons.twitter),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
                     onPressed: () =>
-                        launch("http://instagram.com/_u/centraltimes"),
-                    icon: const Icon(FontAwesomeIcons.instagram),
-                    color: Theme.of(context).primaryColor),
+                        launchUrlString("https://twitter.com/centraltimes"),
+                    icon: const Icon(FontAwesomeIcons.twitter),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
-                    onPressed: () => launch(
+                    onPressed: () =>
+                        launchUrlString("http://instagram.com/_u/centraltimes"),
+                    icon: const Icon(FontAwesomeIcons.instagram),
+                    color: Theme.of(context).colorScheme.primary),
+                IconButton(
+                    onPressed: () => launchUrlString(
                         "https://www.youtube.com/channel/UCZD15y_YblVe0cI0kMKKZQA"),
                     icon: const Icon(FontAwesomeIcons.youtube),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
                 IconButton(
-                    onPressed: () => launch("https://www.centraltimes.org/"),
+                    onPressed: () =>
+                        launchUrlString("https://www.centraltimes.org/"),
                     icon: const Icon(Icons.language_outlined),
-                    color: Theme.of(context).primaryColor),
+                    color: Theme.of(context).colorScheme.primary),
               ],
             ))
           ],
@@ -109,7 +117,7 @@ class AppDrawer extends StatelessWidget {
               leading: const Icon(Icons.email),
               title: const Text("Contact Us"),
               onTap: () async {
-                launch('mailto:nchspaper.ct@gmail.com');
+                launchUrlString('mailto:nchspaper.ct@gmail.com');
               }),
           ..._devTools(context),
         ],
