@@ -280,12 +280,12 @@ class _ArticleSections extends StatelessWidget {
             return Container(
                 margin: const EdgeInsets.all(35),
                 padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 1.0, style: BorderStyle.solid)
-              ),
-              child: Text(sidebarModel.toString()));
-
-
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
+                        style: BorderStyle.solid)),
+                child: Text(sidebarModel.toString()));
 
           default:
             //TODO: implement galleries
