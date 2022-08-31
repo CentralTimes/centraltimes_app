@@ -6,11 +6,15 @@ import 'package:wordpress_api/wordpress_api.dart';
 class CtTabCategoryService {
   static final Logger log = Logger("CtTabCategoryService");
 
-  static Future<List<TabCategoryModel>> getTabCategories() async {
-    final WPResponse res =
-        await wpApi.fetch('tab-categories', namespace: 'centraltimes/v1');
-    return (res.data as List)
-        .map((e) => TabCategoryModel(e["name"], e["id"]))
-        .toList();
+  static Future<dynamic> getTabCategories() async {
+    WPResponse res;
+    try {
+      res = await wpApi.fetch('tab-categories', namespace: 'centraltimes/v1');
+      return (res.data as List)
+          .map((e) => TabCategoryModel(e["name"], e["id"]))
+          .toList();
+    } catch (e) {
+      return null;
+    }
   }
 }

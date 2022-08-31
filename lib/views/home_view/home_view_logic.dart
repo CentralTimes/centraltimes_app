@@ -24,20 +24,23 @@ class HomeViewLogic {
   final Logger log = Logger("HomeViewLogic");
   final int _postsPerPage = 10;
   void initPostsPage(TickerProvider vsync) {
-    CtTabCategoryService.getTabCategories().then((value) {
-      tabCategories = value;
-      tabController =
-          TabController(vsync: vsync, length: tabCategories.length + 1);
-      pagingControllers = List.generate(tabCategories.length + 1, (index) {
-        PagingController<int, PostModel> controller =
-            PagingController(firstPageKey: 1);
-        controller.addPageRequestListener((pageKey) {
-          _fetchPage(controller: controller, tabIndex: index, pageKey: pageKey);
+    if (CtTabCategoryService.getTabCategories() != null) {
+      CtTabCategoryService.getTabCategories().then((value) {
+        tabCategories = value;
+        tabController =
+            TabController(vsync: vsync, length: tabCategories.length + 1);
+        pagingControllers = List.generate(tabCategories.length + 1, (index) {
+          PagingController<int, PostModel> controller =
+              PagingController(firstPageKey: 1);
+          controller.addPageRequestListener((pageKey) {
+            _fetchPage(
+                controller: controller, tabIndex: index, pageKey: pageKey);
+          });
+          return controller;
         });
-        return controller;
+        postsPageInitializedNotifier.value = true;
       });
-      postsPageInitializedNotifier.value = true;
-    });
+    }
   }
 
   Future<void> _fetchPage(

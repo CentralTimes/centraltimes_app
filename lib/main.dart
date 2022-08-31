@@ -19,7 +19,7 @@ void main() async {
 
   await SavedPostsService.init();
 
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   await setupWordpress();
 

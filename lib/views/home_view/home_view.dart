@@ -2,12 +2,14 @@ import 'package:app/logic/posts_logic.dart';
 import 'package:app/models/post_model.dart';
 import 'package:app/services/logic_getit_init.dart';
 import 'package:app/services/saved_posts_service.dart';
+import 'package:app/services/wordpress/ct_shortcode_service.dart';
 import 'package:app/widgets/drawer.dart';
 import 'package:app/views/home_view/home_view_logic.dart';
 import 'package:app/widgets/post_preview_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:app_settings/app_settings.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -65,8 +67,50 @@ class __PostsPageState extends State<_PostsPage> with TickerProviderStateMixin {
       body: ValueListenableBuilder<bool>(
           valueListenable: logic.postsPageInitializedNotifier,
           builder: (context, value, child) {
-            if (value == false) {
-              return const Center(child: CircularProgressIndicator());
+            if (value == false &&
+                CtShortcodeService.getShortcodeNames().isEmpty) {
+              //After the app doesnt error out because of missing wifi errors it correctly displays a missing wifi symbol and it looks nice.
+              return NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      SliverOverlapAbsorber(
+                          handle:
+                              NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                  context)),
+                      const SliverAppBar(
+                        centerTitle: true,
+                        title: Text('Central Times'),
+                        pinned: true,
+                        floating: false,
+                      )
+                    ];
+                  },
+                  body: const Center(
+                    child: IconButton(
+                      onPressed: AppSettings.openWIFISettings,
+                      icon: Icon(
+                          Icons.signal_wifi_connected_no_internet_4_rounded),
+                    ),
+                  ));
+            }
+            if (value == false &&
+                CtShortcodeService.getShortcodeNames().isNotEmpty) {
+              return NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      SliverOverlapAbsorber(
+                          handle:
+                              NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                  context)),
+                      const SliverAppBar(
+                        centerTitle: true,
+                        title: Text('Central Times'),
+                        pinned: true,
+                        floating: false,
+                      )
+                    ];
+                  },
+                  body: const Center(child: CircularProgressIndicator()));
             }
             return NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -117,6 +161,8 @@ class _PostListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeViewLogic logic = getIt<HomeViewLogic>();
+    //if (CtShortcodeService.getShortcodeNames().isNotEmpty) {
+    //This essentially checks to see if WP api has worked and if it hasnt this list will be empty. (This usually is caused by an internet error so then it displays a please check connection page)
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -148,6 +194,7 @@ class _PostListView extends StatelessWidget {
                 const Padding(padding: EdgeInsets.all(8))),
       ),
     );
+    //} else {}
   }
 }
 
