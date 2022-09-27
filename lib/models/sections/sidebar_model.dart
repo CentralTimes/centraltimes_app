@@ -9,5 +9,4 @@ class SidebarModel extends SectionModel {
   String toString() {
     return title.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ');
   }
-
 }

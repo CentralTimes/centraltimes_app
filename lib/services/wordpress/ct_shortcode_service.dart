@@ -7,9 +7,14 @@ class CtShortcodeService {
   static final Logger log = Logger("CtShortcodeService");
 
   static Future<void> init() async {
-    final WPResponse res =
-        await wpApi.fetch('shortcodes', namespace: 'centraltimes/v1');
-    _shortcodeNamesList = (res.data as List).map((e) => e.toString()).toList();
+    WPResponse res;
+    try {
+      res = await wpApi.fetch('shortcodes', namespace: 'centraltimes/v1');
+      _shortcodeNamesList =
+          (res.data as List).map((e) => e.toString()).toList();
+    } catch (e) {
+      _shortcodeNamesList = [];
+    }
   }
 
   static List<String> getShortcodeNames() {

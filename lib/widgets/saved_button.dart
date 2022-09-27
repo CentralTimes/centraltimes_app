@@ -24,6 +24,6 @@ class _SaveButtonState extends State<SaveButton> {
             SavedPostsService.isPostSaved(widget.id)
                 ? Icons.bookmark
                 : Icons.bookmark_add_outlined,
-            color: widget.iconColor ?? Theme.of(context).primaryColor));
+            color: widget.iconColor ?? Theme.of(context).colorScheme.primary));
   }
 }

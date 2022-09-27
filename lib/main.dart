@@ -1,8 +1,8 @@
 import 'package:app/services/logic_getit_init.dart';
-import 'package:app/services/saved_posts_service.dart';
 import 'package:app/services/wordpress/wordpress_init.dart';
 import 'package:app/views/home_view/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:app/services/saved_posts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
@@ -81,9 +81,7 @@ class _CentralTimesAppState extends State<CentralTimesApp> {
       theme: ThemeData(
         colorScheme: const ColorScheme(
           primary: Color.fromRGBO(239, 72, 68, 1),
-          primaryVariant: Color.fromRGBO(239, 72, 68, 1),
           secondary: Color.fromRGBO(239, 72, 68, 1),
-          secondaryVariant: Color.fromRGBO(239, 72, 68, 1),
           surface: Colors.white,
           background: Colors.white,
           error: Colors.black,
